@@ -126,10 +126,10 @@ pub fn Input(props: InputProps) -> Element {
         InputVariant::Error => "border-destructive focus-visible:border-destructive",
     };
 
-    // Determine size classes
+    // Determine size classes (shadcn uses h-9 for default)
     let size_classes = match props.size {
         InputSize::Small => "text-xs px-2 py-1 h-8",
-        InputSize::Medium => "text-sm px-3 py-1.5 h-10",
+        InputSize::Medium => "text-base md:text-sm px-3 py-1 h-9",
         InputSize::Large => "text-base px-4 py-2 h-12",
     };
 
@@ -140,7 +140,7 @@ pub fn Input(props: InputProps) -> Element {
     let state_class = if props.disabled {
         "opacity-50 cursor-not-allowed bg-muted"
     } else {
-        "bg-background"
+        "bg-background dark:bg-input/30"
     };
 
     // Padding adjustment when icons are present
@@ -166,9 +166,11 @@ pub fn Input(props: InputProps) -> Element {
 
     // Generate all the classes
     let input_classes = vec![
-        // Base classes
-        "rounded border text-foreground",
-        "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        // Base classes (matches shadcn input.tsx)
+        "min-w-0 rounded-md border shadow-xs text-foreground selection:bg-primary selection:text-primary-foreground",
+        "placeholder:text-muted-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
+        "transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
         // Variant-specific classes
         variant_classes,
         // Size-specific classes
@@ -242,6 +244,11 @@ pub fn Input(props: InputProps) -> Element {
                 required: props.required,
                 class: input_classes,
                 "data-slot": "input",
+                "data-size": match props.size {
+                    InputSize::Small => "sm",
+                    InputSize::Medium => "default",
+                    InputSize::Large => "lg",
+                },
 
                 // Event handlers
                 onchange: handle_change,

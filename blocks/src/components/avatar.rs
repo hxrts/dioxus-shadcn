@@ -116,8 +116,8 @@ pub fn AvatarImage(props: AvatarImageProps) -> Element {
     let id_value = use_memo(move || props.id.clone().unwrap_or_else(|| image_id.peek().clone()));
 
     let image_classes = vec![
-        // Base classes - fill the container and maintain aspect ratio
-        "aspect-square h-full w-full object-cover group-data-[state=error]:hidden",
+        // Base classes - fill the container and maintain aspect ratio (matches shadcn)
+        "aspect-square size-full",
         // Additional classes passed by the user
         props.class.as_deref().unwrap_or(""),
     ]

@@ -100,23 +100,24 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
         None => *internal_checked.read(),
     };
 
-    // Determine size-specific classes
+    // Determine size-specific classes (shadcn uses size-4 as default)
     let (size_class, icon_size) = match props.size {
-        CheckboxSize::Small => ("h-4 w-4", "h-3 w-3"),
-        CheckboxSize::Medium => ("h-5 w-5", "h-4 w-4"),
-        CheckboxSize::Large => ("h-6 w-6", "h-5 w-5"),
+        CheckboxSize::Small => ("size-3.5", "size-3"),
+        CheckboxSize::Medium => ("size-4", "size-3.5"),
+        CheckboxSize::Large => ("size-5", "size-4"),
     };
 
-    // Build checkbox wrapper classes
+    // Build checkbox wrapper classes matching shadcn-ui
     let custom_class = props.class.as_deref().unwrap_or("");
     let checkbox_class = format!(
-        "inline-flex items-center justify-center rounded border-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 {} {} {} {}",
+        "peer shrink-0 rounded-[4px] border border-input shadow-xs transition-shadow outline-none \
+         focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 \
+         disabled:cursor-not-allowed disabled:opacity-50 \
+         aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 \
+         data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground \
+         dark:bg-input/30 dark:data-[state=checked]:bg-primary \
+         {} {} {}",
         size_class,
-        if is_checked {
-            "bg-primary border-primary"
-        } else {
-            "bg-background border-input hover:bg-accent/10"
-        },
         if props.disabled {
             "cursor-not-allowed opacity-50"
         } else {
@@ -188,12 +189,12 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
             onkeydown: on_keydown,
             tabindex: if !props.disabled { "0" } else { "-1" },
 
-            // Render indicator when checked
+            // Render indicator when checked (matching shadcn grid layout)
             if is_checked {
                 div {
-                    class: "flex items-center justify-center {icon_size}",
+                    class: "grid place-content-center text-current transition-none",
                     "data-slot": "checkbox-indicator",
-                    Check { class: "text-primary-foreground" }
+                    Check { class: "{icon_size}" }
                 }
             }
 

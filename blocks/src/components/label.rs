@@ -84,6 +84,11 @@ pub fn Label(props: LabelProps) -> Element {
             class: label_classes,
             for: (props.for_id)(),
             "data-slot": "label",
+            "data-size": match (props.size)() {
+                LabelSize::Small => "sm",
+                LabelSize::Medium => "default",
+                LabelSize::Large => "lg",
+            },
 
             // Pass through other attributes
             ..props.attributes,

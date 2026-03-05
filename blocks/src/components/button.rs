@@ -138,22 +138,22 @@ pub fn Button(props: ButtonProps) -> Element {
     // Determine base classes for button based on variant
     let variant_classes = match props.variant {
         ButtonVariant::Primary => {
-            "bg-primary text-primary-foreground hover:bg-primary/90 border-transparent focus:ring-ring"
+            "bg-primary text-primary-foreground hover:bg-primary/90"
         }
         ButtonVariant::Secondary => {
-            "bg-secondary text-secondary-foreground hover:bg-secondary/80 border-transparent focus:ring-ring"
+            "bg-secondary text-secondary-foreground hover:bg-secondary/80"
         }
         ButtonVariant::Outline => {
-            "bg-background text-foreground hover:bg-muted border-border focus:ring-ring"
+            "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50"
         }
         ButtonVariant::Ghost => {
-            "bg-transparent text-foreground hover:bg-muted border-transparent focus:ring-ring"
+            "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50"
         }
         ButtonVariant::Link => {
-            "bg-transparent text-primary underline-offset-4 underline border-transparent p-0 shadow-none focus:ring-ring"
+            "text-primary underline-offset-4 hover:underline"
         }
         ButtonVariant::Destructive => {
-            "bg-destructive text-primary-foreground dark:text-foreground hover:bg-destructive/90 border-transparent focus:ring-ring"
+            "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40"
         }
     };
 
@@ -167,10 +167,10 @@ pub fn Button(props: ButtonProps) -> Element {
         }
     } else {
         match props.size {
-            ButtonSize::Xs | ButtonSize::IconXs => "h-6 gap-1 rounded-[min(var(--radius-md),8px)] px-2 text-xs",
-            ButtonSize::Small | ButtonSize::IconSm => "h-8 gap-1.5 px-3 text-xs",
-            ButtonSize::Medium | ButtonSize::Icon => "h-9 gap-2 px-4 py-2 text-sm",
-            ButtonSize::Large | ButtonSize::IconLg => "h-10 gap-2 px-6 text-base",
+            ButtonSize::Xs | ButtonSize::IconXs => "h-6 gap-1 rounded-[min(var(--radius-md),8px)] px-2 text-xs has-[>svg]:px-1.5",
+            ButtonSize::Small | ButtonSize::IconSm => "h-8 gap-1.5 px-3 text-xs has-[>svg]:px-2.5",
+            ButtonSize::Medium | ButtonSize::Icon => "h-9 gap-2 px-4 py-2 text-sm has-[>svg]:px-3",
+            ButtonSize::Large | ButtonSize::IconLg => "h-10 gap-2 px-6 text-base has-[>svg]:px-4",
         }
     };
 
@@ -193,9 +193,9 @@ pub fn Button(props: ButtonProps) -> Element {
     // Generate all the classes in a more maintainable way
     let button_classes = vec![
         // Base classes that apply to all buttons
-        "inline-flex items-center justify-center font-medium rounded-md border",
-        "whitespace-nowrap ring-offset-background",
-        "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap",
+        "transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
         // Icon sizing
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         // Variant-specific classes
@@ -236,6 +236,20 @@ pub fn Button(props: ButtonProps) -> Element {
             class: button_classes,
             "data-slot": "button",
             "data-loading": props.loading.to_string(),
+            "data-variant": match props.variant {
+                ButtonVariant::Primary => "default",
+                ButtonVariant::Secondary => "secondary",
+                ButtonVariant::Outline => "outline",
+                ButtonVariant::Ghost => "ghost",
+                ButtonVariant::Link => "link",
+                ButtonVariant::Destructive => "destructive",
+            },
+            "data-size": match props.size {
+                ButtonSize::Xs | ButtonSize::IconXs => "xs",
+                ButtonSize::Small | ButtonSize::IconSm => "sm",
+                ButtonSize::Medium | ButtonSize::Icon => "default",
+                ButtonSize::Large | ButtonSize::IconLg => "lg",
+            },
             onclick: handle_click,
 
             // ARIA attributes

@@ -16,25 +16,25 @@ pub enum AlertVariant {
 impl AlertVariant {
     fn classes(&self) -> &'static str {
         match self {
-            AlertVariant::Default => "bg-background text-foreground",
+            AlertVariant::Default => "bg-card text-card-foreground",
             AlertVariant::Destructive => {
-                "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive"
+                "bg-card text-destructive *:data-[slot=alert-description]:text-destructive/90 [&>svg]:text-current"
             }
             AlertVariant::Success => {
-                "border-green-500/50 text-green-700 dark:text-green-400 [&>svg]:text-green-600"
+                "bg-card text-green-700 dark:text-green-400 *:data-[slot=alert-description]:text-green-600/90 [&>svg]:text-current"
             }
             AlertVariant::Warning => {
-                "border-yellow-500/50 text-yellow-700 dark:text-yellow-400 [&>svg]:text-yellow-600"
+                "bg-card text-yellow-700 dark:text-yellow-400 *:data-[slot=alert-description]:text-yellow-600/90 [&>svg]:text-current"
             }
         }
     }
 
     fn icon(&self) -> Element {
         match self {
-            AlertVariant::Default => rsx! { Info { class: "h-4 w-4" } },
-            AlertVariant::Destructive => rsx! { CircleAlert { class: "h-4 w-4" } },
-            AlertVariant::Success => rsx! { CircleCheck { class: "h-4 w-4" } },
-            AlertVariant::Warning => rsx! { TriangleAlert { class: "h-4 w-4" } },
+            AlertVariant::Default => rsx! { Info { class: "size-4 translate-y-0.5" } },
+            AlertVariant::Destructive => rsx! { CircleAlert { class: "size-4 translate-y-0.5" } },
+            AlertVariant::Success => rsx! { CircleCheck { class: "size-4 translate-y-0.5" } },
+            AlertVariant::Warning => rsx! { TriangleAlert { class: "size-4 translate-y-0.5" } },
         }
     }
 }
@@ -81,8 +81,8 @@ pub fn Alert(props: AlertProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "relative w-full rounded-lg border p-4 [&>svg+div]:translate-y-[-3px] \
-         [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&:has(svg)]:pl-11 {} {}",
+        "relative grid w-full grid-cols-[0_1fr] items-start gap-y-0.5 rounded-lg border px-4 py-3 text-sm \
+         has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3 [&>svg]:text-current {} {}",
         variant_classes, custom_class
     );
 
@@ -124,12 +124,12 @@ pub fn AlertTitle(props: AlertTitleProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "mb-1 font-medium leading-none tracking-tight {}",
+        "col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight {}",
         custom_class
     );
 
     rsx! {
-        h5 {
+        div {
             class: classes,
             "data-slot": "alert-title",
             {props.children}
@@ -153,7 +153,10 @@ pub struct AlertDescriptionProps {
 pub fn AlertDescription(props: AlertDescriptionProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!("text-sm [&_p]:leading-relaxed {}", custom_class);
+    let classes = format!(
+        "col-start-2 grid justify-items-start gap-1 text-sm text-muted-foreground [&_p]:leading-relaxed {}",
+        custom_class
+    );
 
     rsx! {
         div {

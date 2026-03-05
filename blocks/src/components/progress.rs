@@ -66,11 +66,11 @@ pub fn Progress(props: ProgressProps) -> Element {
     // An adapter to convert signal type from `f64` to `Option<f64>`
     let value_optional = use_memo(move || Some((props.value)()));
 
-    // Determine size-specific classes
+    // Determine size-specific classes (shadcn uses h-2 as default)
     let height_class = match props.size {
-        ProgressSize::Small => "h-2",
-        ProgressSize::Medium => "h-3",
-        ProgressSize::Large => "h-4",
+        ProgressSize::Small => "h-1.5",
+        ProgressSize::Medium => "h-2",
+        ProgressSize::Large => "h-3",
     };
 
     // Determine color variant classes
@@ -81,9 +81,9 @@ pub fn Progress(props: ProgressProps) -> Element {
         ProgressVariant::Warning => "bg-yellow-500",
     };
 
-    // Build container classes
+    // Build container classes (shadcn uses bg-primary/20)
     let container_class = format!(
-        "relative w-full overflow-hidden rounded-full bg-secondary {}",
+        "relative w-full overflow-hidden rounded-full bg-primary/20 {}",
         height_class
     );
 
@@ -95,7 +95,7 @@ pub fn Progress(props: ProgressProps) -> Element {
 
     // Build indicator classes
     let indicator_class = format!(
-        "h-full transition-all duration-300 ease-in-out {}",
+        "h-full w-full flex-1 transition-all {}",
         indicator_color
     );
 

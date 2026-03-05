@@ -109,6 +109,7 @@ pub fn SideSheetClose(props: SideSheetCloseProps) -> Element {
 
     rsx! {
         div {
+            "data-slot": "sheet-close",
             onclick: on_click,
             {props.children}
         }

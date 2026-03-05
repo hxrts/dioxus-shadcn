@@ -77,7 +77,7 @@ pub fn Slider(props: SliderProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let track_classes = format!(
-        "relative flex w-full touch-none select-none items-center {}",
+        "relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 {}",
         custom_class
     );
 
@@ -112,7 +112,7 @@ pub fn Slider(props: SliderProps) -> Element {
 
             // Track
             div {
-                class: "relative h-2 w-full grow overflow-hidden rounded-full bg-secondary",
+                class: "relative h-1.5 w-full grow overflow-hidden rounded-full bg-muted",
                 "data-slot": "slider-track",
 
                 // Range (filled portion)
@@ -142,12 +142,11 @@ pub fn Slider(props: SliderProps) -> Element {
 
             // Visual thumb
             div {
-                class: "absolute h-5 w-5 rounded-full border-2 border-primary bg-background \
-                        ring-offset-background transition-colors focus-visible:outline-none \
-                        focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 \
-                        disabled:pointer-events-none disabled:opacity-50",
+                class: "block size-4 shrink-0 rounded-full border border-primary bg-white shadow-sm \
+                        ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 \
+                        focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50",
                 "data-slot": "slider-thumb",
-                style: "left: calc({percentage}% - 0.625rem)",
+                style: "position: absolute; left: calc({percentage}% - 0.5rem)",
                 "data-disabled": props.disabled.to_string(),
             }
         }

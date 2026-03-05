@@ -76,6 +76,10 @@ Based on MIT-licensed code from shadcn: https://github.com/shadcn-ui/ui
     --sidebar-ring: oklch(0.708 0 0);
     --surface: oklch(0.98 0 0);
     --surface-foreground: var(--foreground);
+    --code: oklch(0.95 0 0);
+    --code-foreground: oklch(0.145 0 0);
+    --selection: var(--primary);
+    --selection-foreground: var(--primary-foreground);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -113,6 +117,8 @@ Based on MIT-licensed code from shadcn: https://github.com/shadcn-ui/ui
         --sidebar-ring: oklch(0.439 0 0);
         --surface: oklch(0.2 0 0);
         --surface-foreground: oklch(0.708 0 0);
+        --code: oklch(0.2 0 0);
+        --code-foreground: oklch(0.985 0 0);
     }
 }
 
@@ -159,6 +165,10 @@ Based on MIT-licensed code from shadcn: https://github.com/shadcn-ui/ui
     --color-sidebar-ring: var(--sidebar-ring);
     --color-surface: var(--surface);
     --color-surface-foreground: var(--surface-foreground);
+    --color-code: var(--code);
+    --color-code-foreground: var(--code-foreground);
+    --color-selection: var(--selection);
+    --color-selection-foreground: var(--selection-foreground);
 
     /* Animation definitions - slide */
     --animate-slide-in-from-right: slide-in-from-right 0.2s ease-out;

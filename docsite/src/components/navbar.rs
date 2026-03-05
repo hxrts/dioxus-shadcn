@@ -1,5 +1,5 @@
 use crate::Route;
-use crate::LUMEN_LOGO_SMALL;
+use crate::LOGO_SMALL;
 use ::docs::docs::router::{BookRoute, LAZY_BOOK};
 use dioxus::prelude::*;
 use docs::docs;
@@ -39,8 +39,8 @@ pub fn Navbar() -> Element {
                     class: "text-foreground hover:text-primary transition-colors",
                     div {
                         class: "flex items-center gap-2",
-                        img { class: "w-8 h-8 dark:invert", src: LUMEN_LOGO_SMALL }
-                        span { class: "text-xl font-bold text-foreground", "Lumen Blocks" }
+                        img { class: "w-8 h-8 dark:invert", src: LOGO_SMALL }
+                        span { class: "text-xl font-bold text-foreground", "dioxus-shadcn" }
                     }
                 }
                 // Desktop navigation links
@@ -57,7 +57,7 @@ pub fn Navbar() -> Element {
                         "Docs"
                     }
                     a {
-                        href: "https://github.com/Leaf-Computer/lumen-blocks",
+                        href: "https://github.com/hxrts/dioxus-shadcn",
                         target: "_blank",
                         rel: "noopener noreferrer",
                         class: "text-foreground hover:text-primary transition-colors",
@@ -95,7 +95,7 @@ pub fn Navbar() -> Element {
                         "Docs"
                     }
                     a {
-                        href: "https://github.com/Leaf-Computer/lumen-blocks",
+                        href: "https://github.com/hxrts/dioxus-shadcn",
                         target: "_blank",
                         rel: "noopener noreferrer",
                         class: "text-foreground hover:text-primary transition-colors",

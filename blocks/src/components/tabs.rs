@@ -103,8 +103,8 @@ pub fn Tabs(props: TabsProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let orientation_class = match props.orientation {
-        TabsOrientation::Horizontal => "",
-        TabsOrientation::Vertical => "flex",
+        TabsOrientation::Horizontal => "group/tabs flex gap-2 flex-col",
+        TabsOrientation::Vertical => "group/tabs flex gap-2",
     };
 
     let classes = format!("{} {}", orientation_class, custom_class);
@@ -146,18 +146,18 @@ pub fn TabsList(props: TabsListProps) -> Element {
     let base_classes = match context.variant {
         TabsVariant::Default => match context.orientation {
             TabsOrientation::Horizontal => {
-                "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground"
+                "group/tabs-list inline-flex w-fit items-center justify-center rounded-lg bg-muted p-[3px] text-muted-foreground h-9"
             }
             TabsOrientation::Vertical => {
-                "flex flex-col h-auto items-stretch rounded-md bg-muted p-1 text-muted-foreground"
+                "group/tabs-list inline-flex w-fit items-center justify-center rounded-lg bg-muted p-[3px] text-muted-foreground h-fit flex-col"
             }
         },
         TabsVariant::Line => match context.orientation {
             TabsOrientation::Horizontal => {
-                "inline-flex h-10 items-center justify-start gap-2 border-b border-border"
+                "group/tabs-list inline-flex w-fit items-center justify-center rounded-none bg-transparent p-[3px] text-muted-foreground h-9 gap-1"
             }
             TabsOrientation::Vertical => {
-                "flex flex-col items-stretch gap-1 border-r border-border pr-2"
+                "group/tabs-list inline-flex w-fit items-center justify-center rounded-none bg-transparent p-[3px] text-muted-foreground h-fit flex-col gap-1"
             }
         },
     };
@@ -206,30 +206,20 @@ pub fn TabsTrigger(props: TabsTriggerProps) -> Element {
 
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let variant_classes = match context.variant {
-        TabsVariant::Default => {
-            if is_active {
-                "bg-background text-foreground shadow-sm rounded-sm"
-            } else {
-                "hover:bg-background/50 hover:text-foreground rounded-sm"
-            }
-        }
-        TabsVariant::Line => {
-            if is_active {
-                "text-foreground border-b-2 border-primary -mb-px"
-            } else {
-                "text-muted-foreground hover:text-foreground border-b-2 border-transparent -mb-px"
-            }
-        }
+    let state_classes = if is_active {
+        "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30"
+    } else {
+        "text-foreground/60 dark:text-muted-foreground"
     };
 
     let classes = format!(
-        "inline-flex items-center justify-center whitespace-nowrap px-3 py-1.5 \
-         text-sm font-medium ring-offset-background transition-all \
-         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 \
+        "relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md \
+         border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-all \
+         hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring \
          disabled:pointer-events-none disabled:opacity-50 \
+         [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 \
          {} {}",
-        variant_classes,
+        state_classes,
         custom_class
     );
 
@@ -310,11 +300,7 @@ pub fn TabsContent(props: TabsContentProps) -> Element {
 
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "mt-2 ring-offset-background focus-visible:outline-none \
-         focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 {}",
-        custom_class
-    );
+    let classes = format!("flex-1 outline-none {}", custom_class);
 
     if !is_active {
         return rsx! {};

@@ -9,9 +9,9 @@ use crate::Route;
 pub fn MainLayout() -> Element {
     let route = use_route::<Route>();
     let title = match route {
-        Route::Home { .. } => "Lumen Blocks - Home",
-        Route::Docs { .. } => "Lumen Blocks - Documentation",
-        Route::Err404 { .. } => "Lumen Blocks - Page Not Found",
+        Route::Home { .. } => "dioxus-shadcn",
+        Route::Docs { .. } => "dioxus-shadcn - Docs",
+        Route::Err404 { .. } => "dioxus-shadcn - Not Found",
     };
 
     rsx! {

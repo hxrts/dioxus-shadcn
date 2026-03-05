@@ -38,7 +38,7 @@ pub fn Card(props: CardProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "rounded-lg border border-border bg-card text-card-foreground shadow-sm {}",
+        "flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm {}",
         custom_class
     );
 
@@ -68,7 +68,7 @@ pub fn CardHeader(props: CardHeaderProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 p-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6 {}",
+        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6 {}",
         custom_class
     );
 
@@ -97,13 +97,10 @@ pub struct CardTitleProps {
 pub fn CardTitle(props: CardTitleProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "text-2xl font-semibold leading-none tracking-tight {}",
-        custom_class
-    );
+    let classes = format!("leading-none font-semibold {}", custom_class);
 
     rsx! {
-        h3 {
+        div {
             class: classes,
             "data-slot": "card-title",
             {props.children}
@@ -154,7 +151,7 @@ pub struct CardContentProps {
 pub fn CardContent(props: CardContentProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!("p-6 pt-0 {}", custom_class);
+    let classes = format!("px-6 {}", custom_class);
 
     rsx! {
         div {
@@ -181,7 +178,7 @@ pub struct CardFooterProps {
 pub fn CardFooter(props: CardFooterProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!("flex items-center p-6 pt-0 {}", custom_class);
+    let classes = format!("flex items-center px-6 [.border-t]:pt-6 {}", custom_class);
 
     rsx! {
         div {

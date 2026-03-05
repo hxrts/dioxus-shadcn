@@ -58,9 +58,9 @@ pub fn DocsLayout() -> Element {
             .next()
             .unwrap_or_else(|| "Documentation".to_string());
 
-        format!("Lumen Blocks - {}", page_title)
+        format!("dioxus-shadcn - {}", page_title)
     } else {
-        "Lumen Blocks - Documentation".to_string()
+        "dioxus-shadcn - Docs".to_string()
     };
 
     rsx! {

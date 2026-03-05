@@ -99,8 +99,8 @@ pub fn RadioGroup(props: RadioGroupProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let orientation_class = match props.orientation {
-        RadioGroupOrientation::Vertical => "flex flex-col space-y-2",
-        RadioGroupOrientation::Horizontal => "flex flex-row space-x-4",
+        RadioGroupOrientation::Vertical => "grid gap-3",
+        RadioGroupOrientation::Horizontal => "flex flex-row gap-4",
     };
 
     let classes = format!("{} {}", orientation_class, custom_class);
@@ -152,10 +152,11 @@ pub fn RadioGroupItem(props: RadioGroupItemProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "aspect-square h-4 w-4 rounded-full border border-primary text-primary \
-         ring-offset-background focus:outline-none focus-visible:ring-2 \
-         focus-visible:ring-ring focus-visible:ring-offset-2 \
-         disabled:cursor-not-allowed disabled:opacity-50 {}",
+        "aspect-square size-4 shrink-0 rounded-full border border-input text-primary \
+         shadow-xs transition-[color,box-shadow] outline-none \
+         focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 \
+         disabled:cursor-not-allowed disabled:opacity-50 \
+         aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30 dark:aria-invalid:ring-destructive/40 {}",
         custom_class
     );
 
@@ -184,13 +185,13 @@ pub fn RadioGroupItem(props: RadioGroupItemProps) -> Element {
             disabled: is_disabled,
             onclick: handle_change,
 
-            // Inner indicator circle
+            // Inner indicator circle (matching shadcn CircleIcon approach)
             if is_checked {
                 span {
-                    class: "flex items-center justify-center",
+                    class: "relative flex items-center justify-center",
                     "data-slot": "radio-group-indicator",
                     span {
-                        class: "h-2.5 w-2.5 rounded-full bg-current",
+                        class: "absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary",
                     }
                 }
             }

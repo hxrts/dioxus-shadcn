@@ -1,6 +1,6 @@
 [book.en]
-title = "Lumen Blocks Documentation"
-description = "Get started with Lumen blocks"
+title = "dioxus-shadcn"
+description = "shadcn UI components for Dioxus"
 authors = ["Daniel D’Aquino"]
 
 [rust]

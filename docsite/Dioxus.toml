@@ -5,7 +5,7 @@ asset_dir = "assets"
 [web.app]
 
 # HTML title tag content
-title = "Lumen Blocks"
+title = "dioxus-shadcn"
 
 # include `assets` in web platform
 [web.resource]

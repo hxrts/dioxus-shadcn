@@ -18,20 +18,22 @@ impl BadgeVariant {
     fn classes(&self) -> &'static str {
         match self {
             BadgeVariant::Default => {
-                "border-transparent bg-primary text-primary-foreground hover:bg-primary/80"
+                "bg-primary text-primary-foreground [a&]:hover:bg-primary/90"
             }
             BadgeVariant::Secondary => {
-                "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                "bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90"
             }
             BadgeVariant::Destructive => {
-                "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80"
+                "bg-destructive text-white focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40 [a&]:hover:bg-destructive/90"
             }
-            BadgeVariant::Outline => "text-foreground",
+            BadgeVariant::Outline => {
+                "border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground"
+            }
             BadgeVariant::Ghost => {
-                "border-transparent hover:bg-accent hover:text-accent-foreground"
+                "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground"
             }
             BadgeVariant::Link => {
-                "border-transparent text-primary underline-offset-4 hover:underline"
+                "text-primary underline-offset-4 [a&]:hover:underline"
             }
         }
     }
@@ -70,8 +72,10 @@ pub fn Badge(props: BadgeProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold \
-         transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 \
+        "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border border-transparent px-2 py-0.5 text-xs font-medium whitespace-nowrap \
+         transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 \
+         aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 \
+         [&>svg]:pointer-events-none [&>svg]:size-3 \
          {} {}",
         variant_classes, custom_class
     );

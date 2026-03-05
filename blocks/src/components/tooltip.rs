@@ -86,8 +86,8 @@ pub fn Tooltip(props: TooltipProps) -> Element {
     let animation_classes = props.side.animation_classes();
 
     let tooltip_classes = format!(
-        "absolute z-50 overflow-hidden rounded-md border border-border bg-popover px-3 py-1.5 \
-         text-sm text-popover-foreground shadow-md {} {} {}",
+        "absolute z-50 w-fit rounded-md bg-foreground px-3 py-1.5 \
+         text-xs text-balance text-background {} {} {}",
         position_classes, animation_classes, custom_class
     );
 
