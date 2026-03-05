@@ -78,8 +78,18 @@ pub static DOCS_NAV: &[NavSection] = &[
                 badge: None,
             },
             NavItem {
+                title: "Button Group",
+                route: DocsRoute::ButtonGroupPage,
+                badge: None,
+            },
+            NavItem {
                 title: "Card",
                 route: DocsRoute::CardPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Carousel",
+                route: DocsRoute::CarouselPage,
                 badge: None,
             },
             NavItem {
@@ -93,13 +103,53 @@ pub static DOCS_NAV: &[NavSection] = &[
                 badge: None,
             },
             NavItem {
+                title: "Combobox",
+                route: DocsRoute::ComboboxPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Command",
+                route: DocsRoute::CommandPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Context Menu",
+                route: DocsRoute::ContextMenuPage,
+                badge: None,
+            },
+            NavItem {
                 title: "Dialog",
                 route: DocsRoute::DialogPage,
                 badge: None,
             },
             NavItem {
+                title: "Direction",
+                route: DocsRoute::DirectionPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Drawer",
+                route: DocsRoute::DrawerPage,
+                badge: None,
+            },
+            NavItem {
                 title: "Dropdown",
                 route: DocsRoute::DropdownPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Empty",
+                route: DocsRoute::EmptyPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Field",
+                route: DocsRoute::FieldPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Form",
+                route: DocsRoute::FormPage,
                 badge: None,
             },
             NavItem {
@@ -113,13 +163,48 @@ pub static DOCS_NAV: &[NavSection] = &[
                 badge: None,
             },
             NavItem {
+                title: "Input Group",
+                route: DocsRoute::InputGroupPage,
+                badge: None,
+            },
+            NavItem {
                 title: "Input OTP",
                 route: DocsRoute::InputOTPPage,
                 badge: None,
             },
             NavItem {
+                title: "Item",
+                route: DocsRoute::ItemPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Kbd",
+                route: DocsRoute::KbdPage,
+                badge: None,
+            },
+            NavItem {
                 title: "Label",
                 route: DocsRoute::LabelPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Menubar",
+                route: DocsRoute::MenubarPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Native Select",
+                route: DocsRoute::NativeSelectPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Navigation Menu",
+                route: DocsRoute::NavigationMenuPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Pagination",
+                route: DocsRoute::PaginationPage,
                 badge: None,
             },
             NavItem {
@@ -135,6 +220,11 @@ pub static DOCS_NAV: &[NavSection] = &[
             NavItem {
                 title: "Radio Group",
                 route: DocsRoute::RadioGroupPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Resizable",
+                route: DocsRoute::ResizablePage,
                 badge: None,
             },
             NavItem {
@@ -165,6 +255,11 @@ pub static DOCS_NAV: &[NavSection] = &[
             NavItem {
                 title: "Slider",
                 route: DocsRoute::SliderPage,
+                badge: None,
+            },
+            NavItem {
+                title: "Spinner",
+                route: DocsRoute::SpinnerPage,
                 badge: None,
             },
             NavItem {

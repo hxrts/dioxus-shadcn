@@ -1,0 +1,44 @@
+//! Field example components.
+
+use dioxus::prelude::*;
+use lumen_blocks::components::field::{Field, FieldDescription, FieldGroup, FieldLabel, FieldSet, FieldLegend};
+use lumen_blocks::components::input::Input;
+
+/// Source code for the basic example.
+pub const BASIC_SOURCE: &str = r##"rsx! {
+    FieldSet {
+        FieldLegend { "Personal Information" }
+        FieldGroup {
+            Field {
+                FieldLabel { "Name" }
+                Input { placeholder: "Enter your name" }
+            }
+            Field {
+                FieldLabel { "Email" }
+                Input { placeholder: "Enter your email" }
+                FieldDescription { "We'll never share your email." }
+            }
+        }
+    }
+}"##;
+
+/// Basic field example.
+#[component]
+pub fn FieldBasicExample() -> Element {
+    rsx! {
+        FieldSet { class: "max-w-md",
+            FieldLegend { "Personal Information" }
+            FieldGroup {
+                Field {
+                    FieldLabel { "Name" }
+                    Input { placeholder: "Enter your name" }
+                }
+                Field {
+                    FieldLabel { "Email" }
+                    Input { placeholder: "Enter your email" }
+                    FieldDescription { "We'll never share your email." }
+                }
+            }
+        }
+    }
+}

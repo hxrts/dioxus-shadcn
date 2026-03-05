@@ -11,6 +11,8 @@ pub const BASIC_SOURCE: &str = r##"rsx! {
         on_submit: move |_| {
             // Handle form submission
         },
+        class: "space-y-6",
+
         FormField { name: "username",
             FormLabel { "Username" }
             FormControl {
@@ -19,7 +21,17 @@ pub const BASIC_SOURCE: &str = r##"rsx! {
             FormDescription { "This is your public display name." }
             FormMessage {}
         }
-        Button { r#type: "submit", "Submit" }
+
+        FormField { name: "email",
+            FormLabel { "Email" }
+            FormControl {
+                Input { r#type: "email", placeholder: "Enter your email" }
+            }
+            FormDescription { "We'll never share your email." }
+            FormMessage {}
+        }
+
+        Button { button_type: "submit", "Submit" }
     }
 }"##;
 
@@ -28,10 +40,11 @@ pub const BASIC_SOURCE: &str = r##"rsx! {
 pub fn FormBasicExample() -> Element {
     rsx! {
         Form {
-            class: "w-2/3 space-y-6",
             on_submit: move |_| {
                 // Handle form submission
             },
+            class: "space-y-6 w-full max-w-sm",
+
             FormField { name: "username",
                 FormLabel { "Username" }
                 FormControl {
@@ -40,7 +53,17 @@ pub fn FormBasicExample() -> Element {
                 FormDescription { "This is your public display name." }
                 FormMessage {}
             }
-            Button { r#type: "submit", "Submit" }
+
+            FormField { name: "email",
+                FormLabel { "Email" }
+                FormControl {
+                    Input { r#type: "email", placeholder: "Enter your email" }
+                }
+                FormDescription { "We'll never share your email." }
+                FormMessage {}
+            }
+
+            Button { button_type: "submit", "Submit" }
         }
     }
 }
