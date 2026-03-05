@@ -123,7 +123,7 @@ pub fn Progress(props: ProgressProps) -> Element {
 
                 div {
                     class: indicator_class,
-                    style: format!("width: {}%", percentage),
+                    style: format!("transform: translateX(-{}%)", 100.0 - percentage),
                     "data-slot": "progress-indicator",
                 }
             }

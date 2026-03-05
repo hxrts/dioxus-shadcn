@@ -140,7 +140,7 @@ use dioxus_shadcn::components::button::{Button, ButtonVariant};
 fn App() -> Element {
     rsx! {
         Button {
-            variant: ButtonVariant::Primary,
+            variant: ButtonVariant::Default,
             "Click me"
         }
     }

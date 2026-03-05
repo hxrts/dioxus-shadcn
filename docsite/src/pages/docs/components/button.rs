@@ -29,7 +29,7 @@ pub fn ButtonDoc() -> Element {
                 CodeBlock {
                     source: r#"rsx! {
     Button {
-        variant: ButtonVariant::Primary,
+        variant: ButtonVariant::Default,
         "Click me"
     }
 }"#.to_string(),
@@ -138,7 +138,7 @@ pub fn ButtonDoc() -> Element {
                             tr { class: "border-b border-border",
                                 td { class: "py-3 px-4 font-mono text-xs", "variant" }
                                 td { class: "py-3 px-4 font-mono text-xs", "ButtonVariant" }
-                                td { class: "py-3 px-4 font-mono text-xs", "Primary" }
+                                td { class: "py-3 px-4 font-mono text-xs", "Default" }
                                 td { class: "py-3 px-4 text-muted-foreground", "Visual style variant" }
                             }
                             tr { class: "border-b border-border",

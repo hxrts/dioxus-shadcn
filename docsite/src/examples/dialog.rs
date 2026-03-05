@@ -63,7 +63,7 @@ rsx! {
                 }
             }
             DialogFooter {
-                Button { variant: ButtonVariant::Primary, "Save changes" }
+                Button { variant: ButtonVariant::Default, "Save changes" }
             }
         }
     }
@@ -146,7 +146,7 @@ pub fn DialogWithFormExample() -> Element {
                         Button { variant: ButtonVariant::Outline, "Cancel" }
                     }
                     DialogClose {
-                        Button { variant: ButtonVariant::Primary, "Save changes" }
+                        Button { variant: ButtonVariant::Default, "Save changes" }
                     }
                 }
             }

@@ -44,6 +44,22 @@ pub struct SwitchProps {
     #[props(default)]
     pub aria_label: Option<String>,
 
+    /// Name attribute for form submission
+    #[props(default)]
+    pub name: Option<String>,
+
+    /// Value attribute for form submission
+    #[props(default)]
+    pub value: Option<String>,
+
+    /// Whether the switch is required
+    #[props(default)]
+    pub required: bool,
+
+    /// Additional CSS classes
+    #[props(default)]
+    pub class: Option<String>,
+
     #[props(extends = GlobalAttributes)]
     pub attributes: Vec<Attribute>,
 }
@@ -88,24 +104,21 @@ pub fn Switch(props: SwitchProps) -> Element {
         SwitchSize::Default => "default",
     };
 
+    let custom_class = props.class.as_deref().unwrap_or("");
+
     // Build full switch classes matching shadcn-ui styling
-    let full_switch_classes = vec![
-        // Base classes
-        "peer group/switch inline-flex shrink-0 items-center rounded-full",
-        "border border-transparent shadow-xs transition-all outline-none",
-        // Focus styles
-        "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
-        // Disabled styles
-        "disabled:cursor-not-allowed disabled:opacity-50",
-        // State-based colors
-        "data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
-        "dark:data-[state=unchecked]:bg-input/80",
-        // Size class
+    let full_switch_classes = format!(
+        "peer group/switch inline-flex shrink-0 items-center rounded-full \
+         border border-transparent shadow-xs transition-all outline-none \
+         focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 \
+         disabled:cursor-not-allowed disabled:opacity-50 \
+         aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 \
+         data-[state=checked]:bg-primary data-[state=unchecked]:bg-input \
+         dark:data-[state=unchecked]:bg-input/80 \
+         {} {}",
         switch_size_class,
-    ]
-    .into_iter()
-    .collect::<Vec<_>>()
-    .join(" ");
+        custom_class
+    );
 
     // Build thumb classes
     let full_thumb_classes = vec![
@@ -129,21 +142,39 @@ pub fn Switch(props: SwitchProps) -> Element {
         }
     };
 
+    let is_checked = (props.checked)();
+    let is_disabled = (props.disabled)();
+
     rsx! {
         PrimitiveSwitch {
-            id: id_value,
+            id: id_value.clone(),
             class: full_switch_classes,
             "data-slot": "switch",
             "data-size": data_size,
             checked: inner_checked_state,
             on_checked_change: on_change,
-            disabled: (props.disabled)(),
+            disabled: is_disabled,
             aria_label: props.aria_label.clone(),
 
             SwitchThumb {
                 class: full_thumb_classes,
                 "data-slot": "switch-thumb",
                 aria_hidden: "true".to_string(),
+            }
+        }
+
+        // Hidden input for form submission
+        if let Some(name) = &props.name {
+            input {
+                r#type: "checkbox",
+                name: name.clone(),
+                value: props.value.clone().unwrap_or_else(|| "on".to_string()),
+                checked: is_checked,
+                disabled: is_disabled,
+                required: props.required,
+                class: "sr-only",
+                "aria-hidden": "true",
+                tabindex: "-1",
             }
         }
     }

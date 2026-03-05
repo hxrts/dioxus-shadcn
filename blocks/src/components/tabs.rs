@@ -102,12 +102,10 @@ pub fn Tabs(props: TabsProps) -> Element {
 
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let orientation_class = match props.orientation {
-        TabsOrientation::Horizontal => "group/tabs flex gap-2 flex-col",
-        TabsOrientation::Vertical => "group/tabs flex gap-2",
-    };
-
-    let classes = format!("{} {}", orientation_class, custom_class);
+    let classes = format!(
+        "group/tabs flex gap-2 data-[orientation=horizontal]:flex-col {}",
+        custom_class
+    );
 
     rsx! {
         div {
@@ -143,32 +141,28 @@ pub fn TabsList(props: TabsListProps) -> Element {
     let context = use_context::<TabsContext>();
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let base_classes = match context.variant {
-        TabsVariant::Default => match context.orientation {
-            TabsOrientation::Horizontal => {
-                "group/tabs-list inline-flex w-fit items-center justify-center rounded-lg bg-muted p-[3px] text-muted-foreground h-9"
-            }
-            TabsOrientation::Vertical => {
-                "group/tabs-list inline-flex w-fit items-center justify-center rounded-lg bg-muted p-[3px] text-muted-foreground h-fit flex-col"
-            }
-        },
-        TabsVariant::Line => match context.orientation {
-            TabsOrientation::Horizontal => {
-                "group/tabs-list inline-flex w-fit items-center justify-center rounded-none bg-transparent p-[3px] text-muted-foreground h-9 gap-1"
-            }
-            TabsOrientation::Vertical => {
-                "group/tabs-list inline-flex w-fit items-center justify-center rounded-none bg-transparent p-[3px] text-muted-foreground h-fit flex-col gap-1"
-            }
-        },
+    let variant_classes = match context.variant {
+        TabsVariant::Default => "bg-muted",
+        TabsVariant::Line => "gap-1 bg-transparent",
     };
 
-    let classes = format!("{} {}", base_classes, custom_class);
+    let classes = format!(
+        "group/tabs-list inline-flex w-fit items-center justify-center rounded-lg p-[3px] text-muted-foreground \
+         group-data-[orientation=horizontal]/tabs:h-9 group-data-[orientation=vertical]/tabs:h-fit \
+         group-data-[orientation=vertical]/tabs:flex-col data-[variant=line]:rounded-none \
+         {} {}",
+        variant_classes, custom_class
+    );
 
     rsx! {
         div {
             class: classes,
             role: "tablist",
             "data-slot": "tabs-list",
+            "data-variant": match context.variant {
+                TabsVariant::Default => "default",
+                TabsVariant::Line => "line",
+            },
             "data-orientation": match context.orientation {
                 TabsOrientation::Horizontal => "horizontal",
                 TabsOrientation::Vertical => "vertical",
@@ -206,20 +200,25 @@ pub fn TabsTrigger(props: TabsTriggerProps) -> Element {
 
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let state_classes = if is_active {
-        "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30"
-    } else {
-        "text-foreground/60 dark:text-muted-foreground"
-    };
-
+    // Classes matching shadcn-ui reference exactly
     let classes = format!(
         "relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md \
-         border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-all \
+         border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap text-foreground/60 transition-all \
+         group-data-[orientation=vertical]/tabs:w-full group-data-[orientation=vertical]/tabs:justify-start \
          hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring \
          disabled:pointer-events-none disabled:opacity-50 \
+         group-data-[variant=default]/tabs-list:data-[state=active]:shadow-sm group-data-[variant=line]/tabs-list:data-[state=active]:shadow-none \
+         dark:text-muted-foreground dark:hover:text-foreground \
          [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 \
-         {} {}",
-        state_classes,
+         group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-[state=active]:bg-transparent \
+         dark:group-data-[variant=line]/tabs-list:data-[state=active]:border-transparent dark:group-data-[variant=line]/tabs-list:data-[state=active]:bg-transparent \
+         data-[state=active]:bg-background data-[state=active]:text-foreground \
+         dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 dark:data-[state=active]:text-foreground \
+         after:absolute after:bg-foreground after:opacity-0 after:transition-opacity \
+         group-data-[orientation=horizontal]/tabs:after:inset-x-0 group-data-[orientation=horizontal]/tabs:after:bottom-[-5px] group-data-[orientation=horizontal]/tabs:after:h-0.5 \
+         group-data-[orientation=vertical]/tabs:after:inset-y-0 group-data-[orientation=vertical]/tabs:after:-right-1 group-data-[orientation=vertical]/tabs:after:w-0.5 \
+         group-data-[variant=line]/tabs-list:data-[state=active]:after:opacity-100 \
+         {}",
         custom_class
     );
 

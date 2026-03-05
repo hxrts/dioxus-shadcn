@@ -8,12 +8,14 @@ default:
 # Development
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Start docsite dev server with hot-reload
+# Start docsite dev server with hot-reload (kills existing instance first)
 dev:
+    -lsof -ti:8080 | xargs kill -9 2>/dev/null || true
     dx serve -p docsite --platform web --port 8080
 
 # Start docsite dev server (alias)
 dev-docsite:
+    -lsof -ti:8080 | xargs kill -9 2>/dev/null || true
     dx serve -p docsite --platform web --port 8080
 
 # Start docsite with verbose logging

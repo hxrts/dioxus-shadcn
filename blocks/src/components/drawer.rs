@@ -21,8 +21,8 @@ impl DrawerDirection {
         match self {
             DrawerDirection::Top => "inset-x-0 top-0 mb-24 max-h-[80vh] rounded-b-lg border-b",
             DrawerDirection::Bottom => "inset-x-0 bottom-0 mt-24 max-h-[80vh] rounded-t-lg border-t",
-            DrawerDirection::Left => "inset-y-0 left-0 mr-24 h-full w-3/4 max-w-sm rounded-r-lg border-r",
-            DrawerDirection::Right => "inset-y-0 right-0 ml-24 h-full w-3/4 max-w-sm rounded-l-lg border-l",
+            DrawerDirection::Left => "inset-y-0 left-0 mr-24 h-full w-3/4 rounded-r-lg border-r sm:max-w-sm",
+            DrawerDirection::Right => "inset-y-0 right-0 ml-24 h-full w-3/4 rounded-l-lg border-l sm:max-w-sm",
         }
     }
 
@@ -281,7 +281,7 @@ pub fn DrawerContent(props: DrawerContentProps) -> Element {
     let close_animation = context.direction.close_animation();
 
     let classes = format!(
-        "fixed z-50 flex flex-col gap-4 bg-background shadow-lg \
+        "group/drawer-content fixed z-50 flex h-auto flex-col bg-background \
          data-[state=open]:animate-in data-[state=closed]:animate-out \
          data-[state=open]:duration-300 data-[state=closed]:duration-200 \
          {} {} {} {}",
@@ -318,10 +318,10 @@ pub fn DrawerContent(props: DrawerContentProps) -> Element {
                 tabindex: "-1",
                 onkeydown: handle_keydown,
 
-                // Handle bar for bottom/top drawers
-                if matches!(direction, DrawerDirection::Bottom | DrawerDirection::Top) {
+                // Handle bar for bottom drawer only (matches shadcn reference)
+                if matches!(direction, DrawerDirection::Bottom) {
                     div {
-                        class: "mx-auto mt-4 h-1.5 w-12 shrink-0 rounded-full bg-muted",
+                        class: "mx-auto mt-4 h-2 w-[100px] shrink-0 rounded-full bg-muted",
                         "data-slot": "drawer-handle",
                     }
                 }
@@ -333,7 +333,7 @@ pub fn DrawerContent(props: DrawerContentProps) -> Element {
                     button {
                         class: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background \
                                 transition-opacity hover:opacity-100 \
-                                focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 \
+                                focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 \
                                 disabled:pointer-events-none",
                         "data-slot": "drawer-close-button",
                         onclick: move |_| close_context.close(),
@@ -370,7 +370,7 @@ pub fn DrawerHeader(props: DrawerHeaderProps) -> Element {
     };
 
     let classes = format!(
-        "flex flex-col gap-1.5 p-4 {} {}",
+        "flex flex-col gap-0.5 p-4 md:gap-1.5 md:text-left {} {}",
         text_align, custom_class
     );
 

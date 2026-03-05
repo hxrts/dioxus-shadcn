@@ -127,7 +127,7 @@ pub fn CardDescription(props: CardDescriptionProps) -> Element {
     let classes = format!("text-sm text-muted-foreground {}", custom_class);
 
     rsx! {
-        p {
+        div {
             class: classes,
             "data-slot": "card-description",
             {props.children}

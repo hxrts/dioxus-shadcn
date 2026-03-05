@@ -12,7 +12,7 @@ pub const VARIANTS_SOURCE: &str = r#"use lumen_blocks::components::button::{Butt
 
 rsx! {
     div { class: "flex flex-wrap gap-2.5 items-center",
-        Button { variant: ButtonVariant::Primary, "Primary" }
+        Button { variant: ButtonVariant::Default, "Default" }
         Button { variant: ButtonVariant::Secondary, "Secondary" }
         Button { variant: ButtonVariant::Outline, "Outline" }
         Button { variant: ButtonVariant::Ghost, "Ghost" }
@@ -25,9 +25,9 @@ pub const SIZES_SOURCE: &str = r#"use lumen_blocks::components::button::{Button,
 
 rsx! {
     div { class: "flex flex-wrap gap-2.5 items-center",
-        Button { variant: ButtonVariant::Primary, size: ButtonSize::Small, "Small" }
-        Button { variant: ButtonVariant::Primary, size: ButtonSize::Medium, "Medium" }
-        Button { variant: ButtonVariant::Primary, size: ButtonSize::Large, "Large" }
+        Button { variant: ButtonVariant::Default, size: ButtonSize::Small, "Small" }
+        Button { variant: ButtonVariant::Default, size: ButtonSize::Medium, "Medium" }
+        Button { variant: ButtonVariant::Default, size: ButtonSize::Large, "Large" }
     }
 }"#;
 
@@ -37,8 +37,8 @@ let mut loading = use_signal(|| false);
 
 rsx! {
     div { class: "flex flex-wrap gap-2.5 items-center",
-        Button { variant: ButtonVariant::Primary, disabled: true, "Disabled" }
-        Button { variant: ButtonVariant::Primary, loading: loading(), "Loading" }
+        Button { variant: ButtonVariant::Default, disabled: true, "Disabled" }
+        Button { variant: ButtonVariant::Default, loading: loading(), "Loading" }
         Button {
             variant: ButtonVariant::Secondary,
             on_click: move |_| loading.toggle(),
@@ -53,12 +53,12 @@ use lumen_blocks::components::button::{Button, ButtonVariant};
 rsx! {
     div { class: "flex flex-wrap gap-2.5 items-center",
         Button {
-            variant: ButtonVariant::Primary,
+            variant: ButtonVariant::Default,
             icon_left: rsx! { ArrowLeft { size: 16 } },
             "Left Icon"
         }
         Button {
-            variant: ButtonVariant::Primary,
+            variant: ButtonVariant::Default,
             icon_right: rsx! { ArrowRight { size: 16 } },
             "Right Icon"
         }
@@ -71,7 +71,7 @@ use lumen_blocks::components::button::{Button, ButtonVariant};
 rsx! {
     div { class: "flex flex-wrap gap-2.5 items-center",
         Button {
-            variant: ButtonVariant::Primary,
+            variant: ButtonVariant::Default,
             is_icon_button: true,
             aria_label: Some("Add item".to_string()),
             Plus { size: 20 }
@@ -90,7 +90,7 @@ pub const FULL_WIDTH_SOURCE: &str = r#"use lumen_blocks::components::button::{Bu
 
 rsx! {
     Button {
-        variant: ButtonVariant::Primary,
+        variant: ButtonVariant::Default,
         full_width: true,
         "Full Width Button"
     }
@@ -104,7 +104,7 @@ rsx! {
 pub fn ButtonVariantsExample() -> Element {
     rsx! {
         div { class: "flex flex-wrap gap-2.5 items-center",
-            Button { variant: ButtonVariant::Primary, "Primary" }
+            Button { variant: ButtonVariant::Default, "Default" }
             Button { variant: ButtonVariant::Secondary, "Secondary" }
             Button { variant: ButtonVariant::Outline, "Outline" }
             Button { variant: ButtonVariant::Ghost, "Ghost" }
@@ -118,9 +118,9 @@ pub fn ButtonVariantsExample() -> Element {
 pub fn ButtonSizesExample() -> Element {
     rsx! {
         div { class: "flex flex-wrap gap-2.5 items-center",
-            Button { variant: ButtonVariant::Primary, size: ButtonSize::Small, "Small" }
-            Button { variant: ButtonVariant::Primary, size: ButtonSize::Medium, "Medium" }
-            Button { variant: ButtonVariant::Primary, size: ButtonSize::Large, "Large" }
+            Button { variant: ButtonVariant::Default, size: ButtonSize::Small, "Small" }
+            Button { variant: ButtonVariant::Default, size: ButtonSize::Medium, "Medium" }
+            Button { variant: ButtonVariant::Default, size: ButtonSize::Large, "Large" }
         }
     }
 }
@@ -131,8 +131,8 @@ pub fn ButtonStatesExample() -> Element {
 
     rsx! {
         div { class: "flex flex-wrap gap-2.5 items-center",
-            Button { variant: ButtonVariant::Primary, disabled: true, "Disabled" }
-            Button { variant: ButtonVariant::Primary, loading: loading(), "Loading" }
+            Button { variant: ButtonVariant::Default, disabled: true, "Disabled" }
+            Button { variant: ButtonVariant::Default, loading: loading(), "Loading" }
             Button {
                 variant: ButtonVariant::Secondary,
                 on_click: move |_| loading.toggle(),
@@ -147,12 +147,12 @@ pub fn ButtonWithIconsExample() -> Element {
     rsx! {
         div { class: "flex flex-wrap gap-2.5 items-center",
             Button {
-                variant: ButtonVariant::Primary,
+                variant: ButtonVariant::Default,
                 icon_left: rsx! { ArrowLeft { size: 16 } },
                 "Left Icon"
             }
             Button {
-                variant: ButtonVariant::Primary,
+                variant: ButtonVariant::Default,
                 icon_right: rsx! { ArrowRight { size: 16 } },
                 "Right Icon"
             }
@@ -165,7 +165,7 @@ pub fn IconButtonsExample() -> Element {
     rsx! {
         div { class: "flex flex-wrap gap-2.5 items-center",
             Button {
-                variant: ButtonVariant::Primary,
+                variant: ButtonVariant::Default,
                 is_icon_button: true,
                 aria_label: Some("Add item".to_string()),
                 Plus { size: 20 }
@@ -203,7 +203,7 @@ pub fn FullWidthButtonExample() -> Element {
     rsx! {
         div { class: "w-full max-w-md",
             Button {
-                variant: ButtonVariant::Primary,
+                variant: ButtonVariant::Default,
                 full_width: true,
                 "Full Width Button"
             }

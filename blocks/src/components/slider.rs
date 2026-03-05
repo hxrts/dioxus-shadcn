@@ -142,10 +142,10 @@ pub fn Slider(props: SliderProps) -> Element {
 
             // Visual thumb
             div {
-                class: "block size-4 shrink-0 rounded-full border border-primary/50 bg-background shadow-sm \
-                        transition-[color,box-shadow] hover:border-primary \
-                        focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 \
-                        group-data-[disabled=true]/slider:pointer-events-none",
+                class: "block size-4 shrink-0 rounded-full border border-primary bg-white shadow-sm \
+                        ring-ring/50 transition-[color,box-shadow] hover:ring-4 \
+                        focus-visible:ring-4 focus-visible:outline-hidden \
+                        disabled:pointer-events-none disabled:opacity-50",
                 "data-slot": "slider-thumb",
                 style: "position: absolute; left: calc({percentage}% - 0.5rem)",
                 "data-disabled": props.disabled.to_string(),

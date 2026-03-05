@@ -5,7 +5,7 @@ use dioxus_primitives::context_menu::{
     ContextMenu as PrimitiveContextMenu, ContextMenuContent as PrimitiveContextMenuContent,
     ContextMenuItem as PrimitiveContextMenuItem,
 };
-use lucide_dioxus::ChevronRight;
+use lucide_dioxus::{Check, ChevronRight, Circle};
 
 // Define a context struct for radio groups
 #[derive(Clone, PartialEq)]
@@ -131,7 +131,6 @@ pub fn ContextMenu(props: ContextMenuProps) -> Element {
 }
 
 pub use dioxus_primitives::context_menu::ContextMenuTrigger;
-use lucide_dioxus::Check;
 
 #[component]
 pub fn ContextMenuContent(props: ContextMenuContentProps) -> Element {
@@ -191,7 +190,7 @@ pub fn ContextMenuLabel(props: ContextMenuLabelProps) -> Element {
     let id_value = use_id_or(label_id, props_id.into());
 
     // Label classes matching shadcn context-menu.tsx ContextMenuLabel
-    let label_classes = "px-2 py-1.5 text-sm font-medium text-foreground";
+    let label_classes = "px-2 py-1.5 text-sm font-medium text-foreground data-[inset]:pl-8";
 
     rsx! {
         div {
@@ -283,18 +282,14 @@ pub fn ContextMenuCheckboxItem(props: ContextMenuCheckboxItemProps) -> Element {
         }
     };
 
-    // Determine item classes
+    // Determine item classes matching shadcn ContextMenuCheckboxItem
     let item_classes = vec![
         // Base classes
-        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5",
-        "text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground",
-        "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
-        // State classes
-        if props.disabled {
-            "pointer-events-none opacity-50"
-        } else {
-            "hover:bg-accent hover:text-accent-foreground"
-        },
+        "relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none",
+        "focus:bg-accent focus:text-accent-foreground",
+        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        // SVG styling
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     ]
     .into_iter()
     .filter(|s| !s.is_empty())
@@ -311,16 +306,15 @@ pub fn ContextMenuCheckboxItem(props: ContextMenuCheckboxItemProps) -> Element {
             value: ReadSignal::new(Signal::new(value_str)),
             index: ReadSignal::new(Signal::new(index_val)),
             on_select: move |_| handle_change(),
+            "data-slot": "context-menu-checkbox-item",
 
-            // Checkbox indicator
+            // Checkbox indicator (absolute positioned like shadcn)
             span {
-                class: "mr-2 h-4 w-4 flex items-center justify-center border-none",
+                class: "pointer-events-none absolute left-2 flex size-3.5 items-center justify-center",
                 aria_hidden: "true",
 
                 if props.checked {
-                    Check {
-                        class: "h-4 w-4 text-current",
-                    }
+                    Check { class: "size-4" }
                 }
             }
 
@@ -417,18 +411,14 @@ pub fn ContextMenuRadioItem(props: ContextMenuRadioItemProps) -> Element {
     // Check if this item is selected based on context
     let is_selected = *context.value.read() == props.value;
 
-    // Determine item classes
+    // Determine item classes matching shadcn ContextMenuRadioItem
     let item_classes = vec![
         // Base classes
-        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5",
-        "text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground",
-        "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
-        // State classes
-        if props.disabled {
-            "pointer-events-none opacity-50"
-        } else {
-            "hover:bg-accent hover:text-accent-foreground"
-        },
+        "relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none",
+        "focus:bg-accent focus:text-accent-foreground",
+        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        // SVG styling
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     ]
     .into_iter()
     .filter(|s| !s.is_empty())
@@ -452,16 +442,16 @@ pub fn ContextMenuRadioItem(props: ContextMenuRadioItemProps) -> Element {
             value: value_str,
             index: index_val,
             on_select: handle_select,
+            "data-slot": "context-menu-radio-item",
+            "data-state": if is_selected { "checked" } else { "unchecked" },
 
-            // Radio indicator
+            // Radio indicator (absolute positioned like shadcn)
             span {
-                class: "mr-2 h-3.5 w-3.5 flex items-center justify-center rounded-full border",
+                class: "pointer-events-none absolute left-2 flex size-3.5 items-center justify-center",
                 aria_hidden: "true",
 
-                // The dot will be shown when this item is selected
-                span {
-                    class: "h-1.5 w-1.5 rounded-full bg-current",
-                    style: if is_selected { "opacity: 1" } else { "opacity: 0" },
+                if is_selected {
+                    Circle { class: "size-2 fill-current" }
                 }
             }
 
@@ -483,11 +473,12 @@ pub fn ContextMenuItem(props: ContextMenuItemProps) -> Element {
         "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none",
         "focus:bg-accent focus:text-accent-foreground",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "data-[inset]:pl-8",
         // SVG styling
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground",
         // Destructive variant
         if props.destructive {
-            "text-destructive focus:bg-destructive/10 focus:text-destructive dark:focus:bg-destructive/20"
+            "data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg]:text-destructive!"
         } else { "" },
     ]
     .into_iter()
@@ -625,9 +616,11 @@ pub fn ContextMenuSubTrigger(props: ContextMenuSubTriggerProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 \
-        text-sm outline-hidden focus:bg-accent focus:text-accent-foreground \
-        data-[state=open]:bg-accent data-[state=open]:text-accent-foreground {} {}",
+        "flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 \
+        text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground \
+        data-[inset]:pl-8 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground \
+        [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 \
+        [&_svg:not([class*='text-'])]:text-muted-foreground {} {}",
         inset_class, custom_class
     );
 

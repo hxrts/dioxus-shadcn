@@ -5,14 +5,19 @@ use lucide_dioxus::LoaderCircle;
 /// Button variant types
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
 pub enum ButtonVariant {
+    /// Default/primary button style (renamed from Primary to match shadcn-ui)
     #[default]
-    Primary,
+    Default,
     Secondary,
     Outline,
     Ghost,
     Link,
     Destructive,
 }
+
+/// Alias for backward compatibility
+#[deprecated(since = "0.4.0", note = "Use ButtonVariant::Default instead")]
+pub const PRIMARY: ButtonVariant = ButtonVariant::Default;
 
 /// Button size options
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
@@ -137,7 +142,7 @@ pub fn Button(props: ButtonProps) -> Element {
 
     // Determine base classes for button based on variant
     let variant_classes = match props.variant {
-        ButtonVariant::Primary => {
+        ButtonVariant::Default => {
             "bg-primary text-primary-foreground hover:bg-primary/90"
         }
         ButtonVariant::Secondary => {
@@ -160,17 +165,17 @@ pub fn Button(props: ButtonProps) -> Element {
     // Determine size classes based on whether it's an icon button or regular button
     let size_classes = if props.is_icon_button {
         match props.size {
-            ButtonSize::IconXs | ButtonSize::Xs => "h-6 w-6 text-xs",
-            ButtonSize::IconSm | ButtonSize::Small => "h-8 w-8 text-sm",
-            ButtonSize::Icon | ButtonSize::Medium => "h-9 w-9 text-base",
-            ButtonSize::IconLg | ButtonSize::Large => "h-10 w-10 text-lg",
+            ButtonSize::IconXs | ButtonSize::Xs => "size-6 rounded-md [&_svg:not([class*='size-'])]:size-3",
+            ButtonSize::IconSm | ButtonSize::Small => "size-8",
+            ButtonSize::Icon | ButtonSize::Medium => "size-9",
+            ButtonSize::IconLg | ButtonSize::Large => "size-10",
         }
     } else {
         match props.size {
-            ButtonSize::Xs | ButtonSize::IconXs => "h-6 gap-1 rounded-[min(var(--radius-md),8px)] px-2 text-xs has-[>svg]:px-1.5",
-            ButtonSize::Small | ButtonSize::IconSm => "h-8 gap-1.5 px-3 text-xs has-[>svg]:px-2.5",
-            ButtonSize::Medium | ButtonSize::Icon => "h-9 gap-2 px-4 py-2 text-sm has-[>svg]:px-3",
-            ButtonSize::Large | ButtonSize::IconLg => "h-10 gap-2 px-6 text-base has-[>svg]:px-4",
+            ButtonSize::Xs | ButtonSize::IconXs => "h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3",
+            ButtonSize::Small | ButtonSize::IconSm => "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
+            ButtonSize::Medium | ButtonSize::Icon => "h-9 px-4 py-2 has-[>svg]:px-3",
+            ButtonSize::Large | ButtonSize::IconLg => "h-10 rounded-md px-6 has-[>svg]:px-4",
         }
     };
 
@@ -237,7 +242,7 @@ pub fn Button(props: ButtonProps) -> Element {
             "data-slot": "button",
             "data-loading": props.loading.to_string(),
             "data-variant": match props.variant {
-                ButtonVariant::Primary => "default",
+                ButtonVariant::Default => "default",
                 ButtonVariant::Secondary => "secondary",
                 ButtonVariant::Outline => "outline",
                 ButtonVariant::Ghost => "ghost",

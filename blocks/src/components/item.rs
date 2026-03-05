@@ -137,8 +137,8 @@ pub fn Item(props: ItemProps) -> Element {
     };
 
     let interactive_class = if props.interactive {
-        "cursor-pointer transition-colors hover:bg-accent focus-visible:outline-none \
-         focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        "cursor-pointer transition-colors hover:bg-accent focus-visible:outline-1 \
+         focus-visible:ring-[3px] focus-visible:ring-ring/50"
     } else {
         ""
     };

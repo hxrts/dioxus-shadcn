@@ -17,7 +17,7 @@ pub mod variants {
         rsx! {
             div { class: "flex flex-wrap gap-2.5 items-center",
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     "Primary"
                 }
 
@@ -61,19 +61,19 @@ pub mod sizes {
         rsx! {
             div { class: "flex flex-wrap gap-2.5 items-center",
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     size: ButtonSize::Small,
                     "Small"
                 }
 
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     size: ButtonSize::Medium,
                     "Medium"
                 }
 
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     size: ButtonSize::Large,
                     "Large"
                 }
@@ -101,13 +101,13 @@ pub mod states {
         rsx! {
             div { class: "flex flex-wrap gap-2.5 items-center",
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     disabled: true,
                     "Disabled"
                 }
 
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     loading: loading(),
                     "Loading"
                 }
@@ -134,13 +134,13 @@ pub mod icons {
         rsx! {
             div { class: "flex flex-wrap gap-2.5 items-center",
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     icon_left: rsx! { ArrowLeft { size: 16 } },
                     "Left Icon"
                 }
 
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     icon_right: rsx! { ArrowRight { size: 16 } },
                     "Right Icon"
                 }
@@ -160,7 +160,7 @@ pub mod full_width {
         rsx! {
             div { class: "w-full",
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     full_width: true,
                     "Full Width Button"
                 }
@@ -181,7 +181,7 @@ pub mod icon_buttons {
         rsx! {
             div { class: "flex flex-wrap gap-2.5 items-center",
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     is_icon_button: true,
                     aria_label: Some("Add item".to_string()),
                     Plus { size: 20 }

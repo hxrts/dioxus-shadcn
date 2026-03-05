@@ -86,8 +86,8 @@ pub fn AccordionItem(props: AccordionItemProps) -> Element {
     let id_value = use_memo(move || props.id.clone().unwrap_or_else(|| item_id.peek().clone()));
 
     let item_classes = vec![
-        // Base classes
-        "group border-b last:border-b-0 border-border",
+        // Base classes matching shadcn
+        "border-b last:border-b-0",
         // Additional classes passed by the user
         props.class.as_deref().unwrap_or(""),
     ]
@@ -145,30 +145,33 @@ pub fn AccordionTrigger(props: AccordionTriggerProps) -> Element {
             .unwrap_or_else(|| trigger_id.peek().clone())
     });
 
-    let trigger_classes = vec![
-        // Base classes
-        "flex w-full items-center text-left justify-between py-4 px-5 font-medium transition-all hover:underline group",
+    let custom_class = props.class.as_deref().unwrap_or("");
 
-        // Additional classes passed by the user
-        props.class.as_deref().unwrap_or(""),
-    ]
-    .into_iter()
-    .filter(|s| !s.is_empty())
-    .collect::<Vec<_>>()
-    .join(" ");
+    let trigger_classes = format!(
+        "flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium \
+         transition-all outline-none hover:underline \
+         focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 \
+         disabled:pointer-events-none disabled:opacity-50 \
+         [&[data-state=open]>svg]:rotate-180 {}",
+        custom_class
+    );
 
     rsx! {
-        PrimitiveAccordionTrigger {
-            id: id_value.peek().clone(),
-            class: trigger_classes,
-            "data-slot": "accordion-trigger",
+        h3 {
+            class: "flex",
+            "data-slot": "accordion-header",
 
-            {props.children}
+            PrimitiveAccordionTrigger {
+                id: id_value.peek().clone(),
+                class: trigger_classes,
+                "data-slot": "accordion-trigger",
 
-            // Chevron icon
-            ChevronDown {
-                // class: "text-red-500 data-[state=open]:rotate-180"
-                class: "group-aria-expanded:rotate-180 transition-all transition-ease-out "
+                {props.children}
+
+                // Chevron icon
+                ChevronDown {
+                    class: "pointer-events-none size-4 shrink-0 translate-y-0.5 text-muted-foreground transition-transform duration-200"
+                }
             }
         }
     }
@@ -201,17 +204,13 @@ pub fn AccordionContent(props: AccordionContentProps) -> Element {
             .unwrap_or_else(|| content_id.peek().clone())
     });
 
-    let content_classes = vec![
-        // Base classes
-        "grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-data-[open=true]:grid-rows-[1fr] text-sm",
+    let custom_class = props.class.as_deref().unwrap_or("");
 
-        // Additional classes passed by the user
-        props.class.as_deref().unwrap_or(""),
-    ]
-    .into_iter()
-    .filter(|s| !s.is_empty())
-    .collect::<Vec<_>>()
-    .join(" ");
+    let content_classes = format!(
+        "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down \
+         overflow-hidden text-sm {}",
+        custom_class
+    );
 
     rsx! {
         PrimitiveAccordionContent {
@@ -220,11 +219,8 @@ pub fn AccordionContent(props: AccordionContentProps) -> Element {
             "data-slot": "accordion-content",
 
             div {
-                class: "overflow-hidden",
-                div {
-                    class: "py-4 px-5",
-                    {props.children}
-                }
+                class: "pt-0 pb-4",
+                {props.children}
             }
         }
     }

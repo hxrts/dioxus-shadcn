@@ -11,6 +11,10 @@ lumen-blocks.workspace = true
 lucide-dioxus = { workspace = true, features = ["all-icons"] }
 dioxus-sdk-time.workspace = true
 
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+web-sys = { version = "0.3", features = ["Window", "Document", "Element", "DomTokenList"] }
+wasm-bindgen = "0.2"
+
 [features]
 default = ["web"]
 web = ["dioxus/web"]

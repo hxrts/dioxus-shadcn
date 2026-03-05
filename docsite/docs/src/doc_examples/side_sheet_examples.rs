@@ -18,7 +18,7 @@ pub mod basic {
                 SideSheet {
                     SideSheetTrigger {
                         Button {
-                            variant: ButtonVariant::Primary,
+                            variant: ButtonVariant::Default,
                             "Open Side Sheet"
                         }
                     }
@@ -53,7 +53,7 @@ pub mod basic {
                             }
                             SideSheetClose {
                                 Button {
-                                    variant: ButtonVariant::Primary,
+                                    variant: ButtonVariant::Default,
                                     "Save Changes"
                                 }
                             }
@@ -85,7 +85,7 @@ pub mod positions {
                     SideSheet {
                         SideSheetTrigger {
                             Button {
-                                variant: ButtonVariant::Primary,
+                                variant: ButtonVariant::Default,
                                 "Right Side Sheet"
                             }
                         }

@@ -7,7 +7,7 @@ mod layouts;
 mod pages;
 
 use crate::layouts::MainLayout;
-use crate::pages::{Err404, Home};
+use crate::pages::{AuthenticationExample, Blocks, Err404, Home, Themes};
 
 const FAVICON: Asset = asset!("/assets/lumen-logo-small.png");
 const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
@@ -20,6 +20,15 @@ pub enum Route {
     #[layout(MainLayout)]
     #[route("/")]
     Home {},
+
+    #[route("/blocks")]
+    Blocks {},
+
+    #[route("/themes")]
+    Themes {},
+
+    #[route("/examples/authentication")]
+    AuthenticationExample {},
 
     #[route("/docs/:..segments")]
     DocsPage { segments: Vec<String> },
@@ -53,7 +62,7 @@ fn App() -> Element {
         document::Meta { property: "og:image", content: PREVIEW_IMAGE }
         document::Meta { name: "twitter:card", content: "summary_large_image" }
 
-        div { class: "min-h-screen bg-background",
+        div { class: "relative min-h-screen bg-background antialiased",
             Router::<Route> {}
         }
     }

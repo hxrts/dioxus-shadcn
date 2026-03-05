@@ -48,30 +48,20 @@ pub fn Avatar(props: AvatarProps) -> Element {
     let avatar_id = use_unique_id();
     let id_value = use_memo(move || props.id.clone().unwrap_or_else(|| avatar_id.peek().clone()));
 
-    let size_class = match props.size {
-        AvatarSize::Sm => "size-6",
-        AvatarSize::Default => "size-8",
-        AvatarSize::Lg => "size-10",
-    };
-
     let data_size = match props.size {
         AvatarSize::Sm => "sm",
         AvatarSize::Default => "default",
         AvatarSize::Lg => "lg",
     };
 
-    let avatar_classes = vec![
-        // Base classes - circular avatar with consistent sizing
-        "group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none",
-        // Size classes
-        size_class,
-        // Additional classes passed by the user
-        props.class.as_deref().unwrap_or(""),
-    ]
-    .into_iter()
-    .filter(|s| !s.is_empty())
-    .collect::<Vec<_>>()
-    .join(" ");
+    let custom_class = props.class.as_deref().unwrap_or("");
+
+    // Use data-attribute styling for sizes to match shadcn
+    let avatar_classes = format!(
+        "group/avatar relative flex size-8 shrink-0 overflow-hidden rounded-full select-none \
+         data-[size=lg]:size-10 data-[size=sm]:size-6 {}",
+        custom_class
+    );
 
     rsx! {
         PrimitiveAvatar {

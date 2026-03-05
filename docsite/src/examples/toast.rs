@@ -107,7 +107,7 @@ pub fn ToastVariantsExample() -> Element {
     rsx! {
         div { class: "flex flex-wrap gap-2",
             Button {
-                variant: ButtonVariant::Primary,
+                variant: ButtonVariant::Default,
                 on_click: move |_| {
                     toast_success.success("Success!", Some(ToastOptions::with_description("Your action was successful.")));
                 },

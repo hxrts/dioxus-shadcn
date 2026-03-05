@@ -16,6 +16,8 @@ pub struct ToggleGroupContext {
     pub variant: ToggleVariant,
     /// Size for all items.
     pub size: ToggleSize,
+    /// Spacing between items.
+    pub spacing: u8,
     /// Whether all items are disabled.
     pub disabled: bool,
     /// Callback when value changes.
@@ -91,6 +93,10 @@ pub struct ToggleGroupProps {
     #[props(default)]
     pub size: ToggleSize,
 
+    /// Spacing between items (0 = items touching, >0 = gap in pixels).
+    #[props(default)]
+    pub spacing: u8,
+
     /// Whether all items are disabled.
     #[props(default)]
     pub disabled: bool,
@@ -135,6 +141,7 @@ pub fn ToggleGroup(props: ToggleGroupProps) -> Element {
         value,
         variant: props.variant,
         size: props.size,
+        spacing: props.spacing,
         disabled: props.disabled,
         on_value_change: props.on_value_change.clone(),
     };
@@ -143,9 +150,23 @@ pub fn ToggleGroup(props: ToggleGroupProps) -> Element {
 
     let custom_class = props.class.as_deref().unwrap_or("");
 
+    // Build gap class based on spacing
+    let gap_class = if props.spacing > 0 {
+        format!("gap-{}", props.spacing)
+    } else {
+        String::new()
+    };
+
+    // Shadow for outline variant with default spacing
+    let shadow_class = if props.spacing == 0 && matches!(props.variant, ToggleVariant::Outline) {
+        "shadow-xs"
+    } else {
+        ""
+    };
+
     let classes = format!(
-        "group/toggle-group flex w-fit items-center rounded-md {}",
-        custom_class
+        "group/toggle-group flex w-fit items-center rounded-md {} {} {}",
+        gap_class, shadow_class, custom_class
     );
 
     rsx! {
@@ -166,6 +187,7 @@ pub fn ToggleGroup(props: ToggleGroupProps) -> Element {
                 ToggleGroupType::Single => "single",
                 ToggleGroupType::Multiple => "multiple",
             },
+            "data-spacing": props.spacing.to_string(),
             {props.children}
         }
     }
@@ -211,6 +233,20 @@ pub fn ToggleGroupItem(props: ToggleGroupItemProps) -> Element {
         ToggleSize::Lg => "h-10 min-w-10 px-2.5",
     };
 
+    // Spacing-dependent classes
+    let spacing_classes = if context.spacing == 0 {
+        "rounded-none shadow-none first:rounded-l-md last:rounded-r-md"
+    } else {
+        "rounded-md"
+    };
+
+    // Border handling for outline variant with no spacing
+    let border_class = if context.spacing == 0 && matches!(context.variant, ToggleVariant::Outline) {
+        "border-l-0 first:border-l"
+    } else {
+        ""
+    };
+
     let classes = format!(
         "inline-flex w-auto min-w-0 shrink-0 items-center justify-center gap-2 text-sm font-medium whitespace-nowrap px-3 \
          transition-[color,box-shadow] outline-none \
@@ -219,10 +255,9 @@ pub fn ToggleGroupItem(props: ToggleGroupItemProps) -> Element {
          disabled:pointer-events-none disabled:opacity-50 \
          aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 \
          data-[state=on]:bg-accent data-[state=on]:text-accent-foreground \
-         rounded-none first:rounded-l-md last:rounded-r-md \
          [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 \
-         {} {} {}",
-        variant_class, size_class, custom_class
+         {} {} {} {} {}",
+        variant_class, size_class, spacing_classes, border_class, custom_class
     );
 
     let handle_click = {

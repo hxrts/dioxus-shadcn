@@ -1,12 +1,14 @@
-//! Documentation layout with three-column structure.
+//! Documentation layout with three-column structure - matches shadcn-ui v4.
 
 use crate::pages::docs::components::*;
 use crate::pages::docs::navigation::DOCS_NAV;
 use crate::pages::docs::{DocsRoute, InstallationDoc, IntroDoc};
 use dioxus::document;
 use dioxus::prelude::*;
+use lucide_dioxus::ChevronRight;
 
 /// Documentation layout with left nav, content, and right nav.
+/// Matches shadcn/ui v4 docs layout exactly.
 #[component]
 pub fn DocsLayout(segments: Vec<String>) -> Element {
     // Parse the DocsRoute from segments
@@ -19,51 +21,18 @@ pub fn DocsLayout(segments: Vec<String>) -> Element {
         document::Title { "{title}" }
 
         div {
-            class: "container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10",
-
-            DocsLeftNav { current_route: docs_route.clone() }
-
-            main { class: "relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]",
-                DocsContent { route: docs_route.clone() }
-                DocsRightNav { route: docs_route }
-            }
-        }
-    }
-}
-
-/// Left navigation sidebar.
-#[component]
-fn DocsLeftNav(current_route: DocsRoute) -> Element {
-    rsx! {
-        aside {
-            class: "fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block",
+            class: "container-wrapper flex flex-1 flex-col px-2",
+            style: "--sidebar-width: calc(var(--spacing) * 72);",
 
             div {
-                class: "relative overflow-hidden h-full py-6 pr-6 lg:py-8",
+                class: "min-h-min flex-1 items-start px-0 lg:grid lg:grid-cols-[var(--sidebar-width)_minmax(0,1fr)]",
 
-                // Scrollable content
-                div { class: "h-full overflow-auto",
-                    div { class: "w-full",
-                        for section in DOCS_NAV {
-                            div { class: "pb-4",
-                                // Section label
-                                h4 { class: "mb-1 rounded-md px-2 py-1 text-sm font-semibold",
-                                    "{section.title}"
-                                }
+                DocsLeftNav { current_route: docs_route.clone() }
 
-                                // Section items
-                                div { class: "grid grid-flow-row auto-rows-max text-sm",
-                                    for item in section.items {
-                                        NavLink {
-                                            item_route: item.route.clone(),
-                                            current_route: current_route.clone(),
-                                            title: item.title,
-                                            badge: item.badge,
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                div { class: "h-full w-full",
+                    main { class: "relative py-6 lg:py-8 xl:grid xl:grid-cols-[1fr_280px] xl:gap-10",
+                        DocsContent { route: docs_route.clone() }
+                        DocsRightNav { route: docs_route }
                     }
                 }
             }
@@ -71,7 +40,57 @@ fn DocsLeftNav(current_route: DocsRoute) -> Element {
     }
 }
 
-/// Navigation link component.
+/// Left navigation sidebar - matches shadcn-ui v4 docs-sidebar exactly.
+#[component]
+fn DocsLeftNav(current_route: DocsRoute) -> Element {
+    rsx! {
+        aside {
+            class: "sticky top-[calc(3.5rem+0.6rem)] z-30 hidden h-[calc(100svh-10rem)] overscroll-none bg-transparent lg:flex",
+            style: "--sidebar-menu-width: calc(var(--spacing) * 56);",
+
+            // Top spacing
+            div { class: "h-9" }
+
+            // Top gradient overlay with blur
+            div { class: "absolute top-8 z-10 h-8 w-[var(--sidebar-menu-width)] shrink-0 bg-gradient-to-b from-background via-background/80 to-background/50 blur-xs" }
+
+            // Right border gradient
+            div { class: "absolute top-12 right-2 bottom-0 hidden h-full w-px bg-gradient-to-b from-transparent via-border to-transparent lg:flex" }
+
+            // Scrollable content
+            nav { class: "mx-auto w-[var(--sidebar-menu-width)] overflow-x-hidden overflow-y-auto no-scrollbar px-2",
+                // Navigation sections
+                div { class: "pt-6",
+                    for section in DOCS_NAV {
+                        div { class: "pb-4",
+                            // Section label
+                            p { class: "mb-1 px-2 text-sm font-medium text-muted-foreground",
+                                "{section.title}"
+                            }
+
+                            // Section items
+                            div { class: "grid gap-0.5",
+                                for item in section.items {
+                                    NavLink {
+                                        item_route: item.route.clone(),
+                                        current_route: current_route.clone(),
+                                        title: item.title,
+                                        badge: item.badge,
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Bottom gradient with blur
+                div { class: "sticky -bottom-1 z-10 h-16 shrink-0 bg-gradient-to-t from-background via-background/80 to-background/50 blur-xs" }
+            }
+        }
+    }
+}
+
+/// Navigation link component - matches shadcn-ui sidebar menu button style exactly.
 #[component]
 fn NavLink(
     item_route: DocsRoute,
@@ -82,23 +101,32 @@ fn NavLink(
     let is_active = current_route == item_route;
     let href = item_route.to_path();
 
-    let class = if is_active {
-        "group flex w-full items-center rounded-md border border-transparent px-2 py-1 font-medium text-foreground"
+    // Matches shadcn SidebarMenuButton styling exactly
+    // Base: relative h-[30px] w-fit overflow-visible border border-transparent text-[0.8rem] font-medium
+    // After pseudo: after:absolute after:inset-x-0 after:-inset-y-1 after:z-0 after:rounded-md (for hitbox)
+    // Active: data-[active=true]:border-accent data-[active=true]:bg-accent
+    let base_class = "relative flex h-[30px] w-fit items-center overflow-visible rounded-md border border-transparent px-2 text-[0.8rem] font-medium transition-colors after:absolute after:inset-x-0 after:-inset-y-1 after:z-0 after:rounded-md";
+    let state_class = if is_active {
+        "border-accent bg-accent text-accent-foreground"
     } else {
-        "group flex w-full items-center rounded-md border border-transparent px-2 py-1 text-muted-foreground hover:underline"
+        "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
     };
 
     rsx! {
         a {
             href: "{href}",
-            class: class,
+            class: "{base_class} {state_class}",
+            "data-active": if is_active { "true" } else { "false" },
+
+            // Expanded hitbox span (same as reference)
+            span { class: "absolute inset-0 flex w-[var(--sidebar-menu-width)] bg-transparent" }
 
             "{title}"
 
             if let Some(badge_text) = badge {
                 span {
-                    class: "ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline",
-                    "{badge_text}"
+                    class: "ml-2 flex size-2 rounded-full bg-blue-500",
+                    title: "{badge_text}",
                 }
             }
         }
@@ -108,9 +136,26 @@ fn NavLink(
 /// Main content area.
 #[component]
 fn DocsContent(route: DocsRoute) -> Element {
+    // Determine breadcrumb section
+    let section = route.section();
+    let page_title = route.title();
+
     rsx! {
         div {
             class: "mx-auto w-full min-w-0",
+
+            // Breadcrumbs
+            nav { class: "mb-4 flex items-center space-x-1 text-sm text-muted-foreground",
+                a {
+                    href: "/docs",
+                    class: "hover:text-foreground transition-colors",
+                    "Docs"
+                }
+                ChevronRight { class: "h-4 w-4" }
+                span { class: "text-muted-foreground", "{section}" }
+                ChevronRight { class: "h-4 w-4" }
+                span { class: "font-medium text-foreground", "{page_title}" }
+            }
 
             // Render the appropriate page based on route
             match route {

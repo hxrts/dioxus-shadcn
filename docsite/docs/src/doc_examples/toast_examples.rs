@@ -53,7 +53,7 @@ pub mod basic {
         rsx! {
             div { class: "space-y-4",
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     full_width: true,
                     on_click: move |_| {
                         toasts.success("Success!".to_string(), None);
@@ -106,7 +106,7 @@ pub mod descriptions {
         rsx! {
             div { class: "space-y-4",
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     full_width: true,
                     on_click: move |_| {
                         toasts.success(
@@ -184,7 +184,7 @@ pub mod durations {
         rsx! {
             div { class: "space-y-4",
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     full_width: true,
                     on_click: move |_| {
                         toasts.success(
@@ -250,7 +250,7 @@ pub mod advanced {
         rsx! {
             div { class: "space-y-4",
                 Button {
-                    variant: ButtonVariant::Primary,
+                    variant: ButtonVariant::Default,
                     full_width: true,
                     on_click: move |_| {
                         // Custom toast using the show method directly

@@ -372,7 +372,7 @@ pub fn SideSheetCloseButton(props: SideSheetCloseButtonProps) -> Element {
     rsx! {
         button {
             class: "absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity \
-                    hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden \
+                    hover:opacity-100 focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 \
                     disabled:pointer-events-none data-[state=open]:bg-secondary {props.class}",
             onclick: move |_| context.is_open.set(false),
             r#type: "button",

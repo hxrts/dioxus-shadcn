@@ -136,7 +136,8 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
     // Build checkbox wrapper classes matching shadcn-ui
     let custom_class = props.class.as_deref().unwrap_or("");
     let checkbox_class = format!(
-        "peer shrink-0 rounded-[4px] border border-input shadow-xs transition-shadow outline-none \
+        "peer shrink-0 rounded-[4px] border border-input shadow-xs \
+         transition-shadow outline-none \
          focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 \
          disabled:cursor-not-allowed disabled:opacity-50 \
          aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 \

@@ -164,8 +164,8 @@ pub fn PaginationLink(props: PaginationLinkProps) -> Element {
 
     let classes = format!(
         "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm \
-         font-medium ring-offset-background transition-colors focus-visible:outline-none \
-         focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 \
+         font-medium transition-colors focus-visible:outline-1 \
+         focus-visible:ring-[3px] focus-visible:ring-ring/50 \
          disabled:pointer-events-none disabled:opacity-50 \
          {} {} {}",
         size_class, active_class, custom_class
@@ -224,8 +224,8 @@ pub fn PaginationPrevious(props: PaginationPreviousProps) -> Element {
 
     let classes = format!(
         "inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md text-sm \
-         font-medium ring-offset-background transition-colors focus-visible:outline-none \
-         focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 \
+         font-medium transition-colors focus-visible:outline-1 \
+         focus-visible:ring-[3px] focus-visible:ring-ring/50 \
          disabled:pointer-events-none disabled:opacity-50 \
          hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 \
          {}",
@@ -302,8 +302,8 @@ pub fn PaginationNext(props: PaginationNextProps) -> Element {
 
     let classes = format!(
         "inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md text-sm \
-         font-medium ring-offset-background transition-colors focus-visible:outline-none \
-         focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 \
+         font-medium transition-colors focus-visible:outline-1 \
+         focus-visible:ring-[3px] focus-visible:ring-ring/50 \
          disabled:pointer-events-none disabled:opacity-50 \
          hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 \
          {}",

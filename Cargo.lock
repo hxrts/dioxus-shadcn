@@ -1008,6 +1008,8 @@ dependencies = [
  "dioxus-sdk-time",
  "lucide-dioxus",
  "lumen-blocks",
+ "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]

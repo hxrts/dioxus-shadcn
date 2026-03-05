@@ -462,7 +462,7 @@ pub mod complete {
 
                     // Submit button
                     Button {
-                        variant: ButtonVariant::Primary,
+                        variant: ButtonVariant::Default,
                         button_type: "submit".to_string(),
                         full_width: true,
                         on_click: handle_submit,

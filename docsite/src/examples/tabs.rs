@@ -89,7 +89,7 @@ pub fn TabsBasicExample() -> Element {
                             Label { for_id: "username", "Username" }
                             Input { id: "username", placeholder: "@johndoe" }
                         }
-                        Button { variant: ButtonVariant::Primary, "Save changes" }
+                        Button { variant: ButtonVariant::Default, "Save changes" }
                     }
                 }
             }
@@ -108,7 +108,7 @@ pub fn TabsBasicExample() -> Element {
                             Label { for_id: "new", "New password" }
                             Input { id: "new", r#type: "password" }
                         }
-                        Button { variant: ButtonVariant::Primary, "Save password" }
+                        Button { variant: ButtonVariant::Default, "Save password" }
                     }
                 }
             }

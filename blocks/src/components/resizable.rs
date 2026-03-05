@@ -184,7 +184,7 @@ pub fn ResizableHandle(props: ResizableHandleProps) -> Element {
     let classes = format!(
         "relative flex items-center justify-center bg-border \
          after:absolute after:inset-y-0 after:left-1/2 after:-translate-x-1/2 \
-         focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 \
+         focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50 \
          data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 \
          {} {} {}",
         direction_class,

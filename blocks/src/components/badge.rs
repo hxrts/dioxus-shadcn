@@ -81,7 +81,7 @@ pub fn Badge(props: BadgeProps) -> Element {
     );
 
     rsx! {
-        div {
+        span {
             class: classes,
             "data-slot": "badge",
             "data-variant": match props.variant {

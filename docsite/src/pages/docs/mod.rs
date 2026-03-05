@@ -254,4 +254,12 @@ impl DocsRoute {
             Self::TooltipPage => "Tooltip",
         }
     }
+
+    /// Get the section name for breadcrumbs.
+    pub fn section(&self) -> &'static str {
+        match self {
+            Self::IntroPage | Self::InstallationPage => "Getting Started",
+            _ => "Components",
+        }
+    }
 }

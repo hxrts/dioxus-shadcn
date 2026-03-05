@@ -36,7 +36,7 @@ pub fn Err404(segments: Vec<String>) -> Element {
                     Link {
                         to: Route::Home {},
                         Button {
-                            variant: ButtonVariant::Primary,
+                            variant: ButtonVariant::Default,
                             size: ButtonSize::Large,
                             icon_left: rsx! { House { class: "w-5 h-5 mr-2" } },
                             "Back to Home"
