@@ -159,6 +159,8 @@ pub fn Dropdown(props: DropdownProps) -> Element {
             class: dropdown_classes,
             id: id_value,
             default_open: props.default_open,
+            "data-slot": "dropdown",
+            "data-state": if is_open().unwrap_or(false) { "open" } else { "closed" },
             // Note: DropdownMenuTrigger doesn't have a disabled prop, using class and aria attributes instead
             "aria-disabled": if disabled_val { "true" } else { "false" },
             aria_label: props.aria_label.clone(),
@@ -200,6 +202,7 @@ pub fn DropdownContent(props: DropdownContentProps) -> Element {
         DropdownMenuContent {
             class: content_classes,
             id: id_value,
+            "data-slot": "dropdown-content",
 
             {props.children}
         }
@@ -440,11 +443,23 @@ pub fn DropdownRadioItem<T: Clone + PartialEq + 'static>(
     let props_id = use_signal(|| props.id);
     let id_value = use_id_or(item_id, props_id.into());
 
-    // Get the radio group context if available
-    let context = use_context::<RadioGroupContext<T>>();
+    // Get the radio group context if available (with fallback)
+    let context = try_use_context::<RadioGroupContext<T>>();
+
+    // Log warning in debug mode if context is missing
+    #[cfg(debug_assertions)]
+    if context.is_none() {
+        tracing::warn!(
+            "DropdownRadioItem used outside of DropdownRadioGroup context. \
+             The item will render but selection state won't work."
+        );
+    }
 
     // Check if this item is selected based on context
-    let is_selected: bool = *context.value.read() == props.value;
+    let is_selected = context
+        .as_ref()
+        .map(|ctx| *ctx.value.read() == props.value)
+        .unwrap_or(false);
 
     // Determine item classes
     let item_classes = vec![
@@ -465,7 +480,9 @@ pub fn DropdownRadioItem<T: Clone + PartialEq + 'static>(
     .join(" ");
 
     let handle_select = move |value: T| {
-        context.on_change.call(value);
+        if let Some(ctx) = &context {
+            ctx.on_change.call(value);
+        }
     };
 
     rsx! {
@@ -476,10 +493,13 @@ pub fn DropdownRadioItem<T: Clone + PartialEq + 'static>(
             index: ReadSignal::new(Signal::new(props.index)),
             disabled: props.disabled,
             on_select: handle_select,
+            "data-slot": "dropdown-radio-item",
+            "data-state": if is_selected { "checked" } else { "unchecked" },
 
             // Radio indicator
             span {
                 class: "mr-2 h-3.5 w-3.5 flex items-center justify-center rounded-full border",
+                "data-slot": "dropdown-radio-indicator",
                 aria_hidden: "true",
 
                 // The dot will be shown when this item is selected

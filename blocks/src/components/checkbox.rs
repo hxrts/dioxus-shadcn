@@ -14,11 +14,18 @@ pub enum CheckboxSize {
 /// Props for the Checkbox component
 #[derive(Props, Clone, PartialEq)]
 pub struct CheckboxProps {
-    /// Whether the checkbox is checked
-    #[props(default = Signal::new(false))]
-    pub checked: Signal<bool>,
+    /// Controlled checked state (optional).
+    /// When provided, the checkbox is in controlled mode and won't manage its own state.
+    #[props(default)]
+    pub checked: Option<Signal<bool>>,
 
-    /// Callback for when the checkbox is toggled
+    /// Default checked state for uncontrolled mode.
+    /// Only used when `checked` prop is not provided.
+    #[props(default = false)]
+    pub default_checked: bool,
+
+    /// Callback for when the checkbox is toggled.
+    /// Always called with the new checked state, regardless of controlled/uncontrolled mode.
     #[props(default)]
     pub on_checked_change: Option<EventHandler<bool>>,
 
@@ -42,6 +49,10 @@ pub struct CheckboxProps {
     #[props(default)]
     pub aria_label: Option<String>,
 
+    /// Additional CSS classes
+    #[props(default)]
+    pub class: Option<String>,
+
     /// Optional children (usually the indicator)
     #[props(default)]
     pub children: Element,
@@ -50,12 +61,44 @@ pub struct CheckboxProps {
     pub attributes: Vec<Attribute>,
 }
 
-/// A styled checkbox component that can be toggled on or off
+/// A styled checkbox component that can be toggled on or off.
+///
+/// Supports both controlled and uncontrolled usage patterns:
+///
+/// ## Uncontrolled (default)
+/// ```rust
+/// Checkbox {
+///     default_checked: true,
+///     on_checked_change: move |checked| {
+///         println!("Checked: {}", checked);
+///     }
+/// }
+/// ```
+///
+/// ## Controlled
+/// ```rust
+/// let is_checked = use_signal(|| false);
+/// Checkbox {
+///     checked: is_checked,
+///     on_checked_change: move |new_value| {
+///         is_checked.set(new_value);
+///     }
+/// }
+/// ```
 #[component]
 pub fn Checkbox(props: CheckboxProps) -> Element {
     // Generate unique ID if not provided
     let checkbox_id = use_unique_id();
     let id = props.id.clone().unwrap_or(checkbox_id());
+
+    // Internal state for uncontrolled mode
+    let internal_checked = use_signal(|| props.default_checked);
+
+    // Determine current checked state: prefer controlled, fall back to internal
+    let is_checked = match &props.checked {
+        Some(controlled) => controlled.read().clone(),
+        None => *internal_checked.read(),
+    };
 
     // Determine size-specific classes
     let (size_class, icon_size) = match props.size {
@@ -65,10 +108,11 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
     };
 
     // Build checkbox wrapper classes
+    let custom_class = props.class.as_deref().unwrap_or("");
     let checkbox_class = format!(
-        "inline-flex items-center justify-center rounded border-2 transition-colors {} {} {}",
+        "inline-flex items-center justify-center rounded border-2 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 {} {} {} {}",
         size_class,
-        if (props.checked)() {
+        if is_checked {
             "bg-primary border-primary"
         } else {
             "bg-background border-input hover:bg-accent/10"
@@ -77,18 +121,43 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
             "cursor-not-allowed opacity-50"
         } else {
             "cursor-pointer"
-        }
+        },
+        custom_class
     );
 
     // Handle checkbox change
-    let mut checked = props.checked;
-    let on_change = move |_| {
-        if !props.disabled
-            && let Some(handler) = &props.on_checked_change
-        {
-            let new_state = !checked();
-            checked.set(new_state);
-            handler.call(new_state);
+    let on_change = {
+        let checked_prop = props.checked.clone();
+        let on_checked_change = props.on_checked_change.clone();
+        let disabled = props.disabled;
+
+        move |_| {
+            if disabled {
+                return;
+            }
+
+            let new_state = !is_checked;
+
+            // Only update internal state in uncontrolled mode
+            if checked_prop.is_none() {
+                internal_checked.set(new_state);
+            }
+
+            // Always call the callback if provided
+            if let Some(handler) = &on_checked_change {
+                handler.call(new_state);
+            }
+        }
+    };
+
+    // Handle keyboard activation
+    let on_keydown = {
+        let on_change = on_change.clone();
+        move |event: KeyboardEvent| {
+            if event.key() == " " || event.key() == "Enter" {
+                event.prevent_default();
+                on_change(MouseEvent::default());
+            }
         }
     };
 
@@ -96,15 +165,20 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
         div {
             class: checkbox_class,
             role: "checkbox",
-            "aria-checked": (props.checked)().to_string(),
+            "aria-checked": is_checked.to_string(),
+            "aria-disabled": props.disabled.to_string(),
+            "data-slot": "checkbox",
+            "data-state": if is_checked { "checked" } else { "unchecked" },
             id: id.clone(),
             onclick: on_change,
+            onkeydown: on_keydown,
             tabindex: if !props.disabled { "0" } else { "-1" },
 
             // Render indicator when checked
-            if (props.checked)() {
-                div { class: format!("flex items-center justify-center {}", icon_size),
-
+            if is_checked {
+                div {
+                    class: "flex items-center justify-center {icon_size}",
+                    "data-slot": "checkbox-indicator",
                     Check { class: "text-primary-foreground" }
                 }
             }
@@ -113,11 +187,12 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
             if let Some(name) = &props.name {
                 input {
                     r#type: "checkbox",
-                    id: format!("{}-input", id),
+                    id: "{id}-input",
                     name: name.clone(),
-                    checked: (props.checked)(),
+                    checked: is_checked,
                     disabled: props.disabled,
                     class: "sr-only",
+                    "aria-hidden": "true",
                 }
             }
         }

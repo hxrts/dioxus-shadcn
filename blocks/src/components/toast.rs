@@ -50,36 +50,156 @@ pub struct ToastItem {
     pub visible: bool,
 }
 
-// Global signal for toast management
-static TOASTS: GlobalSignal<Vec<ToastItem>> = Signal::global(Vec::new);
-static NEXT_ID: GlobalSignal<usize> = Signal::global(|| 0);
+/// Context for toast management.
+/// This is provided by ToastProvider and consumed by use_toast().
+#[derive(Clone)]
+pub struct ToastContext {
+    toasts: Signal<Vec<ToastItem>>,
+    next_id: Signal<usize>,
+    default_duration: Duration,
+    max_toasts: usize,
+}
+
+impl ToastContext {
+    /// Show a toast with the given type and options
+    pub fn show(&self, title: String, toast_type: ToastType, options: ToastOptions) {
+        let mut next_id = self.next_id;
+        let id = *next_id.read();
+        next_id.set(id + 1);
+
+        let toast = ToastItem {
+            id,
+            title,
+            description: options.description,
+            toast_type,
+            duration: if options.permanent {
+                None
+            } else {
+                options.duration.or(Some(self.default_duration))
+            },
+            permanent: options.permanent,
+            visible: true,
+        };
+
+        let mut toasts = self.toasts;
+        toasts.with_mut(|t| {
+            t.push(toast);
+
+            // Limit the number of toasts
+            while t.len() > self.max_toasts {
+                // Try to remove non-permanent toasts first
+                if let Some(pos) = t.iter().position(|toast| !toast.permanent) {
+                    t.remove(pos);
+                } else {
+                    t.remove(0);
+                }
+            }
+        });
+    }
+
+    /// Remove a toast by ID
+    pub fn remove(&self, id: usize) {
+        let mut toasts = self.toasts;
+        toasts.with_mut(|t| {
+            if let Some(pos) = t.iter().position(|toast| toast.id == id) {
+                t.remove(pos);
+            }
+        });
+    }
+
+    /// Show a success toast
+    pub fn success(&self, title: impl Into<String>, options: Option<ToastOptions>) {
+        self.show(title.into(), ToastType::Success, options.unwrap_or_default());
+    }
+
+    /// Show an error toast
+    pub fn error(&self, title: impl Into<String>, options: Option<ToastOptions>) {
+        self.show(title.into(), ToastType::Error, options.unwrap_or_default());
+    }
+
+    /// Show a warning toast
+    pub fn warning(&self, title: impl Into<String>, options: Option<ToastOptions>) {
+        self.show(title.into(), ToastType::Warning, options.unwrap_or_default());
+    }
+
+    /// Show an info toast
+    pub fn info(&self, title: impl Into<String>, options: Option<ToastOptions>) {
+        self.show(title.into(), ToastType::Info, options.unwrap_or_default());
+    }
+}
 
 // Toast provider props
 #[derive(Props, Clone, PartialEq)]
 pub struct ToastProviderProps {
+    /// Default duration for toasts (default: 5 seconds)
     #[props(default = Duration::from_secs(5))]
     pub default_duration: Duration,
 
+    /// Maximum number of toasts to display (default: 10)
     #[props(default = 10)]
     pub max_toasts: usize,
 
+    /// Position of the toast container
+    #[props(default = ToastPosition::TopRight)]
+    pub position: ToastPosition,
+
     pub children: Element,
+}
+
+/// Position for the toast container
+#[derive(Clone, Copy, PartialEq, Eq, Default)]
+pub enum ToastPosition {
+    #[default]
+    TopRight,
+    TopLeft,
+    TopCenter,
+    BottomRight,
+    BottomLeft,
+    BottomCenter,
+}
+
+impl ToastPosition {
+    fn classes(&self) -> &'static str {
+        match self {
+            ToastPosition::TopRight => "top-4 right-0 items-end",
+            ToastPosition::TopLeft => "top-4 left-0 items-start",
+            ToastPosition::TopCenter => "top-4 left-1/2 -translate-x-1/2 items-center",
+            ToastPosition::BottomRight => "bottom-4 right-0 items-end",
+            ToastPosition::BottomLeft => "bottom-4 left-0 items-start",
+            ToastPosition::BottomCenter => "bottom-4 left-1/2 -translate-x-1/2 items-center",
+        }
+    }
 }
 
 // Toast provider component
 #[component]
 pub fn ToastProvider(props: ToastProviderProps) -> Element {
+    let toasts = use_signal(Vec::new);
+    let next_id = use_signal(|| 0usize);
+
+    let context = ToastContext {
+        toasts,
+        next_id,
+        default_duration: props.default_duration,
+        max_toasts: props.max_toasts,
+    };
+
+    use_context_provider(|| context.clone());
+
+    let position_classes = props.position.classes();
+
     rsx! {
         // Render children
         {props.children}
 
         // Toast container - fixed position overlay
         div {
-            class: "fixed top-4 right-0 z-50 flex flex-col space-y-2 w-full max-w-sm px-4 items-end pointer-events-none",
+            class: "fixed z-50 flex flex-col space-y-2 w-full max-w-sm px-4 pointer-events-none {position_classes}",
+            "data-slot": "toaster",
             aria_live: "polite",
-            aria_atomic: true,
+            aria_atomic: "true",
 
-            for toast in TOASTS.read().iter() {
+            for toast in toasts.read().iter() {
                 Toast {
                     key: "{toast.id}",
                     toast: toast.clone(),
@@ -100,21 +220,19 @@ pub struct ToastProps {
 // Toast component
 #[component]
 pub fn Toast(props: ToastProps) -> Element {
+    let context = use_context::<ToastContext>();
     let toast = props.toast.clone();
     let id = toast.id;
     let mut visible = use_signal(|| true);
 
     // Handle removing toast from the list
     let remove_toast = move || {
-        let mut toasts = TOASTS.write();
-        if let Some(pos) = toasts.iter().position(|t| t.id == id) {
-            toasts.remove(pos);
-        }
+        context.remove(id);
     };
 
     // Handle starting exit animation
     let start_exit = move |_| {
-        visible.with_mut(|val| *val = false);
+        visible.set(false);
     };
 
     // Set up auto-dismiss timer if not permanent
@@ -124,7 +242,7 @@ pub fn Toast(props: ToastProps) -> Element {
         // Simple timeout effect
         use_effect(move || {
             let timer = use_timeout(duration, move |()| {
-                visible.with_mut(|val| *val = false);
+                visible.set(false);
             });
             timer.action(());
         });
@@ -135,9 +253,9 @@ pub fn Toast(props: ToastProps) -> Element {
 
     // Animation classes based on state
     let animation_classes = if !*visible.read() {
-        "animate-slide-out-to-right"
+        "animate-out fade-out-0 slide-out-to-right-full"
     } else {
-        "animate-slide-in-from-right"
+        "animate-in fade-in-0 slide-in-from-right-full"
     };
 
     // Toast type specific classes
@@ -150,14 +268,15 @@ pub fn Toast(props: ToastProps) -> Element {
         div {
             role: "alert",
             class: "{combined_classes}",
-            tabindex: "0",  // Make focusable
-            aria_labelledby: format!("toast-title-{}", toast.id),
+            "data-slot": "toast",
+            "data-state": if *visible.read() { "visible" } else { "hidden" },
+            tabindex: "0",
+            aria_labelledby: "toast-title-{toast.id}",
             aria_describedby: if toast.description.is_some() {
                 Some(format!("toast-desc-{}", toast.id))
             } else {
                 None
             },
-            // Simplified: no pause-on-hover for initial implementation
             onanimationend: move |_| {
                 // If toast is not visible, remove it when animation ends
                 if !*visible.read() {
@@ -170,6 +289,7 @@ pub fn Toast(props: ToastProps) -> Element {
 
                 div {
                     class: "flex-shrink-0 {toast.toast_type.icon_classes()}",
+                    "data-slot": "toast-icon",
                     aria_label: match toast.toast_type {
                         ToastType::Success => "Success:",
                         ToastType::Error => "Error:",
@@ -184,14 +304,16 @@ pub fn Toast(props: ToastProps) -> Element {
 
                     div {
                         class: "text-sm font-semibold leading-none tracking-tight",
-                        id: format!("toast-title-{}", toast.id),
+                        "data-slot": "toast-title",
+                        id: "toast-title-{toast.id}",
                         "{toast.title}"
                     }
 
                     if let Some(description) = &toast.description {
                         div {
                             class: "text-sm opacity-90",
-                            id: format!("toast-desc-{}", toast.id),
+                            "data-slot": "toast-description",
+                            id: "toast-desc-{toast.id}",
                             "{description}"
                         }
                     }
@@ -218,14 +340,70 @@ pub struct ToastOptions {
     pub permanent: bool,
 }
 
-// Simplified toast API
+impl ToastOptions {
+    /// Create options with a description
+    pub fn with_description(description: impl Into<String>) -> Self {
+        Self {
+            description: Some(description.into()),
+            ..Default::default()
+        }
+    }
+
+    /// Set the duration
+    pub fn duration(mut self, duration: Duration) -> Self {
+        self.duration = Some(duration);
+        self
+    }
+
+    /// Make the toast permanent (no auto-dismiss)
+    pub fn permanent(mut self) -> Self {
+        self.permanent = true;
+        self
+    }
+}
+
+/// Hook to use the toast API.
+///
+/// Must be called within a ToastProvider.
+///
+/// # Example
+///
+/// ```rust
+/// let toast = use_toast();
+///
+/// // Show a simple success toast
+/// toast.success("Operation completed!", None);
+///
+/// // Show a toast with description
+/// toast.error("Failed to save", Some(ToastOptions::with_description("Please try again")));
+///
+/// // Show a permanent warning
+/// toast.warning("Session expiring", Some(ToastOptions::with_description("Please save your work").permanent()));
+/// ```
+pub fn use_toast() -> ToastContext {
+    use_context::<ToastContext>()
+}
+
+// ============================================================================
+// Legacy API support (deprecated)
+// ============================================================================
+
+/// Legacy toast API using global signals.
+///
+/// **Deprecated**: Use `use_toast()` within a `ToastProvider` instead.
+/// This is kept for backward compatibility but may cause issues with SSR.
+#[deprecated(since = "0.4.0", note = "Use use_toast() within a ToastProvider instead")]
 #[derive(Clone, Copy)]
 pub struct Toasts;
 
+// Global signals for legacy API
+static LEGACY_TOASTS: GlobalSignal<Vec<ToastItem>> = Signal::global(Vec::new);
+static LEGACY_NEXT_ID: GlobalSignal<usize> = Signal::global(|| 0);
+
+#[allow(deprecated)]
 impl Toasts {
-    // Show a toast with the given type and options
     pub fn show(&self, title: String, toast_type: ToastType, options: ToastOptions) {
-        let mut next_id = NEXT_ID.write();
+        let mut next_id = LEGACY_NEXT_ID.write();
         let id = *next_id;
         *next_id += 1;
 
@@ -243,12 +421,10 @@ impl Toasts {
             visible: true,
         };
 
-        let mut toasts = TOASTS.write();
+        let mut toasts = LEGACY_TOASTS.write();
         toasts.push(toast);
 
-        // Limit the number of toasts
         while toasts.len() > 10 {
-            // Try to remove non-permanent toasts first
             if let Some(pos) = toasts.iter().position(|t| !t.permanent) {
                 toasts.remove(pos);
             } else {
@@ -257,7 +433,6 @@ impl Toasts {
         }
     }
 
-    // Convenience methods for different toast types
     pub fn success(&self, title: String, options: Option<ToastOptions>) {
         self.show(title, ToastType::Success, options.unwrap_or_default());
     }
@@ -273,9 +448,4 @@ impl Toasts {
     pub fn info(&self, title: String, options: Option<ToastOptions>) {
         self.show(title, ToastType::Info, options.unwrap_or_default());
     }
-}
-
-// Hook to use the toast API
-pub fn use_toast() -> Toasts {
-    Toasts
 }

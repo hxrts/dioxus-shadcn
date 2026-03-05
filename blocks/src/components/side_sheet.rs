@@ -1,3 +1,4 @@
+use crate::use_unique_id;
 use dioxus::prelude::*;
 use lucide_dioxus::X;
 
@@ -64,6 +65,9 @@ pub fn SideSheet(props: SideSheetProps) -> Element {
 // Trigger component to open the side sheet
 #[derive(Props, Clone, PartialEq)]
 pub struct SideSheetTriggerProps {
+    #[props(default)]
+    pub class: Option<String>,
+
     pub children: Element,
 }
 
@@ -75,8 +79,12 @@ pub fn SideSheetTrigger(props: SideSheetTriggerProps) -> Element {
         context.is_open.set(true);
     };
 
+    let class = props.class.unwrap_or_default();
+
     rsx! {
-        div { class: "w-auto inline-block",
+        div {
+            class: "w-auto inline-block {class}",
+            "data-slot": "sheet-trigger",
             onclick: on_click,
             {props.children}
         }
@@ -138,37 +146,83 @@ pub struct SideSheetContentProps {
     #[props(default = "".to_string())]
     pub class: String,
 
+    /// Optional ID for the content container
+    #[props(default)]
+    pub id: Option<String>,
+
     pub children: Element,
 }
 
 #[component]
 pub fn SideSheetContent(props: SideSheetContentProps) -> Element {
-    let context = use_context::<SideSheetContext>();
+    let mut context = use_context::<SideSheetContext>();
     let is_open = *context.is_open.read();
 
-    // We'll handle escape key with the aria-modal attribute
-    // which provides built-in keyboard handling
+    // Generate unique ID for focus trap
+    let content_id = use_unique_id();
+    let id = props.id.clone().unwrap_or_else(|| content_id());
 
     let side_classes = context.side.content_classes();
     let animation_classes = context.side.animation_classes(is_open);
+
+    // Set up focus trap when open
+    use_effect(move || {
+        if !is_open {
+            return;
+        }
+
+        let id_clone = id.clone();
+        spawn(async move {
+            // Focus the first focusable element in the sheet
+            let focus_script = format!(
+                r#"
+                (function() {{
+                    const container = document.getElementById('{id}');
+                    if (!container) return;
+
+                    const focusable = container.querySelectorAll(
+                        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                    );
+                    if (focusable.length > 0) {{
+                        focusable[0].focus();
+                    }}
+                }})()
+                "#,
+                id = id_clone,
+            );
+            let _ = eval(&focus_script).await;
+        });
+    });
+
+    // Handle Escape key to close
+    let handle_keydown = move |event: KeyboardEvent| {
+        if event.key() == "Escape" {
+            context.is_open.set(false);
+        }
+    };
 
     rsx! {
         // Portal-like behavior - render at the root level
         div {
             class: "fixed z-50",
+            "data-slot": "sheet",
+            "data-state": if is_open { "open" } else { "closed" },
 
             // Overlay
             SideSheetOverlay {}
 
             // Content
             div {
+                id: id,
                 class: "fixed z-50 bg-background border-l border-border shadow-lg transition ease-in-out duration-300 {side_classes} {animation_classes} {props.class}",
                 role: "dialog",
                 aria_modal: "true",
                 aria_labelledby: "side-sheet-title",
                 aria_describedby: "side-sheet-description",
-
-                // Focus trap would be implemented here in a production version
+                "data-slot": "sheet-content",
+                "data-state": if is_open { "open" } else { "closed" },
+                onkeydown: handle_keydown,
+                tabindex: "-1",
 
                 {props.children}
             }
@@ -190,6 +244,7 @@ pub fn SideSheetHeader(props: SideSheetHeaderProps) -> Element {
     rsx! {
         div {
             class: "flex flex-col space-y-2 text-center sm:text-left {props.class}",
+            "data-slot": "sheet-header",
             {props.children}
         }
     }
@@ -210,6 +265,7 @@ pub fn SideSheetTitle(props: SideSheetTitleProps) -> Element {
         h2 {
             id: "side-sheet-title",
             class: "text-lg font-semibold leading-none tracking-tight {props.class}",
+            "data-slot": "sheet-title",
             {props.children}
         }
     }
@@ -230,6 +286,7 @@ pub fn SideSheetDescription(props: SideSheetDescriptionProps) -> Element {
         p {
             id: "side-sheet-description",
             class: "text-sm text-muted-foreground {props.class}",
+            "data-slot": "sheet-description",
             {props.children}
         }
     }
@@ -249,6 +306,7 @@ pub fn SideSheetBody(props: SideSheetBodyProps) -> Element {
     rsx! {
         div {
             class: "flex-1 overflow-y-auto {props.class}",
+            "data-slot": "sheet-body",
             {props.children}
         }
     }

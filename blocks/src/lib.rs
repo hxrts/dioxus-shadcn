@@ -4,6 +4,16 @@ use dioxus::prelude::*;
 pub use log;
 
 pub mod components;
+pub mod focus_trap;
+pub mod patterns;
+pub mod theme;
+pub mod variants;
+
+// Re-export commonly used items
+pub use focus_trap::{use_focus_trap, FocusTrap, FocusSentinel};
+pub use patterns::{ControlledState, CallbackExt, EventHandlerExt};
+pub use theme::{Theme, ThemeColors, ThemeContext, ThemeProvider, ColorScheme, OklchColor, use_theme, themes};
+pub use variants::{cva, cn, class_if, class_switch, VariantConfig, CompoundVariant};
 
 /// Generate a runtime-unique id.
 fn use_unique_id() -> Signal<String> {
