@@ -21,8 +21,8 @@ pub fn DocsLayout(segments: Vec<String>) -> Element {
     rsx! {
         document::Title { "{title}" }
 
-        div { class: "w-full text-sm border-b border-border relative bg-background",
-            div { class: "flex flex-row justify-center text-foreground font-light lg:gap-12",
+        div { class: "relative flex min-h-svh flex-col bg-background",
+            div { class: "container-wrapper mx-auto flex w-full max-w-7xl flex-1 flex-row gap-6 px-4 lg:px-8",
                 DocsLeftNav { current_route: docs_route.clone() }
                 DocsContent { route: docs_route.clone() }
                 DocsRightNav { route: docs_route }
@@ -37,23 +37,51 @@ fn DocsLeftNav(current_route: DocsRoute) -> Element {
     let is_sidebar_visible = *SHOW_SIDEBAR.read();
 
     rsx! {
-        div {
-            class: "min-w-[240px] pt-12 pb-16 border-r border-border sticky top-16 self-start h-[calc(100vh-64px)] overflow-auto backdrop-blur-sm",
-            class: if is_sidebar_visible { "block" } else { "hidden md:block" },
+        aside {
+            "data-slot": "sidebar",
+            class: "w-56 shrink-0 sticky top-[calc(var(--header-height,64px)+0.6rem)] z-30 h-[calc(100svh-10rem)] bg-transparent",
+            class: if is_sidebar_visible { "flex" } else { "hidden lg:flex" },
 
-            div { class: "pr-8 pl-4",
-                nav { class: "space-y-6",
-                    for section in DOCS_NAV {
-                        div { class: "space-y-2",
-                            // Section title
-                            h4 { class: "text-sm font-semibold text-foreground mb-2",
-                                "{section.title}"
-                            }
+            // Top padding spacer
+            div { class: "h-9 shrink-0" }
 
-                            // Section items
-                            ul { class: "space-y-1",
+            // Top gradient fade
+            div { class: "absolute top-8 z-10 h-8 w-full shrink-0 bg-gradient-to-b from-background via-background/80 to-transparent" }
+
+            // Right border line
+            div { class: "absolute top-12 right-0 bottom-0 hidden h-full w-px bg-gradient-to-b from-transparent via-border to-transparent lg:block" }
+
+            // Scrollable content
+            div {
+                "data-slot": "sidebar-content",
+                class: "flex min-h-0 flex-1 flex-col gap-2 overflow-auto no-scrollbar overflow-x-hidden px-2",
+
+                for section in DOCS_NAV {
+                    div {
+                        "data-slot": "sidebar-group",
+                        class: "relative flex w-full min-w-0 flex-col p-2",
+
+                        // Section label
+                        div {
+                            "data-slot": "sidebar-group-label",
+                            class: "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-muted-foreground",
+                            "{section.title}"
+                        }
+
+                        // Section content
+                        div {
+                            "data-slot": "sidebar-group-content",
+                            class: "w-full text-sm",
+
+                            ul {
+                                "data-slot": "sidebar-menu",
+                                class: "flex w-full min-w-0 flex-col gap-0.5",
+
                                 for item in section.items {
                                     li {
+                                        "data-slot": "sidebar-menu-item",
+                                        class: "group/menu-item relative",
+
                                         NavLink {
                                             item_route: item.route.clone(),
                                             current_route: current_route.clone(),
@@ -66,6 +94,9 @@ fn DocsLeftNav(current_route: DocsRoute) -> Element {
                         }
                     }
                 }
+
+                // Bottom gradient fade
+                div { class: "sticky -bottom-1 z-10 h-16 shrink-0 bg-gradient-to-t from-background via-background/80 to-transparent" }
             }
         }
     }
@@ -82,26 +113,30 @@ fn NavLink(
     let is_active = current_route == item_route;
     let href = item_route.to_path();
 
-    let class = if is_active {
-        "flex items-center justify-between py-1.5 px-2 text-sm rounded-md bg-muted text-foreground font-medium"
+    let base_class = "flex h-[30px] w-fit items-center gap-2 overflow-hidden rounded-md px-2 text-[0.8rem] font-medium border border-transparent transition-colors";
+
+    let state_class = if is_active {
+        "bg-accent text-accent-foreground border-accent"
     } else {
-        "flex items-center justify-between py-1.5 px-2 text-sm rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+        "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
     };
 
     rsx! {
         a {
+            "data-slot": "sidebar-menu-button",
+            "data-active": "{is_active}",
             href: "{href}",
-            class: class,
+            class: "{base_class} {state_class}",
             onclick: move |_| {
                 *SHOW_SIDEBAR.write() = false;
             },
 
-            span { "{title}" }
+            "{title}"
 
             if let Some(badge_text) = badge {
                 span {
-                    class: "text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary",
-                    "{badge_text}"
+                    class: "flex size-2 rounded-full bg-blue-500",
+                    title: "{badge_text}",
                 }
             }
         }
@@ -112,8 +147,9 @@ fn NavLink(
 #[component]
 fn DocsContent(route: DocsRoute) -> Element {
     rsx! {
-        div {
-            class: "flex-1 max-w-[80ch] w-full pt-12 pb-16 px-6 text-foreground bg-background",
+        main {
+            "data-slot": "docs-content",
+            class: "relative flex-1 w-full min-w-0 pt-12 pb-16 lg:pl-8 text-foreground",
 
             // Render the appropriate page based on route
             match route {
@@ -652,29 +688,46 @@ fn DocsRightNav(route: DocsRoute) -> Element {
     let toc = get_toc(&route);
 
     rsx! {
-        div {
-            class: "hidden xl:block min-w-[240px] pt-12 pb-16 border-l border-border sticky top-16 self-start h-[calc(100vh-64px)] overflow-auto backdrop-blur-sm",
+        aside {
+            "data-slot": "toc-sidebar",
+            class: "hidden xl:flex w-56 shrink-0 sticky top-[calc(var(--header-height,64px)+0.6rem)] z-30 h-[calc(100svh-10rem)] bg-transparent",
 
-            div { class: "pl-8",
-                h3 { class: "font-bold mb-4 text-foreground text-sm", "On This Page" }
+            // Left border line
+            div { class: "absolute top-12 left-0 bottom-0 h-full w-px bg-gradient-to-b from-transparent via-border to-transparent" }
 
-                ul { class: "space-y-2 text-sm",
-                    for item in toc {
-                        li {
-                            class: match item.level {
-                                2 => "",
-                                3 => "pl-3",
-                                _ => "pl-6",
-                            },
+            // Scrollable content
+            div { class: "flex min-h-0 flex-1 flex-col gap-2 overflow-auto no-scrollbar overflow-x-hidden pl-6 pt-6",
+                div {
+                    "data-slot": "toc-group",
+                    class: "relative flex w-full min-w-0 flex-col p-2",
 
-                            a {
-                                class: "block py-1 text-muted-foreground hover:text-foreground transition-colors",
-                                href: "#{item.id}",
-                                "{item.title}"
+                    div {
+                        "data-slot": "toc-label",
+                        class: "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-muted-foreground",
+                        "On This Page"
+                    }
+
+                    ul { class: "flex w-full min-w-0 flex-col gap-1 text-sm",
+                        for item in toc {
+                            li {
+                                class: match item.level {
+                                    2 => "",
+                                    3 => "pl-3",
+                                    _ => "pl-6",
+                                },
+
+                                a {
+                                    class: "block py-1 px-2 text-[0.8rem] text-muted-foreground hover:text-foreground transition-colors",
+                                    href: "#{item.id}",
+                                    "{item.title}"
+                                }
                             }
                         }
                     }
                 }
+
+                // Bottom gradient fade
+                div { class: "sticky -bottom-1 z-10 h-16 shrink-0 bg-gradient-to-t from-background via-background/80 to-transparent" }
             }
         }
     }
