@@ -42,7 +42,6 @@
           pkg-config
 
           # For wasm builds
-          wasm-bindgen-cli
           binaryen  # wasm-opt
 
           # SSL/TLS support
@@ -61,15 +60,30 @@
           inherit buildInputs nativeBuildInputs;
 
           shellHook = ''
+            # Add cargo bin to PATH
+            export PATH="$HOME/.cargo/bin:$PATH"
+
+            # Check and install matching wasm-bindgen-cli version
+            REQUIRED_VERSION=$(grep -A2 'name = "wasm-bindgen"' Cargo.lock 2>/dev/null | grep 'version' | head -1 | cut -d'"' -f2)
+            if [ -n "$REQUIRED_VERSION" ]; then
+              INSTALLED_VERSION=$(wasm-bindgen --version 2>/dev/null | cut -d' ' -f2 || echo "none")
+              if [ "$INSTALLED_VERSION" != "$REQUIRED_VERSION" ]; then
+                echo "Installing wasm-bindgen-cli $REQUIRED_VERSION (project requirement)..."
+                cargo install wasm-bindgen-cli --version "$REQUIRED_VERSION" --force --quiet
+              fi
+            fi
+
+            echo ""
             echo "Lumen Blocks development environment"
             echo "Rust: $(rustc --version)"
             echo "Dioxus CLI: $(dx --version)"
+            echo "wasm-bindgen: $(wasm-bindgen --version 2>/dev/null || echo 'not installed')"
             echo ""
             echo "Commands:"
-            echo "  just dev-docsite    - Start the docsite dev server"
-            echo "  just build-docsite  - Build the docsite for production"
-            echo "  cargo build         - Build the library"
-            echo "  cargo test          - Run tests"
+            echo "  just dev    - Start docsite with hot-reload"
+            echo "  just build  - Build the library"
+            echo "  just test   - Run tests"
+            echo "  just --list - Show all commands"
           '';
 
           # Environment variables
