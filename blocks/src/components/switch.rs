@@ -1,15 +1,20 @@
+//! Switch component for toggling between on/off states.
+//!
+//! A toggle switch component with smooth animations and accessibility support.
+
 use crate::{use_id_or, use_unique_id};
 use dioxus::html::GlobalAttributesExtension;
 use dioxus::prelude::*;
 use dioxus_primitives::switch::{Switch as PrimitiveSwitch, SwitchThumb};
 
-/// Switch size options
+/// Switch size options matching shadcn-ui.
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
 pub enum SwitchSize {
-    Small,
+    /// Small size
+    Sm,
+    /// Default size
     #[default]
-    Medium,
-    Large,
+    Default,
 }
 
 /// Props for the Switch component
@@ -43,7 +48,20 @@ pub struct SwitchProps {
     pub attributes: Vec<Attribute>,
 }
 
-/// A styled switch component that can be toggled on or off
+/// A styled switch component that can be toggled on or off.
+///
+/// # Example
+///
+/// ```rust
+/// let enabled = use_signal(|| false);
+///
+/// rsx! {
+///     Switch {
+///         checked: enabled,
+///         on_checked_change: move |checked| enabled.set(checked),
+///     }
+/// }
+/// ```
 #[component]
 pub fn Switch(props: SwitchProps) -> Element {
     // Generate unique ID if not provided
@@ -51,55 +69,58 @@ pub fn Switch(props: SwitchProps) -> Element {
     let id_value = use_id_or(switch_id, props.id);
     let inner_checked_state = use_memo(move || Some((props.checked)()));
 
-    // Determine size-specific classes
-    let (switch_classes, thumb_size_classes, thumb_translation) = match props.size {
-        SwitchSize::Small => (
-            "h-[1.25rem] w-[2.25rem]",
-            "h-[1rem] w-[1rem]",
-            "translate-x-[0rem] group-aria-checked:translate-x-[1rem]",
+    // Determine size-specific classes matching shadcn-ui
+    let (switch_size_class, thumb_size_class, thumb_translate) = match props.size {
+        SwitchSize::Sm => (
+            "h-3.5 w-6",              // data-[size=sm]:h-3.5 data-[size=sm]:w-6
+            "size-3",                  // group-data-[size=sm]/switch:size-3
+            "data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0",
         ),
-        SwitchSize::Large => (
-            "h-[1.75rem] w-[3.5rem]",
-            "h-[1.5rem] w-[1.5rem]",
-            "translate-x-[0rem] group-aria-checked:translate-x-[1.75rem]",
-        ),
-        SwitchSize::Medium => (
-            "h-[1.5rem] w-[2.75rem]",
-            "h-[1.25rem] w-[1.25rem]",
-            "translate-x-[0rem] group-aria-checked:translate-x-[1.25rem]",
+        SwitchSize::Default => (
+            "h-[1.15rem] w-8",        // data-[size=default]:h-[1.15rem] data-[size=default]:w-8
+            "size-4",                  // group-data-[size=default]/switch:size-4
+            "data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0",
         ),
     };
 
-    // Build full switch classes
+    let data_size = match props.size {
+        SwitchSize::Sm => "sm",
+        SwitchSize::Default => "default",
+    };
+
+    // Build full switch classes matching shadcn-ui styling
     let full_switch_classes = vec![
         // Base classes
-        "group",
-        "relative inline-flex shrink-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 rounded-full border-2 border-transparent",
-        "transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2",
-        "focus:ring-ring focus:ring-offset-2 focus:ring-offset-background",
-        "bg-input aria-checked:bg-primary",
-        // Size classes
-        switch_classes,
+        "peer group/switch inline-flex shrink-0 items-center rounded-full",
+        "border border-transparent shadow-xs transition-all outline-none",
+        // Focus styles
+        "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        // Disabled styles
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        // State-based colors
+        "data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
+        "dark:data-[state=unchecked]:bg-input/80",
+        // Size class
+        switch_size_class,
     ]
     .into_iter()
-    .filter(|s| !s.is_empty())
     .collect::<Vec<_>>()
     .join(" ");
 
-    // Build thumb classes with dynamic position based on checked state
-    let full_thumb_classes = move || {
-        [
-            // Base classes
-            "pointer-events-none inline-block transform rounded-full bg-background shadow ring-0",
-            // Improved transition for smoother animation
-            "transition-transform duration-300 ease-in-out will-change-transform",
-            // Size classes
-            thumb_size_classes,
-            // Position classes based on checked state
-            thumb_translation,
-        ]
-        .join(" ")
-    };
+    // Build thumb classes
+    let full_thumb_classes = vec![
+        // Base classes
+        "pointer-events-none block rounded-full bg-background ring-0 transition-transform",
+        // Dark mode colors
+        "dark:data-[state=checked]:bg-primary-foreground dark:data-[state=unchecked]:bg-foreground",
+        // Size class
+        thumb_size_class,
+        // Translation
+        thumb_translate,
+    ]
+    .into_iter()
+    .collect::<Vec<_>>()
+    .join(" ");
 
     // Handler for change events
     let on_change = move |checked: bool| {
@@ -112,14 +133,16 @@ pub fn Switch(props: SwitchProps) -> Element {
         PrimitiveSwitch {
             id: id_value,
             class: full_switch_classes,
+            "data-slot": "switch",
+            "data-size": data_size,
             checked: inner_checked_state,
             on_checked_change: on_change,
             disabled: (props.disabled)(),
             aria_label: props.aria_label.clone(),
 
             SwitchThumb {
-                class: full_thumb_classes(),
-                // Add ARIA attributes for better accessibility
+                class: full_thumb_classes,
+                "data-slot": "switch-thumb",
                 aria_hidden: "true".to_string(),
             }
         }
