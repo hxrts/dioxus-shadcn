@@ -10,15 +10,15 @@ default:
 
 # Start docsite dev server with hot-reload
 dev:
-    dx serve -p docsite --platform web
+    dx serve -p docsite --platform web --port 8080
 
 # Start docsite dev server (alias)
 dev-docsite:
-    dx serve -p docsite --platform web
+    dx serve -p docsite --platform web --port 8080
 
 # Start docsite with verbose logging
 dev-verbose:
-    RUST_LOG=debug dx serve -p docsite --platform web
+    RUST_LOG=debug dx serve -p docsite --platform web --port 8080
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Building
