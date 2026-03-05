@@ -17,6 +17,7 @@ dioxus-sdk-time.workspace = true
 dioxus-primitives = { git = "https://github.com/DioxusLabs/components", package = "dioxus-primitives", rev = "545aa7f55205b488f6403f92133fffb6c66838de" }
 tracing.workspace = true
 lucide-dioxus = { workspace = true, features = ["all-icons"] }
+gloo-timers = { version = "0.3", features = ["futures"] }
 log = "0.4"
 
 [dev-dependencies]

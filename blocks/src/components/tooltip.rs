@@ -211,20 +211,8 @@ pub fn Tooltip(props: TooltipProps) -> Element {
     use_effect(move || {
         if *is_hovering.read() {
             spawn(async move {
-                // Simple delay using async sleep
-                #[cfg(target_arch = "wasm32")]
-                {
-                    let promise = js_sys::Promise::new(&mut |resolve, _| {
-                        let window = web_sys::window().unwrap();
-                        window
-                            .set_timeout_with_callback_and_timeout_and_arguments_0(
-                                &resolve,
-                                delay as i32,
-                            )
-                            .unwrap();
-                    });
-                    wasm_bindgen_futures::JsFuture::from(promise).await.ok();
-                }
+                // Use gloo_timers for the delay
+                gloo_timers::future::TimeoutFuture::new(delay).await;
                 if *is_hovering.read() {
                     is_visible.set(true);
                 }
