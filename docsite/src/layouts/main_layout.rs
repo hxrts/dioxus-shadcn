@@ -1,6 +1,5 @@
 use dioxus::prelude::*;
 use dioxus_router::{use_route, Outlet};
-use lumen_blocks::components::side_sheet::SideSheet;
 
 use crate::components::navbar::Navbar;
 use crate::Route;
@@ -16,32 +15,17 @@ pub fn MainLayout() -> Element {
 
     rsx! {
         document::Title { "{title}" }
-        SideSheet {
-            div { class: "min-h-screen relative",
-                // Use the existing Navbar component
-                Navbar {}
 
-                // Main content area
-                main { class: "container mx-auto",
-                    // This is where child routes will be rendered
-                    Outlet::<Route> {}
-                }
+        div {
+            class: "relative flex min-h-screen flex-col bg-background",
+            // CSS variable for header height
+            style: "--header-height: 56px;",
 
-                // Simple footer
-                footer { class: "py-6 text-center text-gray-500 dark:text-gray-400",
-                    p {
-                        "Crafted with "
-                        span { class: "text-red-500", "♥" }
-                        " by "
-                        a {
-                            class: "hover:underline",
-                            target: "_blank",
-                            href: "https://leaf.computer",
-                            "Leaf Computer"
-                        }
-                    }
-                }
-            }
+            // Top navigation bar
+            Navbar {}
+
+            // Main content area - child routes render here
+            Outlet::<Route> {}
         }
     }
 }

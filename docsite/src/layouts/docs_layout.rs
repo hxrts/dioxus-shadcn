@@ -6,9 +6,6 @@ use crate::pages::docs::{DocsRoute, InstallationDoc, IntroDoc};
 use dioxus::document;
 use dioxus::prelude::*;
 
-/// Signal to control mobile sidebar visibility.
-pub(crate) static SHOW_SIDEBAR: GlobalSignal<bool> = Signal::global(|| false);
-
 /// Documentation layout with left nav, content, and right nav.
 #[component]
 pub fn DocsLayout(segments: Vec<String>) -> Element {
@@ -21,9 +18,12 @@ pub fn DocsLayout(segments: Vec<String>) -> Element {
     rsx! {
         document::Title { "{title}" }
 
-        div { class: "relative flex min-h-svh flex-col bg-background",
-            div { class: "container-wrapper mx-auto flex w-full max-w-7xl flex-1 flex-row gap-6 px-4 lg:px-8",
-                DocsLeftNav { current_route: docs_route.clone() }
+        div {
+            class: "container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10",
+
+            DocsLeftNav { current_route: docs_route.clone() }
+
+            main { class: "relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]",
                 DocsContent { route: docs_route.clone() }
                 DocsRightNav { route: docs_route }
             }
@@ -34,54 +34,26 @@ pub fn DocsLayout(segments: Vec<String>) -> Element {
 /// Left navigation sidebar.
 #[component]
 fn DocsLeftNav(current_route: DocsRoute) -> Element {
-    let is_sidebar_visible = *SHOW_SIDEBAR.read();
-
     rsx! {
         aside {
-            "data-slot": "sidebar",
-            class: "w-56 shrink-0 sticky top-[calc(var(--header-height,64px)+0.6rem)] z-30 h-[calc(100svh-10rem)] bg-transparent",
-            class: if is_sidebar_visible { "flex" } else { "hidden lg:flex" },
+            class: "fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block",
 
-            // Top padding spacer
-            div { class: "h-9 shrink-0" }
-
-            // Top gradient fade
-            div { class: "absolute top-8 z-10 h-8 w-full shrink-0 bg-gradient-to-b from-background via-background/80 to-transparent" }
-
-            // Right border line
-            div { class: "absolute top-12 right-0 bottom-0 hidden h-full w-px bg-gradient-to-b from-transparent via-border to-transparent lg:block" }
-
-            // Scrollable content
             div {
-                "data-slot": "sidebar-content",
-                class: "flex min-h-0 flex-1 flex-col gap-2 overflow-auto no-scrollbar overflow-x-hidden px-2",
+                class: "relative overflow-hidden h-full py-6 pr-6 lg:py-8",
 
-                for section in DOCS_NAV {
-                    div {
-                        "data-slot": "sidebar-group",
-                        class: "relative flex w-full min-w-0 flex-col p-2",
+                // Scrollable content
+                div { class: "h-full overflow-auto",
+                    div { class: "w-full",
+                        for section in DOCS_NAV {
+                            div { class: "pb-4",
+                                // Section label
+                                h4 { class: "mb-1 rounded-md px-2 py-1 text-sm font-semibold",
+                                    "{section.title}"
+                                }
 
-                        // Section label
-                        div {
-                            "data-slot": "sidebar-group-label",
-                            class: "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-muted-foreground",
-                            "{section.title}"
-                        }
-
-                        // Section content
-                        div {
-                            "data-slot": "sidebar-group-content",
-                            class: "w-full text-sm",
-
-                            ul {
-                                "data-slot": "sidebar-menu",
-                                class: "flex w-full min-w-0 flex-col gap-0.5",
-
-                                for item in section.items {
-                                    li {
-                                        "data-slot": "sidebar-menu-item",
-                                        class: "group/menu-item relative",
-
+                                // Section items
+                                div { class: "grid grid-flow-row auto-rows-max text-sm",
+                                    for item in section.items {
                                         NavLink {
                                             item_route: item.route.clone(),
                                             current_route: current_route.clone(),
@@ -94,9 +66,6 @@ fn DocsLeftNav(current_route: DocsRoute) -> Element {
                         }
                     }
                 }
-
-                // Bottom gradient fade
-                div { class: "sticky -bottom-1 z-10 h-16 shrink-0 bg-gradient-to-t from-background via-background/80 to-transparent" }
             }
         }
     }
@@ -113,30 +82,23 @@ fn NavLink(
     let is_active = current_route == item_route;
     let href = item_route.to_path();
 
-    let base_class = "flex h-[30px] w-fit items-center gap-2 overflow-hidden rounded-md px-2 text-[0.8rem] font-medium border border-transparent transition-colors";
-
-    let state_class = if is_active {
-        "bg-accent text-accent-foreground border-accent"
+    let class = if is_active {
+        "group flex w-full items-center rounded-md border border-transparent px-2 py-1 font-medium text-foreground"
     } else {
-        "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+        "group flex w-full items-center rounded-md border border-transparent px-2 py-1 text-muted-foreground hover:underline"
     };
 
     rsx! {
         a {
-            "data-slot": "sidebar-menu-button",
-            "data-active": "{is_active}",
             href: "{href}",
-            class: "{base_class} {state_class}",
-            onclick: move |_| {
-                *SHOW_SIDEBAR.write() = false;
-            },
+            class: class,
 
             "{title}"
 
             if let Some(badge_text) = badge {
                 span {
-                    class: "flex size-2 rounded-full bg-blue-500",
-                    title: "{badge_text}",
+                    class: "ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline",
+                    "{badge_text}"
                 }
             }
         }
@@ -147,9 +109,8 @@ fn NavLink(
 #[component]
 fn DocsContent(route: DocsRoute) -> Element {
     rsx! {
-        main {
-            "data-slot": "docs-content",
-            class: "relative flex-1 w-full min-w-0 pt-12 pb-16 lg:pl-8 text-foreground",
+        div {
+            class: "mx-auto w-full min-w-0",
 
             // Render the appropriate page based on route
             match route {
@@ -688,46 +649,35 @@ fn DocsRightNav(route: DocsRoute) -> Element {
     let toc = get_toc(&route);
 
     rsx! {
-        aside {
-            "data-slot": "toc-sidebar",
-            class: "hidden xl:flex w-56 shrink-0 sticky top-[calc(var(--header-height,64px)+0.6rem)] z-30 h-[calc(100svh-10rem)] bg-transparent",
+        div {
+            class: "hidden text-sm xl:block",
 
-            // Left border line
-            div { class: "absolute top-12 left-0 bottom-0 h-full w-px bg-gradient-to-b from-transparent via-border to-transparent" }
+            div {
+                class: "sticky top-16 -mt-10 pt-4",
 
-            // Scrollable content
-            div { class: "flex min-h-0 flex-1 flex-col gap-2 overflow-auto no-scrollbar overflow-x-hidden pl-6 pt-6",
-                div {
-                    "data-slot": "toc-group",
-                    class: "relative flex w-full min-w-0 flex-col p-2",
+                div { class: "pb-10",
+                    div { class: "sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12",
+                        div { class: "space-y-2",
+                            p { class: "font-medium", "On This Page" }
 
-                    div {
-                        "data-slot": "toc-label",
-                        class: "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-muted-foreground",
-                        "On This Page"
-                    }
-
-                    ul { class: "flex w-full min-w-0 flex-col gap-1 text-sm",
-                        for item in toc {
-                            li {
-                                class: match item.level {
-                                    2 => "",
-                                    3 => "pl-3",
-                                    _ => "pl-6",
-                                },
-
-                                a {
-                                    class: "block py-1 px-2 text-[0.8rem] text-muted-foreground hover:text-foreground transition-colors",
-                                    href: "#{item.id}",
-                                    "{item.title}"
+                            ul { class: "m-0 list-none",
+                                for item in toc {
+                                    li { class: "mt-0 pt-2",
+                                        a {
+                                            class: match item.level {
+                                                2 => "inline-block no-underline text-muted-foreground transition-colors hover:text-foreground",
+                                                3 => "inline-block no-underline text-muted-foreground transition-colors hover:text-foreground pl-4",
+                                                _ => "inline-block no-underline text-muted-foreground transition-colors hover:text-foreground pl-8",
+                                            },
+                                            href: "#{item.id}",
+                                            "{item.title}"
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
-                // Bottom gradient fade
-                div { class: "sticky -bottom-1 z-10 h-16 shrink-0 bg-gradient-to-t from-background via-background/80 to-transparent" }
             }
         }
     }
