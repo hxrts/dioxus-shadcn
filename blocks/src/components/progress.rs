@@ -119,10 +119,12 @@ pub fn Progress(props: ProgressProps) -> Element {
                 max: props.max,
                 class: combined_class,
                 id: props.id.clone(),
+                "data-slot": "progress",
 
                 div {
                     class: indicator_class,
                     style: format!("width: {}%", percentage),
+                    "data-slot": "progress-indicator",
                 }
             }
         }

@@ -10,6 +10,8 @@ pub enum BadgeVariant {
     Secondary,
     Destructive,
     Outline,
+    Ghost,
+    Link,
 }
 
 impl BadgeVariant {
@@ -25,6 +27,12 @@ impl BadgeVariant {
                 "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80"
             }
             BadgeVariant::Outline => "text-foreground",
+            BadgeVariant::Ghost => {
+                "border-transparent hover:bg-accent hover:text-accent-foreground"
+            }
+            BadgeVariant::Link => {
+                "border-transparent text-primary underline-offset-4 hover:underline"
+            }
         }
     }
 }
@@ -77,6 +85,8 @@ pub fn Badge(props: BadgeProps) -> Element {
                 BadgeVariant::Secondary => "secondary",
                 BadgeVariant::Destructive => "destructive",
                 BadgeVariant::Outline => "outline",
+                BadgeVariant::Ghost => "ghost",
+                BadgeVariant::Link => "link",
             },
             {props.children}
         }

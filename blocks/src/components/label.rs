@@ -83,6 +83,7 @@ pub fn Label(props: LabelProps) -> Element {
             id: id_value,
             class: label_classes,
             for: (props.for_id)(),
+            "data-slot": "label",
 
             // Pass through other attributes
             ..props.attributes,

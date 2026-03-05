@@ -1,5 +1,7 @@
 use crate::use_unique_id;
 use dioxus::prelude::*;
+use dioxus::document::eval;
+use dioxus::prelude::Key;
 use lucide_dioxus::X;
 
 // Side from which the sheet appears
@@ -161,6 +163,7 @@ pub fn SideSheetContent(props: SideSheetContentProps) -> Element {
     // Generate unique ID for focus trap
     let content_id = use_unique_id();
     let id = props.id.clone().unwrap_or_else(|| content_id());
+    let id_for_effect = id.clone();
 
     let side_classes = context.side.content_classes();
     let animation_classes = context.side.animation_classes(is_open);
@@ -171,7 +174,7 @@ pub fn SideSheetContent(props: SideSheetContentProps) -> Element {
             return;
         }
 
-        let id_clone = id.clone();
+        let id_clone = id_for_effect.clone();
         spawn(async move {
             // Focus the first focusable element in the sheet
             let focus_script = format!(
@@ -196,7 +199,7 @@ pub fn SideSheetContent(props: SideSheetContentProps) -> Element {
 
     // Handle Escape key to close
     let handle_keydown = move |event: KeyboardEvent| {
-        if event.key() == "Escape" {
+        if event.key() == Key::Escape {
             context.is_open.set(false);
         }
     };

@@ -122,8 +122,8 @@ pub fn Input(props: InputProps) -> Element {
 
     // Determine variant classes
     let variant_classes = match props.variant {
-        InputVariant::Default => "border-input focus:border-ring",
-        InputVariant::Error => "border-destructive focus:border-destructive",
+        InputVariant::Default => "border-input focus-visible:border-ring",
+        InputVariant::Error => "border-destructive focus-visible:border-destructive",
     };
 
     // Determine size classes
@@ -168,7 +168,7 @@ pub fn Input(props: InputProps) -> Element {
     let input_classes = vec![
         // Base classes
         "rounded border text-foreground",
-        "transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+        "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         // Variant-specific classes
         variant_classes,
         // Size-specific classes
@@ -241,6 +241,7 @@ pub fn Input(props: InputProps) -> Element {
                 readonly: props.readonly,
                 required: props.required,
                 class: input_classes,
+                "data-slot": "input",
 
                 // Event handlers
                 onchange: handle_change,

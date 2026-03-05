@@ -2,11 +2,31 @@
 
 use crate::use_unique_id;
 use dioxus::prelude::*;
+use dioxus::prelude::Key;
+
+/// Visual variant for tabs.
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
+pub enum TabsVariant {
+    #[default]
+    Default,
+    /// Line variant with underline indicator.
+    Line,
+}
+
+/// Orientation for tabs layout.
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
+pub enum TabsOrientation {
+    #[default]
+    Horizontal,
+    Vertical,
+}
 
 /// Context for managing tab state.
 #[derive(Clone)]
 struct TabsContext {
     value: Signal<String>,
+    variant: TabsVariant,
+    orientation: TabsOrientation,
     on_value_change: Option<Callback<String>>,
 }
 
@@ -24,6 +44,14 @@ pub struct TabsProps {
     /// Callback when the active tab changes.
     #[props(default)]
     pub on_value_change: Option<Callback<String>>,
+
+    /// Visual variant.
+    #[props(default)]
+    pub variant: TabsVariant,
+
+    /// Layout orientation.
+    #[props(default)]
+    pub orientation: TabsOrientation,
 
     /// Additional CSS classes.
     #[props(default)]
@@ -65,6 +93,8 @@ pub fn Tabs(props: TabsProps) -> Element {
 
     let context = TabsContext {
         value,
+        variant: props.variant,
+        orientation: props.orientation,
         on_value_change: props.on_value_change.clone(),
     };
 
@@ -72,10 +102,25 @@ pub fn Tabs(props: TabsProps) -> Element {
 
     let custom_class = props.class.as_deref().unwrap_or("");
 
+    let orientation_class = match props.orientation {
+        TabsOrientation::Horizontal => "",
+        TabsOrientation::Vertical => "flex",
+    };
+
+    let classes = format!("{} {}", orientation_class, custom_class);
+
     rsx! {
         div {
-            class: custom_class,
+            class: classes,
             "data-slot": "tabs",
+            "data-orientation": match props.orientation {
+                TabsOrientation::Horizontal => "horizontal",
+                TabsOrientation::Vertical => "vertical",
+            },
+            "data-variant": match props.variant {
+                TabsVariant::Default => "default",
+                TabsVariant::Line => "line",
+            },
             {props.children}
         }
     }
@@ -95,18 +140,39 @@ pub struct TabsListProps {
 /// Container for tab triggers.
 #[component]
 pub fn TabsList(props: TabsListProps) -> Element {
+    let context = use_context::<TabsContext>();
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground {}",
-        custom_class
-    );
+    let base_classes = match context.variant {
+        TabsVariant::Default => match context.orientation {
+            TabsOrientation::Horizontal => {
+                "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground"
+            }
+            TabsOrientation::Vertical => {
+                "flex flex-col h-auto items-stretch rounded-md bg-muted p-1 text-muted-foreground"
+            }
+        },
+        TabsVariant::Line => match context.orientation {
+            TabsOrientation::Horizontal => {
+                "inline-flex h-10 items-center justify-start gap-2 border-b border-border"
+            }
+            TabsOrientation::Vertical => {
+                "flex flex-col items-stretch gap-1 border-r border-border pr-2"
+            }
+        },
+    };
+
+    let classes = format!("{} {}", base_classes, custom_class);
 
     rsx! {
         div {
             class: classes,
             role: "tablist",
             "data-slot": "tabs-list",
+            "data-orientation": match context.orientation {
+                TabsOrientation::Horizontal => "horizontal",
+                TabsOrientation::Vertical => "vertical",
+            },
             {props.children}
         }
     }
@@ -133,24 +199,37 @@ pub struct TabsTriggerProps {
 /// A clickable tab trigger that switches the active panel.
 #[component]
 pub fn TabsTrigger(props: TabsTriggerProps) -> Element {
-    let context = use_context::<TabsContext>();
+    let mut context = use_context::<TabsContext>();
     let is_active = *context.value.read() == props.value;
 
     let tab_id = use_unique_id();
 
     let custom_class = props.class.as_deref().unwrap_or("");
 
+    let variant_classes = match context.variant {
+        TabsVariant::Default => {
+            if is_active {
+                "bg-background text-foreground shadow-sm rounded-sm"
+            } else {
+                "hover:bg-background/50 hover:text-foreground rounded-sm"
+            }
+        }
+        TabsVariant::Line => {
+            if is_active {
+                "text-foreground border-b-2 border-primary -mb-px"
+            } else {
+                "text-muted-foreground hover:text-foreground border-b-2 border-transparent -mb-px"
+            }
+        }
+    };
+
     let classes = format!(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 \
+        "inline-flex items-center justify-center whitespace-nowrap px-3 py-1.5 \
          text-sm font-medium ring-offset-background transition-all \
          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 \
          disabled:pointer-events-none disabled:opacity-50 \
          {} {}",
-        if is_active {
-            "bg-background text-foreground shadow-sm"
-        } else {
-            "hover:bg-background/50 hover:text-foreground"
-        },
+        variant_classes,
         custom_class
     );
 
@@ -171,7 +250,15 @@ pub fn TabsTrigger(props: TabsTriggerProps) -> Element {
         let value = props.value.clone();
         let on_change = context.on_value_change.clone();
         move |event: KeyboardEvent| {
-            if !props.disabled && (event.key() == "Enter" || event.key() == " ") {
+            if props.disabled {
+                return;
+            }
+            let should_activate = match event.key() {
+                Key::Enter => true,
+                Key::Character(ref s) if s == " " => true,
+                _ => false,
+            };
+            if should_activate {
                 event.prevent_default();
                 context.value.set(value.clone());
                 if let Some(callback) = &on_change {

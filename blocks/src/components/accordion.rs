@@ -45,6 +45,7 @@ pub fn Accordion(props: AccordionProps) -> Element {
             class: accordion_classes,
             allow_multiple_open: props.allow_multiple_open,
             horizontal: props.horizontal,
+            "data-slot": "accordion",
 
             {props.children}
         }
@@ -100,6 +101,7 @@ pub fn AccordionItem(props: AccordionItemProps) -> Element {
             id: id_value.peek().clone(),
             class: item_classes,
             index: props.index,
+            "data-slot": "accordion-item",
             on_change: move |open| {
                 if let Some(handler) = &props.on_change {
                     handler.call(open);
@@ -159,6 +161,7 @@ pub fn AccordionTrigger(props: AccordionTriggerProps) -> Element {
         PrimitiveAccordionTrigger {
             id: id_value.peek().clone(),
             class: trigger_classes,
+            "data-slot": "accordion-trigger",
 
             {props.children}
 
@@ -214,6 +217,7 @@ pub fn AccordionContent(props: AccordionContentProps) -> Element {
         PrimitiveAccordionContent {
             id: id_value.peek().clone(),
             class: content_classes,
+            "data-slot": "accordion-content",
 
             div {
                 class: "overflow-hidden",

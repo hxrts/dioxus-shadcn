@@ -33,6 +33,7 @@
 //! ```
 
 use dioxus::prelude::*;
+use dioxus::document::eval;
 
 /// OKLCH color representation.
 ///
@@ -182,12 +183,12 @@ impl ThemeContext {
     }
 
     /// Set the color scheme.
-    pub fn set_color_scheme(&self, scheme: ColorScheme) {
+    pub fn set_color_scheme(&mut self, scheme: ColorScheme) {
         self.color_scheme.set(scheme);
     }
 
     /// Toggle between light and dark modes.
-    pub fn toggle_color_scheme(&self) {
+    pub fn toggle_color_scheme(&mut self) {
         let current = self.resolved_scheme();
         let new_scheme = match current {
             ColorScheme::Light => ColorScheme::Dark,
@@ -198,7 +199,7 @@ impl ThemeContext {
     }
 
     /// Set a new theme.
-    pub fn set_theme(&self, theme: Theme) {
+    pub fn set_theme(&mut self, theme: Theme) {
         self.theme.set(theme);
     }
 
@@ -227,7 +228,7 @@ pub struct ThemeProviderProps {
 pub fn ThemeProvider(props: ThemeProviderProps) -> Element {
     let theme = use_signal(|| props.theme.clone());
     let color_scheme = use_signal(|| props.color_scheme);
-    let resolved_scheme = use_signal(|| {
+    let mut resolved_scheme = use_signal(|| {
         match props.color_scheme {
             ColorScheme::System => ColorScheme::Light, // Will be updated by effect
             other => other,

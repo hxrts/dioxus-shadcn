@@ -1,7 +1,7 @@
 //! Alert component for displaying important messages.
 
 use dioxus::prelude::*;
-use lucide_dioxus::{AlertCircle, AlertTriangle, CheckCircle2, Info};
+use lucide_dioxus::{CircleAlert, TriangleAlert, CircleCheck, Info};
 
 /// Alert variant styles.
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
@@ -32,9 +32,9 @@ impl AlertVariant {
     fn icon(&self) -> Element {
         match self {
             AlertVariant::Default => rsx! { Info { class: "h-4 w-4" } },
-            AlertVariant::Destructive => rsx! { AlertCircle { class: "h-4 w-4" } },
-            AlertVariant::Success => rsx! { CheckCircle2 { class: "h-4 w-4" } },
-            AlertVariant::Warning => rsx! { AlertTriangle { class: "h-4 w-4" } },
+            AlertVariant::Destructive => rsx! { CircleAlert { class: "h-4 w-4" } },
+            AlertVariant::Success => rsx! { CircleCheck { class: "h-4 w-4" } },
+            AlertVariant::Warning => rsx! { TriangleAlert { class: "h-4 w-4" } },
         }
     }
 }

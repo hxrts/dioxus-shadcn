@@ -50,6 +50,7 @@ pub fn AspectRatio(props: AspectRatioProps) -> Element {
             id: id_value.peek().clone(),
             class: full_classes,
             ratio: props.ratio,
+            "data-slot": "aspect-ratio",
 
             {props.children}
         }

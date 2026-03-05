@@ -27,6 +27,7 @@
 //! ```
 
 use dioxus::prelude::*;
+use dioxus::document::eval;
 
 /// Selector for all focusable elements within a container.
 pub const FOCUSABLE_SELECTOR: &str = r#"
@@ -54,7 +55,7 @@ pub const FOCUSABLE_SELECTOR: &str = r#"
 /// the container element exists in the DOM when `is_active` becomes true.
 pub fn use_focus_trap(is_active: Signal<bool>, container_id: &'static str) {
     // Store the previously focused element to restore later
-    let previous_focus = use_signal(|| Option::<String>::None);
+    let mut previous_focus = use_signal(|| Option::<String>::None);
 
     use_effect(move || {
         let active = is_active();
@@ -75,11 +76,10 @@ pub fn use_focus_trap(is_active: Signal<bool>, container_id: &'static str) {
                     "#
                 );
 
-                if let Ok(result) = eval(&store_focus).await {
-                    if let Ok(id) = result.to_string() {
-                        if id != "null" {
-                            previous_focus.set(Some(id.trim_matches('"').to_string()));
-                        }
+                let mut result = eval(&store_focus);
+                if let Ok(value) = result.recv::<String>().await {
+                    if value != "null" && !value.is_empty() {
+                        previous_focus.set(Some(value.trim_matches('"').to_string()));
                     }
                 }
 
@@ -104,7 +104,9 @@ pub fn use_focus_trap(is_active: Signal<bool>, container_id: &'static str) {
             });
         } else {
             // Restore focus when deactivated
-            if let Some(prev_id) = previous_focus.peek().clone() {
+            let prev_id_opt = { previous_focus.peek().clone() };
+            if let Some(prev_id) = prev_id_opt {
+                previous_focus.set(None);
                 spawn(async move {
                     let restore_focus = format!(
                         r#"
@@ -119,7 +121,6 @@ pub fn use_focus_trap(is_active: Signal<bool>, container_id: &'static str) {
                     );
                     let _ = eval(&restore_focus).await;
                 });
-                previous_focus.set(None);
             }
         }
     });
@@ -190,7 +191,7 @@ pub fn use_focus_trap(is_active: Signal<bool>, container_id: &'static str) {
 ///     is_open.set(false);
 /// });
 /// ```
-pub fn use_escape_close<F>(is_active: Signal<bool>, mut on_close: F)
+pub fn use_escape_close<F>(is_active: Signal<bool>, _on_close: F)
 where
     F: FnMut() + 'static,
 {
@@ -241,19 +242,20 @@ pub struct FocusTrapProps {
 /// ```
 #[component]
 pub fn FocusTrap(props: FocusTrapProps) -> Element {
-    let is_active = use_signal(|| props.active);
+    let mut is_active = use_signal(|| props.active);
+    let id_for_effect = props.id.clone();
 
     // Keep signal in sync with prop
     use_effect(move || {
         is_active.set(props.active);
     });
 
-    let id_static: &'static str = Box::leak(props.id.clone().into_boxed_str());
+    let id_static: &'static str = Box::leak(id_for_effect.into_boxed_str());
     use_focus_trap(is_active, id_static);
 
     rsx! {
         div {
-            id: props.id,
+            id: props.id.clone(),
             class: props.class,
             tabindex: "-1",
             {props.children}
@@ -273,8 +275,9 @@ pub struct FocusSentinelProps {
 
 #[component]
 pub fn FocusSentinel(props: FocusSentinelProps) -> Element {
+    let id_for_effect = props.id.clone();
     use_effect(move || {
-        if let Some(id) = &props.id {
+        if let Some(id) = &id_for_effect {
             let focus_script = format!(
                 r#"
                 (function() {{

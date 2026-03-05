@@ -142,7 +142,7 @@ pub struct RadioGroupItemProps {
 /// A single radio button within a RadioGroup.
 #[component]
 pub fn RadioGroupItem(props: RadioGroupItemProps) -> Element {
-    let context = use_context::<RadioGroupContext>();
+    let mut context = use_context::<RadioGroupContext>();
     let item_id = use_unique_id();
     let id = props.id.clone().unwrap_or_else(|| item_id());
 

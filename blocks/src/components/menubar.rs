@@ -27,6 +27,7 @@ pub fn Menubar(props: MenubarProps) -> Element {
     rsx! {
         PrimitiveMenubar {
             class: class,
+            "data-slot": "menubar",
             {props.children}
         }
     }
@@ -54,6 +55,7 @@ pub fn MenubarMenu(props: MenubarMenuProps) -> Element {
         PrimitiveMenubarMenu {
             class: class,
             index: props.index,
+            "data-slot": "menubar-menu",
             {props.children}
         }
     }
@@ -69,7 +71,7 @@ pub struct MenubarTriggerProps {
 
 #[component]
 pub fn MenubarTrigger(props: MenubarTriggerProps) -> Element {
-    let default_classes = "px-3 py-1.5 rounded-sm text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring transition-colors";
+    let default_classes = "px-3 py-1.5 rounded-sm text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors";
     let class = if let Some(extra) = &props.class {
         format!("{} {}", extra, default_classes)
     } else {
@@ -79,6 +81,7 @@ pub fn MenubarTrigger(props: MenubarTriggerProps) -> Element {
     rsx! {
         PrimitiveMenubarTrigger {
             class: class,
+            "data-slot": "menubar-trigger",
             {props.children}
         }
     }
@@ -104,6 +107,7 @@ pub fn MenubarContent(props: MenubarContentProps) -> Element {
     rsx! {
         PrimitiveMenubarContent {
             class: class,
+            "data-slot": "menubar-content",
             {props.children}
         }
     }
@@ -124,7 +128,7 @@ pub struct MenubarItemProps {
 
 #[component]
 pub fn MenubarItem(props: MenubarItemProps) -> Element {
-    let default_classes = "menubar-item cursor-pointer select-none px-3 py-1.5 rounded-sm text-sm text-foreground hover:bg-accent focus:bg-accent focus:outline-none transition-colors";
+    let default_classes = "menubar-item cursor-pointer select-none px-3 py-1.5 rounded-sm text-sm text-foreground hover:bg-accent focus-visible:bg-accent focus-visible:outline-none transition-colors";
     let class = if let Some(extra) = &props.class {
         format!("{} {}", extra, default_classes)
     } else {
@@ -137,6 +141,7 @@ pub fn MenubarItem(props: MenubarItemProps) -> Element {
             class: class,
             value: props.value.clone(),
             on_select: props.on_select,
+            "data-slot": "menubar-item",
             {props.children}
         }
     }

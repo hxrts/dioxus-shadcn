@@ -224,7 +224,7 @@ impl<T: Clone + PartialEq + 'static> ControlledState<T> {
 
     /// Set the value. Only updates internal state in uncontrolled mode.
     /// In controlled mode, the parent is responsible for updating the signal.
-    pub fn set_value(&self, value: T) {
+    pub fn set_value(&mut self, value: T) {
         if self.controlled.is_none() {
             self.internal.set(value);
         }

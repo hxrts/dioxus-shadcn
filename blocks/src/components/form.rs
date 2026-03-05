@@ -47,7 +47,7 @@ pub struct FormContext {
 
 impl FormContext {
     /// Set an error for a field.
-    pub fn set_error(&self, field: &str, error: FieldError) {
+    pub fn set_error(&mut self, field: &str, error: FieldError) {
         self.errors.with_mut(|errors| {
             errors
                 .entry(field.to_string())
@@ -57,21 +57,21 @@ impl FormContext {
     }
 
     /// Set multiple errors for a field.
-    pub fn set_errors(&self, field: &str, field_errors: Vec<FieldError>) {
+    pub fn set_errors(&mut self, field: &str, field_errors: Vec<FieldError>) {
         self.errors.with_mut(|errors| {
             errors.insert(field.to_string(), field_errors);
         });
     }
 
     /// Clear errors for a field.
-    pub fn clear_errors(&self, field: &str) {
+    pub fn clear_errors(&mut self, field: &str) {
         self.errors.with_mut(|errors| {
             errors.remove(field);
         });
     }
 
     /// Clear all errors.
-    pub fn clear_all_errors(&self) {
+    pub fn clear_all_errors(&mut self) {
         self.errors.set(HashMap::new());
     }
 
@@ -94,7 +94,7 @@ impl FormContext {
     }
 
     /// Mark a field as touched.
-    pub fn touch(&self, field: &str) {
+    pub fn touch(&mut self, field: &str) {
         self.touched.with_mut(|touched| {
             touched.insert(field.to_string(), true);
         });

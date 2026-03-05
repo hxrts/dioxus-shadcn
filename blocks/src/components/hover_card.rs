@@ -27,6 +27,7 @@ pub fn HoverCard(props: HoverCardProps) -> Element {
     rsx! {
         PrimitiveHoverCard {
             class: class,
+            "data-slot": "hover-card",
             {props.children}
         }
     }
@@ -42,7 +43,7 @@ pub struct HoverCardTriggerProps {
 
 #[component]
 pub fn HoverCardTrigger(props: HoverCardTriggerProps) -> Element {
-    let default_classes = "cursor-pointer focus:outline-none";
+    let default_classes = "cursor-pointer focus-visible:outline-none";
     let class = if let Some(extra) = &props.class {
         format!("{} {}", extra, default_classes)
     } else {
@@ -52,6 +53,7 @@ pub fn HoverCardTrigger(props: HoverCardTriggerProps) -> Element {
     rsx! {
         PrimitiveHoverCardTrigger {
             class: class,
+            "data-slot": "hover-card-trigger",
             {props.children}
         }
     }
@@ -83,6 +85,7 @@ pub fn HoverCardContent(props: HoverCardContentProps) -> Element {
             class: class,
             side: props.side.unwrap_or(HoverCardSide::Top),
             align: props.align.unwrap_or(HoverCardAlign::Center),
+            "data-slot": "hover-card-content",
             div {
                 class: "min-w-[16rem] max-w-[22rem] bg-popover border border-border rounded-xl shadow-xl p-5",
                 {props.children}

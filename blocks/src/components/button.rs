@@ -17,10 +17,19 @@ pub enum ButtonVariant {
 /// Button size options
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
 pub enum ButtonSize {
+    Xs,
     Small,
     #[default]
     Medium,
     Large,
+    /// Extra small icon button
+    IconXs,
+    /// Small icon button
+    IconSm,
+    /// Default icon button
+    Icon,
+    /// Large icon button
+    IconLg,
 }
 
 #[derive(Props, Clone, PartialEq)]
@@ -151,15 +160,17 @@ pub fn Button(props: ButtonProps) -> Element {
     // Determine size classes based on whether it's an icon button or regular button
     let size_classes = if props.is_icon_button {
         match props.size {
-            ButtonSize::Small => "p-1.5 text-sm",
-            ButtonSize::Medium => "p-2 text-base",
-            ButtonSize::Large => "p-3 text-lg",
+            ButtonSize::IconXs | ButtonSize::Xs => "h-6 w-6 text-xs",
+            ButtonSize::IconSm | ButtonSize::Small => "h-8 w-8 text-sm",
+            ButtonSize::Icon | ButtonSize::Medium => "h-9 w-9 text-base",
+            ButtonSize::IconLg | ButtonSize::Large => "h-10 w-10 text-lg",
         }
     } else {
         match props.size {
-            ButtonSize::Small => "text-xs px-2.5 py-1",
-            ButtonSize::Medium => "text-sm px-4 py-1.5",
-            ButtonSize::Large => "text-base px-6 py-2",
+            ButtonSize::Xs | ButtonSize::IconXs => "h-6 gap-1 rounded-[min(var(--radius-md),8px)] px-2 text-xs",
+            ButtonSize::Small | ButtonSize::IconSm => "h-8 gap-1.5 px-3 text-xs",
+            ButtonSize::Medium | ButtonSize::Icon => "h-9 gap-2 px-4 py-2 text-sm",
+            ButtonSize::Large | ButtonSize::IconLg => "h-10 gap-2 px-6 text-base",
         }
     };
 
@@ -182,8 +193,11 @@ pub fn Button(props: ButtonProps) -> Element {
     // Generate all the classes in a more maintainable way
     let button_classes = vec![
         // Base classes that apply to all buttons
-        "inline-flex items-center justify-center font-medium rounded border",
-        "transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2",
+        "inline-flex items-center justify-center font-medium rounded-md border",
+        "whitespace-nowrap ring-offset-background",
+        "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        // Icon sizing
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         // Variant-specific classes
         variant_classes,
         // Size-specific classes
@@ -215,11 +229,13 @@ pub fn Button(props: ButtonProps) -> Element {
         button {
             // Standard HTML attributes
             id: id_value,
-            type: props.button_type.clone(),
+            r#type: props.button_type.clone(),
             name: props.name,
             value: props.value,
             disabled: props.disabled || props.loading,
             class: button_classes,
+            "data-slot": "button",
+            "data-loading": props.loading.to_string(),
             onclick: handle_click,
 
             // ARIA attributes

@@ -92,7 +92,7 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
     let id = props.id.clone().unwrap_or(checkbox_id());
 
     // Internal state for uncontrolled mode
-    let internal_checked = use_signal(|| props.default_checked);
+    let mut internal_checked = use_signal(|| props.default_checked);
 
     // Determine current checked state: prefer controlled, fall back to internal
     let is_checked = match &props.checked {
@@ -110,7 +110,7 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
     // Build checkbox wrapper classes
     let custom_class = props.class.as_deref().unwrap_or("");
     let checkbox_class = format!(
-        "inline-flex items-center justify-center rounded border-2 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 {} {} {} {}",
+        "inline-flex items-center justify-center rounded border-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 {} {} {} {}",
         size_class,
         if is_checked {
             "bg-primary border-primary"
@@ -126,12 +126,12 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
     );
 
     // Handle checkbox change
-    let on_change = {
+    let toggle_checked = {
         let checked_prop = props.checked.clone();
         let on_checked_change = props.on_checked_change.clone();
         let disabled = props.disabled;
 
-        move |_| {
+        move || {
             if disabled {
                 return;
             }
@@ -150,13 +150,27 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
         }
     };
 
+    let on_click = {
+        let mut toggle = toggle_checked.clone();
+        move |_: MouseEvent| {
+            toggle();
+        }
+    };
+
     // Handle keyboard activation
     let on_keydown = {
-        let on_change = on_change.clone();
+        let mut toggle = toggle_checked.clone();
         move |event: KeyboardEvent| {
-            if event.key() == " " || event.key() == "Enter" {
-                event.prevent_default();
-                on_change(MouseEvent::default());
+            match event.key() {
+                Key::Character(ref s) if s == " " => {
+                    event.prevent_default();
+                    toggle();
+                }
+                Key::Enter => {
+                    event.prevent_default();
+                    toggle();
+                }
+                _ => {}
             }
         }
     };
@@ -170,7 +184,7 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
             "data-slot": "checkbox",
             "data-state": if is_checked { "checked" } else { "unchecked" },
             id: id.clone(),
-            onclick: on_change,
+            onclick: on_click,
             onkeydown: on_keydown,
             tabindex: if !props.disabled { "0" } else { "-1" },
 

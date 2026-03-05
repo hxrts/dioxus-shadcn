@@ -68,7 +68,7 @@ pub fn Slider(props: SliderProps) -> Element {
     let slider_id = use_unique_id();
     let id = props.id.clone().unwrap_or_else(|| slider_id());
 
-    let internal_value = use_signal(|| props.default_value);
+    let mut internal_value = use_signal(|| props.default_value);
     let current_value = props.value.map(|s| *s.read()).unwrap_or(*internal_value.read());
 
     // Calculate percentage for styling

@@ -91,7 +91,7 @@ pub fn Textarea(props: TextareaProps) -> Element {
     let textarea_id = use_unique_id();
     let id = props.id.clone().unwrap_or_else(|| textarea_id());
 
-    let internal_value = use_signal(|| props.default_value.clone().unwrap_or_default());
+    let mut internal_value = use_signal(|| props.default_value.clone().unwrap_or_default());
     let current_value = props
         .value
         .map(|s| s.read().clone())

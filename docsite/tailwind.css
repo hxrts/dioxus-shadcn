@@ -1,11 +1,39 @@
 @import "tailwindcss";
 @source "./src/**/*.{rs,html,css}";
-@source "./docs/**/*.{rs,html,css}"; 
+@source "./docs/**/*.{rs,html,css}";
 @source "../blocks/**/*.{rs,html,css}";
+
+/*
+ * Custom Data Attribute Variants
+ * For Radix-style component state management
+ */
+@custom-variant data-open (&[data-state="open"]);
+@custom-variant data-closed (&[data-state="closed"]);
+@custom-variant data-checked (&[data-state="checked"]);
+@custom-variant data-unchecked (&[data-state="unchecked"]);
+@custom-variant data-selected (&[data-state="selected"]);
+@custom-variant data-disabled (&[data-disabled]);
+@custom-variant data-active (&[data-state="active"]);
+@custom-variant data-inactive (&[data-state="inactive"]);
+@custom-variant data-on (&[data-state="on"]);
+@custom-variant data-off (&[data-state="off"]);
+@custom-variant data-highlighted (&[data-highlighted]);
+@custom-variant data-placeholder (&[data-placeholder]);
+@custom-variant data-loading (&[data-loading]);
+@custom-variant data-side-top (&[data-side="top"]);
+@custom-variant data-side-right (&[data-side="right"]);
+@custom-variant data-side-bottom (&[data-side="bottom"]);
+@custom-variant data-side-left (&[data-side="left"]);
+
+html {
+    @apply overscroll-y-none;
+}
 
 body {
     background-color: var(--background);
     color: var(--foreground);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
 }
 
 /* 
@@ -46,6 +74,8 @@ Based on MIT-licensed code from shadcn: https://github.com/shadcn-ui/ui
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+    --surface: oklch(0.98 0 0);
+    --surface-foreground: var(--foreground);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -81,6 +111,8 @@ Based on MIT-licensed code from shadcn: https://github.com/shadcn-ui/ui
         --sidebar-accent-foreground: oklch(0.985 0 0);
         --sidebar-border: oklch(0.269 0 0);
         --sidebar-ring: oklch(0.439 0 0);
+        --surface: oklch(0.2 0 0);
+        --surface-foreground: oklch(0.708 0 0);
     }
 }
 
@@ -114,6 +146,9 @@ Based on MIT-licensed code from shadcn: https://github.com/shadcn-ui/ui
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 4px);
+    --radius-2xl: calc(var(--radius) + 8px);
+    --radius-3xl: calc(var(--radius) + 12px);
+    --radius-4xl: calc(var(--radius) + 16px);
     --color-sidebar: var(--sidebar);
     --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar-primary: var(--sidebar-primary);
@@ -122,6 +157,8 @@ Based on MIT-licensed code from shadcn: https://github.com/shadcn-ui/ui
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+    --color-surface: var(--surface);
+    --color-surface-foreground: var(--surface-foreground);
 
     /* Animation definitions - slide */
     --animate-slide-in-from-right: slide-in-from-right 0.2s ease-out;
@@ -246,6 +283,14 @@ Based on MIT-licensed code from shadcn: https://github.com/shadcn-ui/ui
         from { height: var(--radix-collapsible-content-height, auto); opacity: 1; }
         to { height: 0; opacity: 0; }
     }
+
+    /* Caret blink animation for InputOTP */
+    @keyframes caret-blink {
+        0%, 70%, 100% { opacity: 1; }
+        20%, 50% { opacity: 0; }
+    }
+
+    --animate-caret-blink: caret-blink 1.2s ease-out infinite;
 
     /* Combined animate-in/out for composing with other utilities */
     @keyframes animate-in {
@@ -479,3 +524,68 @@ Based on MIT-licensed code from shadcn: https://github.com/shadcn-ui/ui
 .duration-500 { animation-duration: 500ms; }
 .duration-700 { animation-duration: 700ms; }
 .duration-1000 { animation-duration: 1000ms; }
+
+/*
+ * Custom Utility Classes
+ */
+@utility no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@utility scrollbar-thin {
+    scrollbar-width: thin;
+    &::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--border);
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: var(--muted-foreground);
+    }
+}
+
+/*
+ * Base Layer Styles
+ */
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    /* Mobile touch feedback */
+    a:active,
+    button:active {
+        @apply opacity-60 md:opacity-100;
+    }
+
+    ::selection {
+        background-color: var(--primary);
+        color: var(--primary-foreground);
+    }
+
+    /* Focus visible ring styles */
+    :focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+    }
+
+    /* Button and input focus override */
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible,
+    [role="button"]:focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+    }
+}

@@ -49,6 +49,7 @@ pub fn Collapsible(props: CollapsibleProps) -> Element {
         PrimitiveCollapsible {
             id: id_value.peek().clone(),
             class: collapsible_classes,
+            "data-slot": "collapsible",
             {props.children}
         }
     }
@@ -97,6 +98,7 @@ pub fn CollapsibleTrigger(props: CollapsibleTriggerProps) -> Element {
         PrimitiveCollapsibleTrigger {
             id: id_value.peek().clone(),
             class: trigger_classes,
+            "data-slot": "collapsible-trigger",
 
             {props.children}
 
@@ -151,6 +153,7 @@ pub fn CollapsibleContent(props: CollapsibleContentProps) -> Element {
         PrimitiveCollapsibleContent {
             id: id_value.peek().clone(),
             class: content_classes,
+            "data-slot": "collapsible-content",
             div {
                 class: "pb-4 pt-0",
                 {props.children}

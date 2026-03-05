@@ -78,8 +78,8 @@ pub struct TooltipProps {
 /// ```
 #[component]
 pub fn Tooltip(props: TooltipProps) -> Element {
-    let is_visible = use_signal(|| false);
-    let is_hovering = use_signal(|| false);
+    let mut is_visible = use_signal(|| false);
+    let mut is_hovering = use_signal(|| false);
 
     let custom_class = props.class.as_deref().unwrap_or("");
     let position_classes = props.side.position_classes();
@@ -92,7 +92,7 @@ pub fn Tooltip(props: TooltipProps) -> Element {
     );
 
     // Handle hover with delay
-    let delay = props.delay_ms;
+    let _delay = props.delay_ms;
     use_effect(move || {
         if *is_hovering.read() {
             spawn(async move {

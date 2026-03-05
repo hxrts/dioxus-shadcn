@@ -67,7 +67,10 @@ pub struct CardHeaderProps {
 pub fn CardHeader(props: CardHeaderProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!("flex flex-col space-y-1.5 p-6 {}", custom_class);
+    let classes = format!(
+        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 p-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6 {}",
+        custom_class
+    );
 
     rsx! {
         div {
@@ -184,6 +187,36 @@ pub fn CardFooter(props: CardFooterProps) -> Element {
         div {
             class: classes,
             "data-slot": "card-footer",
+            {props.children}
+        }
+    }
+}
+
+/// Props for CardAction.
+#[derive(Props, Clone, PartialEq)]
+pub struct CardActionProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    /// Action content (typically a button or dropdown).
+    pub children: Element,
+}
+
+/// Action element within a CardHeader, positioned in the top-right.
+#[component]
+pub fn CardAction(props: CardActionProps) -> Element {
+    let custom_class = props.class.as_deref().unwrap_or("");
+
+    let classes = format!(
+        "col-start-2 row-span-2 row-start-1 self-start justify-self-end {}",
+        custom_class
+    );
+
+    rsx! {
+        div {
+            class: classes,
+            "data-slot": "card-action",
             {props.children}
         }
     }
