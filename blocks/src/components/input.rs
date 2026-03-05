@@ -138,9 +138,9 @@ pub fn Input(props: InputProps) -> Element {
 
     // Determine state classes
     let state_class = if props.disabled {
-        "opacity-50 cursor-not-allowed bg-muted"
+        "pointer-events-none cursor-not-allowed opacity-50"
     } else {
-        "bg-background dark:bg-input/30"
+        "bg-transparent dark:bg-input/30"
     };
 
     // Padding adjustment when icons are present
@@ -171,6 +171,7 @@ pub fn Input(props: InputProps) -> Element {
         "placeholder:text-muted-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
         "transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
         "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
+        "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
         // Variant-specific classes
         variant_classes,
         // Size-specific classes

@@ -5,6 +5,7 @@ use dioxus_primitives::context_menu::{
     ContextMenu as PrimitiveContextMenu, ContextMenuContent as PrimitiveContextMenuContent,
     ContextMenuItem as PrimitiveContextMenuItem,
 };
+use lucide_dioxus::ChevronRight;
 
 // Define a context struct for radio groups
 #[derive(Clone, PartialEq)]
@@ -146,13 +147,13 @@ pub fn ContextMenuContent(props: ContextMenuContentProps) -> Element {
         _ => "left-0 origin-top-left", // Default to start
     };
 
-    // Content classes
+    // Content classes matching shadcn context-menu.tsx
     let content_classes = [
-        "absolute mt-1 rounded-md bg-popover shadow-lg",
-        "border border-border p-1 text-popover-foreground",
-        "animate-in fade-in-80 data-[side=bottom]:slide-in-from-top-2",
-        "data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2",
-        "data-[side=top]:slide-in-from-bottom-2 z-50",
+        "z-50 min-w-[8rem] overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
+        "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
+        "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+        "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
         align_class,
         &props.width,
     ]
@@ -189,8 +190,8 @@ pub fn ContextMenuLabel(props: ContextMenuLabelProps) -> Element {
     let props_id = use_signal(|| props.id);
     let id_value = use_id_or(label_id, props_id.into());
 
-    // Label classes
-    let label_classes = "px-2 py-1.5 text-xs font-semibold text-foreground/80";
+    // Label classes matching shadcn context-menu.tsx ContextMenuLabel
+    let label_classes = "px-2 py-1.5 text-sm font-medium text-foreground";
 
     rsx! {
         div {
@@ -220,8 +221,8 @@ pub fn ContextMenuSeparator(props: ContextMenuSeparatorProps) -> Element {
     let props_id = use_signal(|| props.id);
     let id_value = use_id_or(separator_id, props_id.into());
 
-    // Separator classes
-    let separator_classes = "h-px my-1 bg-muted";
+    // Separator classes matching shadcn context-menu.tsx ContextMenuSeparator
+    let separator_classes = "-mx-1 my-1 h-px bg-border";
 
     rsx! {
         div {
@@ -476,16 +477,18 @@ pub fn ContextMenuItem(props: ContextMenuItemProps) -> Element {
     let props_id = use_signal(|| props.id);
     let id_value = use_id_or(item_id, props_id.into());
 
-    // Determine item classes
+    // Determine item classes matching shadcn context-menu.tsx ContextMenuItem
     let item_classes = vec![
         // Base classes
-        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5",
-        "text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground",
-        "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
-        "disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground",
-
-        // Destructive style
-        if props.destructive { "text-destructive focus:text-destructive" } else { "" },
+        "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none",
+        "focus:bg-accent focus:text-accent-foreground",
+        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        // SVG styling
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground",
+        // Destructive variant
+        if props.destructive {
+            "text-destructive focus:bg-destructive/10 focus:text-destructive dark:focus:bg-destructive/20"
+        } else { "" },
     ]
     .into_iter()
     .filter(|s| !s.is_empty())
@@ -520,6 +523,215 @@ pub fn ContextMenuItem(props: ContextMenuItemProps) -> Element {
                 }
             }
 
+            {props.children}
+        }
+    }
+}
+
+// ============================================================================
+// Shortcut Component
+// ============================================================================
+
+/// Props for ContextMenuShortcut.
+#[derive(Props, Clone, PartialEq)]
+pub struct ContextMenuShortcutProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    /// The shortcut text.
+    pub children: Element,
+}
+
+/// A keyboard shortcut hint displayed in a context menu item.
+#[component]
+pub fn ContextMenuShortcut(props: ContextMenuShortcutProps) -> Element {
+    let custom_class = props.class.as_deref().unwrap_or("");
+
+    let classes = format!(
+        "ml-auto text-xs tracking-widest text-muted-foreground {}",
+        custom_class
+    );
+
+    rsx! {
+        span {
+            class: classes,
+            "data-slot": "context-menu-shortcut",
+            {props.children}
+        }
+    }
+}
+
+// ============================================================================
+// Submenu Components
+// ============================================================================
+
+/// Context for submenu state.
+#[derive(Clone)]
+struct ContextMenuSubContext {
+    open: Signal<bool>,
+}
+
+/// Props for ContextMenuSub.
+#[derive(Props, Clone, PartialEq)]
+pub struct ContextMenuSubProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    pub children: Element,
+}
+
+/// Container for a context menu submenu.
+#[component]
+pub fn ContextMenuSub(props: ContextMenuSubProps) -> Element {
+    let open = use_signal(|| false);
+    use_context_provider(|| ContextMenuSubContext { open });
+
+    let custom_class = props.class.as_deref().unwrap_or("");
+    let classes = format!("relative {}", custom_class);
+
+    rsx! {
+        div {
+            class: classes,
+            "data-slot": "context-menu-sub",
+            "data-state": if *open.read() { "open" } else { "closed" },
+            {props.children}
+        }
+    }
+}
+
+/// Props for ContextMenuSubTrigger.
+#[derive(Props, Clone, PartialEq)]
+pub struct ContextMenuSubTriggerProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    /// Whether to show inset padding.
+    #[props(default)]
+    pub inset: bool,
+
+    pub children: Element,
+}
+
+/// The item that opens a context menu submenu.
+#[component]
+pub fn ContextMenuSubTrigger(props: ContextMenuSubTriggerProps) -> Element {
+    let context = use_context::<ContextMenuSubContext>();
+    let is_open = *context.open.read();
+
+    let inset_class = if props.inset { "pl-8" } else { "" };
+    let custom_class = props.class.as_deref().unwrap_or("");
+
+    let classes = format!(
+        "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 \
+        text-sm outline-hidden focus:bg-accent focus:text-accent-foreground \
+        data-[state=open]:bg-accent data-[state=open]:text-accent-foreground {} {}",
+        inset_class, custom_class
+    );
+
+    let mut ctx = context.clone();
+    let handle_mouse_enter = move |_| {
+        ctx.open.set(true);
+    };
+
+    let mut ctx2 = context.clone();
+    let handle_mouse_leave = move |_| {
+        ctx2.open.set(false);
+    };
+
+    rsx! {
+        div {
+            class: classes,
+            "data-slot": "context-menu-sub-trigger",
+            "data-state": if is_open { "open" } else { "closed" },
+            onmouseenter: handle_mouse_enter,
+            onmouseleave: handle_mouse_leave,
+
+            {props.children}
+
+            ChevronRight { class: "ml-auto size-4" }
+        }
+    }
+}
+
+/// Props for ContextMenuSubContent.
+#[derive(Props, Clone, PartialEq)]
+pub struct ContextMenuSubContentProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    pub children: Element,
+}
+
+/// The content of a context menu submenu.
+#[component]
+pub fn ContextMenuSubContent(props: ContextMenuSubContentProps) -> Element {
+    let context = use_context::<ContextMenuSubContext>();
+    let is_open = *context.open.read();
+
+    if !is_open {
+        return rsx! {};
+    }
+
+    let custom_class = props.class.as_deref().unwrap_or("");
+
+    let classes = format!(
+        "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg \
+        data-[state=open]:animate-in data-[state=closed]:animate-out \
+        data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 \
+        data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 \
+        data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 \
+        data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 \
+        absolute left-full top-0 ml-1 {}",
+        custom_class
+    );
+
+    let mut ctx = context.clone();
+    let handle_mouse_enter = move |_| {
+        ctx.open.set(true);
+    };
+
+    let mut ctx2 = context.clone();
+    let handle_mouse_leave = move |_| {
+        ctx2.open.set(false);
+    };
+
+    rsx! {
+        div {
+            class: classes,
+            "data-slot": "context-menu-sub-content",
+            "data-state": "open",
+            onmouseenter: handle_mouse_enter,
+            onmouseleave: handle_mouse_leave,
+
+            {props.children}
+        }
+    }
+}
+
+/// Props for ContextMenuGroup.
+#[derive(Props, Clone, PartialEq)]
+pub struct ContextMenuGroupProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    pub children: Element,
+}
+
+/// A group of related context menu items.
+#[component]
+pub fn ContextMenuGroup(props: ContextMenuGroupProps) -> Element {
+    let class = props.class.as_deref().unwrap_or("");
+
+    rsx! {
+        div {
+            class: class,
+            role: "group",
+            "data-slot": "context-menu-group",
             {props.children}
         }
     }

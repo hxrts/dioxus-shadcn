@@ -10,6 +10,8 @@ use dioxus::prelude::*;
 pub struct NavigationMenuContext {
     /// Currently active item value.
     pub value: Signal<Option<String>>,
+    /// Previous active item value (for motion direction).
+    pub previous_value: Signal<Option<String>>,
     /// Whether to use viewport mode.
     pub use_viewport: bool,
     /// Callback when value changes.
@@ -19,6 +21,9 @@ pub struct NavigationMenuContext {
 impl NavigationMenuContext {
     /// Set the active item.
     pub fn set_value(&mut self, value: Option<String>) {
+        // Store previous value for motion direction
+        let current = self.value.read().clone();
+        self.previous_value.set(current);
         self.value.set(value.clone());
         if let Some(callback) = &self.on_value_change {
             callback.call(value);
@@ -28,6 +33,25 @@ impl NavigationMenuContext {
     /// Check if an item is active.
     pub fn is_active(&self, item_value: &str) -> bool {
         self.value.read().as_ref() == Some(&item_value.to_string())
+    }
+
+    /// Get motion direction based on navigation.
+    pub fn get_motion_direction(&self, item_value: &str) -> &'static str {
+        let current = self.value.read();
+        let previous = self.previous_value.read();
+
+        match (&*current, &*previous) {
+            (Some(curr), Some(prev)) if curr == item_value => {
+                // Navigating to this item - determine direction based on order
+                // For simplicity, use from-start as default
+                "from-start"
+            }
+            (Some(_), Some(prev)) if prev == item_value => {
+                // Navigating away from this item
+                "to-end"
+            }
+            _ => "from-start"
+        }
     }
 }
 
@@ -83,12 +107,14 @@ pub struct NavigationMenuProps {
 pub fn NavigationMenu(props: NavigationMenuProps) -> Element {
     // Internal state for uncontrolled mode
     let internal_value = use_signal(|| props.default_value.clone());
+    let previous_value = use_signal(|| None);
 
     // Use controlled or internal state
     let value = props.value.unwrap_or(internal_value);
 
     let context = NavigationMenuContext {
         value,
+        previous_value,
         use_viewport: props.use_viewport,
         on_value_change: props.on_value_change.clone(),
     };
@@ -98,7 +124,7 @@ pub fn NavigationMenu(props: NavigationMenuProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "relative z-10 flex max-w-max flex-1 items-center justify-center {}",
+        "group/navigation-menu relative z-10 flex max-w-max flex-1 items-center justify-center {}",
         custom_class
     );
 
@@ -132,7 +158,7 @@ pub fn NavigationMenuList(props: NavigationMenuListProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "group flex flex-1 list-none items-center justify-center space-x-1 {}",
+        "group flex flex-1 list-none items-center justify-center gap-1 {}",
         custom_class
     );
 
@@ -207,11 +233,12 @@ pub fn NavigationMenuTrigger(props: NavigationMenuTriggerProps) -> Element {
     let is_active = context.is_active(&item_context.value);
 
     let classes = format!(
-        "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 \
-         py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground \
-         focus:bg-accent focus:text-accent-foreground focus:outline-none \
+        "group inline-flex h-9 w-max items-center justify-center gap-1 rounded-md bg-background px-4 \
+         py-2 text-sm font-medium outline-none transition-[color,box-shadow] \
+         hover:bg-accent hover:text-accent-foreground \
+         focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 \
          disabled:pointer-events-none disabled:opacity-50 \
-         data-active:bg-accent/50 {}",
+         data-[state=open]:bg-accent/50 data-[state=open]:text-accent-foreground {}",
         custom_class
     );
 
@@ -242,7 +269,7 @@ pub fn NavigationMenuTrigger(props: NavigationMenuTriggerProps) -> Element {
 
             // Chevron down icon
             svg {
-                class: "relative top-px ml-1 size-3 transition-transform duration-200 group-data-[state=open]:rotate-180",
+                class: "pointer-events-none size-3 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180",
                 xmlns: "http://www.w3.org/2000/svg",
                 width: "24",
                 height: "24",
@@ -282,32 +309,38 @@ pub fn NavigationMenuContent(props: NavigationMenuContentProps) -> Element {
         return rsx! {};
     }
 
-    let classes = format!(
-        "left-0 top-0 w-full animate-in fade-in-0 zoom-in-95 \
+    let motion = context.get_motion_direction(&item_context.value);
+
+    // Non-viewport mode: render inline with top positioning
+    let inline_classes = format!(
+        "left-0 top-full mt-1.5 w-full \
+         data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out \
+         data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out \
+         data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 \
+         data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 \
          md:absolute md:w-auto {}",
         custom_class
     );
 
-    // Non-viewport mode: render inline
-    if !context.use_viewport {
-        return rsx! {
-            div {
-                class: classes,
-                "data-slot": "navigation-menu-content",
-                "data-state": "open",
-                {props.children}
-            }
-        };
-    }
+    // Viewport mode: content is rendered inside NavigationMenuViewport
+    let viewport_classes = format!(
+        "left-0 top-0 w-full \
+         data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out \
+         data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out \
+         data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 \
+         data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 \
+         md:absolute md:w-auto {}",
+        custom_class
+    );
 
-    // Viewport mode: content is rendered in NavigationMenuViewport
-    // We use a portal-like pattern here by storing content in context
+    let classes = if context.use_viewport { viewport_classes } else { inline_classes };
+
     rsx! {
         div {
             class: classes,
             "data-slot": "navigation-menu-content",
             "data-state": "open",
-            "data-motion": "from-start",
+            "data-motion": motion,
             {props.children}
         }
     }
@@ -348,9 +381,9 @@ pub fn NavigationMenuLink(props: NavigationMenuLinkProps) -> Element {
     };
 
     let classes = format!(
-        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none \
-         transition-colors hover:bg-accent hover:text-accent-foreground \
-         focus:bg-accent focus:text-accent-foreground \
+        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden \
+         transition-[color,box-shadow] hover:bg-accent hover:text-accent-foreground \
+         focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 \
          {} {}",
         active_class, custom_class
     );
@@ -437,16 +470,22 @@ pub fn NavigationMenuViewport(props: NavigationMenuViewportProps) -> Element {
         return rsx! {};
     }
 
+    // Use fallback dimensions when CSS variables aren't available
+    // These match typical navigation menu content sizes
     let classes = format!(
-        "origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] \
-         w-full overflow-hidden rounded-md border bg-popover text-popover-foreground shadow \
-         animate-in zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)] {}",
+        "origin-top-center relative mt-1.5 \
+         h-[var(--radix-navigation-menu-viewport-height,auto)] \
+         w-full overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-lg \
+         data-[state=open]:animate-in data-[state=closed]:animate-out \
+         data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 \
+         data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 \
+         md:w-[var(--radix-navigation-menu-viewport-width,auto)] {}",
         custom_class
     );
 
     rsx! {
         div {
-            class: "absolute left-0 top-full flex justify-center",
+            class: "absolute left-0 top-full flex justify-center w-full",
             "data-slot": "navigation-menu-viewport-position",
 
             div {

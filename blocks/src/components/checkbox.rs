@@ -1,6 +1,6 @@
 use crate::use_unique_id;
 use dioxus::prelude::*;
-use lucide_dioxus::Check;
+use lucide_dioxus::{Check, Minus};
 
 /// Checkbox size options
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
@@ -28,6 +28,12 @@ pub struct CheckboxProps {
     /// Always called with the new checked state, regardless of controlled/uncontrolled mode.
     #[props(default)]
     pub on_checked_change: Option<EventHandler<bool>>,
+
+    /// Whether the checkbox is in an indeterminate state.
+    /// This represents a "partially checked" state, typically used for parent checkboxes
+    /// that have some but not all children selected.
+    #[props(default)]
+    pub indeterminate: bool,
 
     /// Whether the checkbox is disabled
     #[props(default)]
@@ -63,7 +69,8 @@ pub struct CheckboxProps {
 
 /// A styled checkbox component that can be toggled on or off.
 ///
-/// Supports both controlled and uncontrolled usage patterns:
+/// Supports both controlled and uncontrolled usage patterns, as well as
+/// an indeterminate state for parent checkboxes with partial selection.
 ///
 /// ## Uncontrolled (default)
 /// ```rust
@@ -82,6 +89,16 @@ pub struct CheckboxProps {
 ///     checked: is_checked,
 ///     on_checked_change: move |new_value| {
 ///         is_checked.set(new_value);
+///     }
+/// }
+/// ```
+///
+/// ## Indeterminate
+/// ```rust
+/// Checkbox {
+///     indeterminate: true,
+///     on_checked_change: move |_| {
+///         // Handle click - typically sets to checked
 ///     }
 /// }
 /// ```
@@ -107,6 +124,15 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
         CheckboxSize::Large => ("size-5", "size-4"),
     };
 
+    // Determine the checkbox state
+    let state = if props.indeterminate {
+        "indeterminate"
+    } else if is_checked {
+        "checked"
+    } else {
+        "unchecked"
+    };
+
     // Build checkbox wrapper classes matching shadcn-ui
     let custom_class = props.class.as_deref().unwrap_or("");
     let checkbox_class = format!(
@@ -115,7 +141,8 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
          disabled:cursor-not-allowed disabled:opacity-50 \
          aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 \
          data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground \
-         dark:bg-input/30 dark:data-[state=checked]:bg-primary \
+         data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground \
+         dark:bg-input/30 dark:data-[state=checked]:bg-primary dark:data-[state=indeterminate]:bg-primary \
          {} {} {}",
         size_class,
         if props.disabled {
@@ -176,21 +203,36 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
         }
     };
 
+    // Determine aria-checked value (supports "mixed" for indeterminate)
+    let aria_checked = if props.indeterminate {
+        "mixed"
+    } else if is_checked {
+        "true"
+    } else {
+        "false"
+    };
+
     rsx! {
         div {
             class: checkbox_class,
             role: "checkbox",
-            "aria-checked": is_checked.to_string(),
+            "aria-checked": aria_checked,
             "aria-disabled": props.disabled.to_string(),
             "data-slot": "checkbox",
-            "data-state": if is_checked { "checked" } else { "unchecked" },
+            "data-state": state,
             id: id.clone(),
             onclick: on_click,
             onkeydown: on_keydown,
             tabindex: if !props.disabled { "0" } else { "-1" },
 
-            // Render indicator when checked (matching shadcn grid layout)
-            if is_checked {
+            // Render indicator when checked or indeterminate (matching shadcn grid layout)
+            if props.indeterminate {
+                div {
+                    class: "grid place-content-center text-current transition-none",
+                    "data-slot": "checkbox-indicator",
+                    Minus { class: "{icon_size}" }
+                }
+            } else if is_checked {
                 div {
                     class: "grid place-content-center text-current transition-none",
                     "data-slot": "checkbox-indicator",

@@ -4,27 +4,41 @@ use dioxus::document::eval;
 use dioxus::prelude::Key;
 use lucide_dioxus::X;
 
-// Side from which the sheet appears
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+// Side from which the sheet appears (matches shadcn sheet.tsx)
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum SideSheetSide {
-    Left,
+    Top,
+    #[default]
     Right,
+    Bottom,
+    Left,
 }
 
 impl SideSheetSide {
     fn content_classes(&self) -> &'static str {
         match self {
-            SideSheetSide::Left => "inset-y-0 left-0 h-full w-3/4 sm:max-w-sm",
-            SideSheetSide::Right => "inset-y-0 right-0 h-full w-3/4 sm:max-w-sm",
+            SideSheetSide::Top => "inset-x-0 top-0 h-auto border-b",
+            SideSheetSide::Right => "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
+            SideSheetSide::Bottom => "inset-x-0 bottom-0 h-auto border-t",
+            SideSheetSide::Left => "inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
         }
     }
 
-    fn animation_classes(&self, is_open: bool) -> &'static str {
-        match (self, is_open) {
-            (SideSheetSide::Left, true) => "translate-x-0",
-            (SideSheetSide::Left, false) => "-translate-x-full",
-            (SideSheetSide::Right, true) => "translate-x-0",
-            (SideSheetSide::Right, false) => "translate-x-full",
+    fn open_animation(&self) -> &'static str {
+        match self {
+            SideSheetSide::Top => "data-[state=open]:slide-in-from-top",
+            SideSheetSide::Right => "data-[state=open]:slide-in-from-right",
+            SideSheetSide::Bottom => "data-[state=open]:slide-in-from-bottom",
+            SideSheetSide::Left => "data-[state=open]:slide-in-from-left",
+        }
+    }
+
+    fn close_animation(&self) -> &'static str {
+        match self {
+            SideSheetSide::Top => "data-[state=closed]:slide-out-to-top",
+            SideSheetSide::Right => "data-[state=closed]:slide-out-to-right",
+            SideSheetSide::Bottom => "data-[state=closed]:slide-out-to-bottom",
+            SideSheetSide::Left => "data-[state=closed]:slide-out-to-left",
         }
     }
 }
@@ -135,7 +149,11 @@ pub fn SideSheetOverlay(props: SideSheetOverlayProps) -> Element {
 
     rsx! {
         div {
-            class: "fixed inset-0 z-50 {props.class} data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:hidden",
+            class: "fixed inset-0 z-50 bg-black/50 \
+                    data-[state=closed]:animate-out data-[state=closed]:fade-out-0 \
+                    data-[state=open]:animate-in data-[state=open]:fade-in-0 \
+                    data-[state=closed]:hidden {props.class}",
+            "data-slot": "sheet-overlay",
             "data-state": if is_open { "open" } else { "closed" },
             onclick: on_click,
             aria_hidden: "true",
@@ -167,7 +185,8 @@ pub fn SideSheetContent(props: SideSheetContentProps) -> Element {
     let id_for_effect = id.clone();
 
     let side_classes = context.side.content_classes();
-    let animation_classes = context.side.animation_classes(is_open);
+    let open_animation = context.side.open_animation();
+    let close_animation = context.side.close_animation();
 
     // Set up focus trap when open
     use_effect(move || {
@@ -215,10 +234,13 @@ pub fn SideSheetContent(props: SideSheetContentProps) -> Element {
             // Overlay
             SideSheetOverlay {}
 
-            // Content
+            // Content (matches shadcn sheet.tsx)
             div {
                 id: id,
-                class: "fixed z-50 bg-background border-l border-border shadow-lg transition ease-in-out duration-300 {side_classes} {animation_classes} {props.class}",
+                class: "fixed z-50 flex flex-col gap-4 bg-background shadow-lg transition ease-in-out \
+                        data-[state=closed]:animate-out data-[state=closed]:duration-300 \
+                        data-[state=open]:animate-in data-[state=open]:duration-500 \
+                        {side_classes} {open_animation} {close_animation} {props.class}",
                 role: "dialog",
                 aria_modal: "true",
                 aria_labelledby: "side-sheet-title",
@@ -247,7 +269,7 @@ pub struct SideSheetHeaderProps {
 pub fn SideSheetHeader(props: SideSheetHeaderProps) -> Element {
     rsx! {
         div {
-            class: "flex flex-col space-y-2 text-center sm:text-left {props.class}",
+            class: "flex flex-col gap-1.5 p-4 {props.class}",
             "data-slot": "sheet-header",
             {props.children}
         }
@@ -268,7 +290,7 @@ pub fn SideSheetTitle(props: SideSheetTitleProps) -> Element {
     rsx! {
         h2 {
             id: "side-sheet-title",
-            class: "text-lg font-semibold leading-none tracking-tight {props.class}",
+            class: "font-semibold text-foreground {props.class}",
             "data-slot": "sheet-title",
             {props.children}
         }
@@ -329,7 +351,8 @@ pub struct SideSheetFooterProps {
 pub fn SideSheetFooter(props: SideSheetFooterProps) -> Element {
     rsx! {
         div {
-            class: "flex gap-2 {props.class}",
+            class: "mt-auto flex flex-col gap-2 p-4 {props.class}",
+            "data-slot": "sheet-footer",
             {props.children}
         }
     }
@@ -348,13 +371,19 @@ pub fn SideSheetCloseButton(props: SideSheetCloseButtonProps) -> Element {
 
     rsx! {
         button {
-            class: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary {props.class}",
+            class: "absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity \
+                    hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden \
+                    disabled:pointer-events-none data-[state=open]:bg-secondary {props.class}",
             onclick: move |_| context.is_open.set(false),
-            type: "button",
+            r#type: "button",
             aria_label: "Close",
 
             X {
-                class: "h-6 w-6"
+                class: "size-4"
+            }
+            span {
+                class: "sr-only",
+                "Close"
             }
         }
     }

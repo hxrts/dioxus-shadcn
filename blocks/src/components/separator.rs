@@ -48,14 +48,10 @@ pub struct SeparatorProps {
 pub fn Separator(props: SeparatorProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let orientation_classes = match props.orientation {
-        SeparatorOrientation::Horizontal => "h-[1px] w-full",
-        SeparatorOrientation::Vertical => "h-full w-[1px]",
-    };
-
     let classes = format!(
-        "shrink-0 bg-border {} {}",
-        orientation_classes, custom_class
+        "shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full \
+         data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px {}",
+        custom_class
     );
 
     rsx! {

@@ -262,10 +262,10 @@ pub fn PopoverContent(props: PopoverContentProps) -> Element {
     let width = props.width.as_deref().unwrap_or("18rem");
 
     let side_class = match props.side {
-        PopoverSide::Top => "bottom-full mb-1 slide-in-from-bottom-2",
-        PopoverSide::Right => "left-full ml-1 slide-in-from-left-2",
-        PopoverSide::Bottom => "top-full mt-1 slide-in-from-top-2",
-        PopoverSide::Left => "right-full mr-1 slide-in-from-right-2",
+        PopoverSide::Top => "bottom-full mb-1",
+        PopoverSide::Right => "left-full ml-1",
+        PopoverSide::Bottom => "top-full mt-1",
+        PopoverSide::Left => "right-full mr-1",
     };
 
     let align_class = match props.align {
@@ -274,11 +274,31 @@ pub fn PopoverContent(props: PopoverContentProps) -> Element {
         PopoverAlign::End => "right-0",
     };
 
+    // Compute transform-origin based on side and align
+    let origin_class = match (props.side, props.align) {
+        (PopoverSide::Top, PopoverAlign::Start) => "origin-bottom-left",
+        (PopoverSide::Top, PopoverAlign::Center) => "origin-bottom",
+        (PopoverSide::Top, PopoverAlign::End) => "origin-bottom-right",
+        (PopoverSide::Bottom, PopoverAlign::Start) => "origin-top-left",
+        (PopoverSide::Bottom, PopoverAlign::Center) => "origin-top",
+        (PopoverSide::Bottom, PopoverAlign::End) => "origin-top-right",
+        (PopoverSide::Left, PopoverAlign::Start) => "origin-top-right",
+        (PopoverSide::Left, PopoverAlign::Center) => "origin-right",
+        (PopoverSide::Left, PopoverAlign::End) => "origin-bottom-right",
+        (PopoverSide::Right, PopoverAlign::Start) => "origin-top-left",
+        (PopoverSide::Right, PopoverAlign::Center) => "origin-left",
+        (PopoverSide::Right, PopoverAlign::End) => "origin-bottom-left",
+    };
+
     let classes = format!(
-        "absolute z-50 rounded-md border bg-popover p-4 text-popover-foreground shadow-md \
-         outline-none animate-in fade-in-0 zoom-in-95 \
-         {} {} {}",
-        side_class, align_class, custom_class
+        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden \
+         {} \
+         data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 \
+         data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 \
+         data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 \
+         data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 \
+         absolute {} {} {}",
+        origin_class, side_class, align_class, custom_class
     );
 
     let context_for_overlay = context.clone();

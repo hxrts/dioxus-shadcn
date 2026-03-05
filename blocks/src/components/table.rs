@@ -43,7 +43,7 @@ pub fn Table(props: TableProps) -> Element {
 
     rsx! {
         div {
-            class: "relative w-full overflow-auto",
+            class: "relative w-full overflow-x-auto",
             "data-slot": "table-container",
 
             table {
@@ -151,8 +151,7 @@ pub fn TableRow(props: TableRowProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "border-b transition-colors hover:bg-muted/50 {} {}",
-        if props.selected { "bg-muted" } else { "" },
+        "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted {}",
         custom_class
     );
 
@@ -160,7 +159,7 @@ pub fn TableRow(props: TableRowProps) -> Element {
         tr {
             class: classes,
             "data-slot": "table-row",
-            "data-selected": props.selected.to_string(),
+            "data-state": if props.selected { "selected" } else { "unselected" },
             {props.children}
         }
     }
@@ -183,8 +182,8 @@ pub fn TableHead(props: TableHeadProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "h-12 px-4 text-left align-middle font-medium text-muted-foreground \
-         [&:has([role=checkbox])]:pr-0 {}",
+        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground \
+         [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] {}",
         custom_class
     );
 
@@ -200,6 +199,14 @@ pub fn TableHead(props: TableHeadProps) -> Element {
 /// Props for TableCell.
 #[derive(Props, Clone, PartialEq)]
 pub struct TableCellProps {
+    /// Column span for the cell.
+    #[props(default)]
+    pub colspan: Option<String>,
+
+    /// Row span for the cell.
+    #[props(default)]
+    pub rowspan: Option<String>,
+
     /// Additional CSS classes.
     #[props(default)]
     pub class: Option<String>,
@@ -214,7 +221,7 @@ pub fn TableCell(props: TableCellProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "p-4 align-middle [&:has([role=checkbox])]:pr-0 {}",
+        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] {}",
         custom_class
     );
 
@@ -222,6 +229,8 @@ pub fn TableCell(props: TableCellProps) -> Element {
         td {
             class: classes,
             "data-slot": "table-cell",
+            colspan: props.colspan.clone(),
+            rowspan: props.rowspan.clone(),
             {props.children}
         }
     }

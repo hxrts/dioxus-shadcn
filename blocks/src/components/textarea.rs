@@ -100,10 +100,10 @@ pub fn Textarea(props: TextareaProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "flex min-h-[80px] w-full min-w-0 rounded-md border bg-transparent shadow-xs px-3 py-2 text-base md:text-sm \
-         placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground \
-         transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 \
-         disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 \
+        "flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent shadow-xs px-3 py-2 text-base md:text-sm \
+         placeholder:text-muted-foreground transition-[color,box-shadow] outline-none \
+         focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 \
+         disabled:cursor-not-allowed disabled:opacity-50 \
          aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:bg-input/30 \
          {} {}",
         if props.error {

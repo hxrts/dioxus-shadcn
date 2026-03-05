@@ -48,28 +48,23 @@ pub fn Label(props: LabelProps) -> Element {
     let label_id = use_unique_id();
     let id_value = use_id_or(label_id, props.id);
 
-    // Determine size classes
+    // Determine size classes (dioxus extension, shadcn doesn't have this)
     let size_classes = match (props.size)() {
         LabelSize::Small => "text-xs",
         LabelSize::Medium => "text-sm",
         LabelSize::Large => "text-base",
     };
 
-    // Determine state classes
-    let state_class = if (props.disabled)() {
-        "text-muted-foreground cursor-not-allowed opacity-70"
-    } else {
-        "text-foreground"
-    };
-
-    // Generate all the classes
+    // Generate all the classes (matches shadcn label.tsx)
     let label_classes = vec![
-        // Base classes
-        "font-medium mb-1.5 block",
+        // Base classes matching shadcn
+        "flex items-center gap-2 leading-none font-medium select-none",
+        // Peer disabled support
+        "peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+        // Group disabled support
+        "group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50",
         // Size-specific classes
         size_classes,
-        // State class
-        state_class,
         // Additional classes passed by the user
         props.class.as_deref().unwrap_or(""),
     ]

@@ -30,11 +30,12 @@ impl AlertVariant {
     }
 
     fn icon(&self) -> Element {
+        // Note: size and translate-y are applied via parent's [&>svg] selectors
         match self {
-            AlertVariant::Default => rsx! { Info { class: "size-4 translate-y-0.5" } },
-            AlertVariant::Destructive => rsx! { CircleAlert { class: "size-4 translate-y-0.5" } },
-            AlertVariant::Success => rsx! { CircleCheck { class: "size-4 translate-y-0.5" } },
-            AlertVariant::Warning => rsx! { TriangleAlert { class: "size-4 translate-y-0.5" } },
+            AlertVariant::Default => rsx! { Info {} },
+            AlertVariant::Destructive => rsx! { CircleAlert {} },
+            AlertVariant::Success => rsx! { CircleCheck {} },
+            AlertVariant::Warning => rsx! { TriangleAlert {} },
         }
     }
 }
@@ -82,7 +83,8 @@ pub fn Alert(props: AlertProps) -> Element {
 
     let classes = format!(
         "relative grid w-full grid-cols-[0_1fr] items-start gap-y-0.5 rounded-lg border px-4 py-3 text-sm \
-         has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3 [&>svg]:text-current {} {}",
+         has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3 \
+         [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current {} {}",
         variant_classes, custom_class
     );
 

@@ -109,7 +109,9 @@ pub fn Command(props: CommandProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground {}",
+        "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground \
+         [&_[data-slot=command-group]:not([hidden])_~[data-slot=command-group]]:pt-0 \
+         [&_[data-slot=command-group]]:px-2 {}",
         custom_class
     );
 
@@ -278,7 +280,7 @@ pub fn CommandInput(props: CommandInputProps) -> Element {
     };
 
     let classes = format!(
-        "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none \
+        "flex h-10 w-full bg-transparent text-sm outline-none \
          placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 \
          {}",
         custom_class
@@ -286,7 +288,7 @@ pub fn CommandInput(props: CommandInputProps) -> Element {
 
     rsx! {
         div {
-            class: "flex h-9 items-center gap-2 border-b px-3",
+            class: "flex h-12 items-center gap-2 border-b px-3",
             "data-slot": "command-input-wrapper",
 
             // Search icon
@@ -336,7 +338,9 @@ pub fn CommandList(props: CommandListProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let classes = format!(
-        "max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto {}",
+        "max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto \
+         [&_[data-slot=command-group-heading]]:px-2 [&_[data-slot=command-group-heading]]:font-medium \
+         [&_[data-slot=command-group-heading]]:text-muted-foreground {}",
         custom_class
     );
 
@@ -406,7 +410,7 @@ pub struct CommandGroupProps {
 pub fn CommandGroup(props: CommandGroupProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!("overflow-hidden p-1 text-foreground {}", custom_class);
+    let classes = format!("overflow-hidden p-1 text-foreground [&_[data-slot=command-group-heading]]:py-1.5 {}", custom_class);
 
     rsx! {
         div {
@@ -487,10 +491,11 @@ pub fn CommandItem(props: CommandItemProps) -> Element {
 
     let classes = format!(
         "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm \
-         outline-none select-none \
-         data-disabled:pointer-events-none data-disabled:opacity-50 \
-         {} {}",
-        if is_selected { "bg-accent text-accent-foreground" } else { "" },
+         outline-hidden select-none \
+         data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 \
+         data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground \
+         [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 \
+         {}",
         custom_class
     );
 

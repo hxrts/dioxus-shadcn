@@ -5,8 +5,8 @@ A high-fidelity port of [shadcn UI](https://ui.shadcn.com) to [Dioxus](https://d
 ## Features
 
 - 40+ components with shadcn-ui patterns
-- OKLCH color theming with multiple presets
-- Full ARIA accessibility via Dioxus Primitives
+- OKLCH color theming with presets
+- ARIA accessibility via Dioxus Primitives
 - Tailwind CSS v4
 
 ## Development

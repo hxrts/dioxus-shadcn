@@ -87,7 +87,11 @@ pub fn HoverCardContent(props: HoverCardContentProps) -> Element {
             align: props.align.unwrap_or(HoverCardAlign::Center),
             "data-slot": "hover-card-content",
             div {
-                class: "min-w-[16rem] max-w-[22rem] bg-popover border border-border rounded-xl shadow-xl p-5",
+                class: "w-64 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden \
+                        data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 \
+                        data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 \
+                        data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 \
+                        data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
                 {props.children}
             }
         }

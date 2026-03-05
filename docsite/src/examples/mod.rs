@@ -1,0 +1,36 @@
+//! Example components and source code for documentation.
+
+pub mod accordion;
+pub mod alert;
+pub mod alert_dialog;
+pub mod aspect_ratio;
+pub mod avatar;
+pub mod badge;
+pub mod breadcrumb;
+pub mod button;
+pub mod card;
+pub mod checkbox;
+pub mod collapsible;
+pub mod dialog;
+pub mod dropdown;
+pub mod hover_card;
+pub mod input;
+pub mod input_otp;
+pub mod label;
+pub mod popover;
+pub mod progress;
+pub mod radio_group;
+pub mod scroll_area;
+pub mod select;
+pub mod separator;
+pub mod side_sheet;
+pub mod skeleton;
+pub mod slider;
+pub mod switch;
+pub mod table;
+pub mod tabs;
+pub mod textarea;
+pub mod toast;
+pub mod toggle;
+pub mod toggle_group;
+pub mod tooltip;

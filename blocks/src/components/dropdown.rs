@@ -3,7 +3,7 @@ use dioxus::html::GlobalAttributesExtension;
 use dioxus::prelude::*;
 pub use dioxus_primitives::dropdown_menu::DropdownMenuTrigger as DropdownTrigger;
 use dioxus_primitives::dropdown_menu::{DropdownMenu, DropdownMenuContent, DropdownMenuItem};
-use lucide_dioxus::Check;
+use lucide_dioxus::{Check, ChevronRight};
 
 // Define a context struct for radio groups
 #[derive(Clone, PartialEq)]
@@ -186,13 +186,13 @@ pub fn DropdownContent(props: DropdownContentProps) -> Element {
         _ => "left-0 origin-top-left", // Default to start
     };
 
-    // Content classes
+    // Content classes matching shadcn dropdown-menu.tsx
     let content_classes = [
-        "absolute mt-2 rounded bg-popover shadow-md",
-        "border border-border p-1 text-popover-foreground",
-        "animate-in fade-in-80 data-[side=bottom]:slide-in-from-top-2",
-        "data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2",
-        "data-[side=top]:slide-in-from-bottom-2 z-50",
+        "z-50 min-w-[8rem] overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
+        "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
+        "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+        "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
         align_class,
         &props.width,
     ]
@@ -229,8 +229,8 @@ pub fn DropdownLabel(props: DropdownLabelProps) -> Element {
     let label_id = use_unique_id();
     let id_value = use_id_or(label_id, props.id);
 
-    // Label classes
-    let label_classes = "px-2 py-1.5 text-xs font-semibold text-foreground/80";
+    // Label classes matching shadcn dropdown-menu.tsx DropdownMenuLabel
+    let label_classes = "px-2 py-1.5 text-sm font-medium";
 
     rsx! {
         div {
@@ -259,8 +259,8 @@ pub fn DropdownSeparator(props: DropdownSeparatorProps) -> Element {
     let separator_id = use_unique_id();
     let id_value = use_id_or(separator_id, props.id);
 
-    // Separator classes
-    let separator_classes = "h-px my-1 bg-muted";
+    // Separator classes matching shadcn dropdown-menu.tsx DropdownMenuSeparator
+    let separator_classes = "-mx-1 my-1 h-px bg-border";
 
     rsx! {
         div {
@@ -521,16 +521,18 @@ pub fn DropdownItem<T: Clone + PartialEq + 'static>(props: DropdownItemProps<T>)
     let props_id = use_signal(|| props.id);
     let id_value = use_id_or(item_id, props_id.into());
 
-    // Determine item classes
+    // Determine item classes matching shadcn dropdown-menu.tsx DropdownMenuItem
     let item_classes = vec![
         // Base classes
-        "relative flex cursor-pointer select-none items-center rounded px-2 py-1.5",
-        "text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground",
-        "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
-        "disabled:pointer-events-none disabled:opacity-50 hover:bg-secondary hover:text-accent-foreground",
-
-        // Destructive style
-        if props.destructive { "text-destructive focus:text-destructive" } else { "" },
+        "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none",
+        "focus:bg-accent focus:text-accent-foreground",
+        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        // SVG styling
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground",
+        // Destructive variant
+        if props.destructive {
+            "text-destructive focus:bg-destructive/10 focus:text-destructive dark:focus:bg-destructive/20"
+        } else { "" },
     ]
     .into_iter()
     .filter(|s| !s.is_empty())
@@ -563,6 +565,215 @@ pub fn DropdownItem<T: Clone + PartialEq + 'static>(props: DropdownItemProps<T>)
 
             {icon_element}
 
+            {props.children}
+        }
+    }
+}
+
+// ============================================================================
+// Shortcut Component
+// ============================================================================
+
+/// Props for DropdownShortcut.
+#[derive(Props, Clone, PartialEq)]
+pub struct DropdownShortcutProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    /// The shortcut text.
+    pub children: Element,
+}
+
+/// A keyboard shortcut hint displayed in a dropdown item.
+#[component]
+pub fn DropdownShortcut(props: DropdownShortcutProps) -> Element {
+    let custom_class = props.class.as_deref().unwrap_or("");
+
+    let classes = format!(
+        "ml-auto text-xs tracking-widest text-muted-foreground {}",
+        custom_class
+    );
+
+    rsx! {
+        span {
+            class: classes,
+            "data-slot": "dropdown-shortcut",
+            {props.children}
+        }
+    }
+}
+
+// ============================================================================
+// Submenu Components
+// ============================================================================
+
+/// Context for submenu state.
+#[derive(Clone)]
+struct DropdownSubContext {
+    open: Signal<bool>,
+}
+
+/// Props for DropdownSub.
+#[derive(Props, Clone, PartialEq)]
+pub struct DropdownSubProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    pub children: Element,
+}
+
+/// Container for a dropdown submenu.
+#[component]
+pub fn DropdownSub(props: DropdownSubProps) -> Element {
+    let open = use_signal(|| false);
+    use_context_provider(|| DropdownSubContext { open });
+
+    let custom_class = props.class.as_deref().unwrap_or("");
+    let classes = format!("relative {}", custom_class);
+
+    rsx! {
+        div {
+            class: classes,
+            "data-slot": "dropdown-sub",
+            "data-state": if *open.read() { "open" } else { "closed" },
+            {props.children}
+        }
+    }
+}
+
+/// Props for DropdownSubTrigger.
+#[derive(Props, Clone, PartialEq)]
+pub struct DropdownSubTriggerProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    /// Whether to show inset padding.
+    #[props(default)]
+    pub inset: bool,
+
+    pub children: Element,
+}
+
+/// The item that opens a submenu.
+#[component]
+pub fn DropdownSubTrigger(props: DropdownSubTriggerProps) -> Element {
+    let context = use_context::<DropdownSubContext>();
+    let is_open = *context.open.read();
+
+    let inset_class = if props.inset { "pl-8" } else { "" };
+    let custom_class = props.class.as_deref().unwrap_or("");
+
+    let classes = format!(
+        "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 \
+        text-sm outline-hidden focus:bg-accent focus:text-accent-foreground \
+        data-[state=open]:bg-accent data-[state=open]:text-accent-foreground {} {}",
+        inset_class, custom_class
+    );
+
+    let mut ctx = context.clone();
+    let handle_mouse_enter = move |_| {
+        ctx.open.set(true);
+    };
+
+    let mut ctx2 = context.clone();
+    let handle_mouse_leave = move |_| {
+        ctx2.open.set(false);
+    };
+
+    rsx! {
+        div {
+            class: classes,
+            "data-slot": "dropdown-sub-trigger",
+            "data-state": if is_open { "open" } else { "closed" },
+            onmouseenter: handle_mouse_enter,
+            onmouseleave: handle_mouse_leave,
+
+            {props.children}
+
+            ChevronRight { class: "ml-auto size-4" }
+        }
+    }
+}
+
+/// Props for DropdownSubContent.
+#[derive(Props, Clone, PartialEq)]
+pub struct DropdownSubContentProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    pub children: Element,
+}
+
+/// The content of a dropdown submenu.
+#[component]
+pub fn DropdownSubContent(props: DropdownSubContentProps) -> Element {
+    let context = use_context::<DropdownSubContext>();
+    let is_open = *context.open.read();
+
+    if !is_open {
+        return rsx! {};
+    }
+
+    let custom_class = props.class.as_deref().unwrap_or("");
+
+    let classes = format!(
+        "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg \
+        data-[state=open]:animate-in data-[state=closed]:animate-out \
+        data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 \
+        data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 \
+        data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 \
+        data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 \
+        absolute left-full top-0 ml-1 {}",
+        custom_class
+    );
+
+    let mut ctx = context.clone();
+    let handle_mouse_enter = move |_| {
+        ctx.open.set(true);
+    };
+
+    let mut ctx2 = context.clone();
+    let handle_mouse_leave = move |_| {
+        ctx2.open.set(false);
+    };
+
+    rsx! {
+        div {
+            class: classes,
+            "data-slot": "dropdown-sub-content",
+            "data-state": "open",
+            onmouseenter: handle_mouse_enter,
+            onmouseleave: handle_mouse_leave,
+
+            {props.children}
+        }
+    }
+}
+
+/// Props for DropdownGroup.
+#[derive(Props, Clone, PartialEq)]
+pub struct DropdownGroupProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    pub children: Element,
+}
+
+/// A group of related dropdown items.
+#[component]
+pub fn DropdownGroup(props: DropdownGroupProps) -> Element {
+    let class = props.class.as_deref().unwrap_or("");
+
+    rsx! {
+        div {
+            class: class,
+            role: "group",
+            "data-slot": "dropdown-group",
             {props.children}
         }
     }

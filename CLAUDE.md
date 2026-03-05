@@ -50,7 +50,7 @@ nix build .#lumen-blocks
 
 ### Workspace Structure
 - `blocks/` - Core component library (published as `lumen-blocks` crate)
-- `docsite/` - Documentation website with component previews
+- `docsite/` - Documentation website with component previews, porting from `~/projects/ui/apps/v4/app/` (shadcn-ui v4 reference app) to Dioxus
 
 ### Core Modules (blocks/src/)
 - `components/` - Individual UI components (Button, Dialog, Tabs, etc.)

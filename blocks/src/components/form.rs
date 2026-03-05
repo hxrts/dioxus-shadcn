@@ -220,6 +220,7 @@ pub fn FormField(props: FormFieldProps) -> Element {
     let errors = form_ctx.get_errors(&props.name);
     let error = errors.first().cloned();
     let touched = form_ctx.is_touched(&props.name);
+    let has_error = error.is_some();
 
     let field_context = FieldContext {
         name: props.name.clone(),
@@ -234,9 +235,10 @@ pub fn FormField(props: FormFieldProps) -> Element {
 
     rsx! {
         div {
-            class: "space-y-2 {custom_class}",
-            "data-slot": "form-field",
+            class: "grid gap-2 {custom_class}",
+            "data-slot": "form-item",
             "data-name": props.name.clone(),
+            "data-error": has_error.to_string(),
             {props.children}
         }
     }
@@ -265,9 +267,12 @@ pub fn FormLabel(props: FormLabelProps) -> Element {
         ""
     };
 
+    let has_error = field_ctx.error.is_some() && field_ctx.touched;
+
     let classes = format!(
-        "text-sm font-medium leading-none peer-disabled:cursor-not-allowed \
-         peer-disabled:opacity-70 {} {}",
+        "flex items-center gap-2 text-sm leading-none font-medium select-none \
+         group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 \
+         {} {}",
         error_class, custom_class
     );
 
@@ -276,6 +281,7 @@ pub fn FormLabel(props: FormLabelProps) -> Element {
             class: classes,
             r#for: field_ctx.id.clone(),
             "data-slot": "form-label",
+            "data-error": has_error.to_string(),
             {props.children}
         }
     }
@@ -321,7 +327,7 @@ pub fn FormDescription(props: FormDescriptionProps) -> Element {
     let field_ctx = use_context::<FieldContext>();
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!("text-sm text-muted-foreground {}", custom_class);
+    let classes = format!("text-[0.8rem] text-muted-foreground {}", custom_class);
 
     rsx! {
         p {
@@ -358,7 +364,7 @@ pub fn FormMessage(props: FormMessageProps) -> Element {
         return rsx! {};
     }
 
-    let classes = format!("text-sm font-medium text-destructive {}", custom_class);
+    let classes = format!("text-[0.8rem] font-medium text-destructive {}", custom_class);
 
     rsx! {
         p {

@@ -10,7 +10,7 @@ pub fn MainLayout() -> Element {
     let route = use_route::<Route>();
     let title = match route {
         Route::Home { .. } => "dioxus-shadcn",
-        Route::Docs { .. } => "dioxus-shadcn - Docs",
+        Route::DocsPage { .. } => "dioxus-shadcn - Docs",
         Route::Err404 { .. } => "dioxus-shadcn - Not Found",
     };
 

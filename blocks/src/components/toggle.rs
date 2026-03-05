@@ -86,30 +86,27 @@ pub fn Toggle(props: ToggleProps) -> Element {
     let variant_class = match props.variant {
         ToggleVariant::Default => "bg-transparent",
         ToggleVariant::Outline => {
-            "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
+            "border border-input bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground"
         }
     };
 
     let size_class = match props.size {
-        ToggleSize::Sm => "h-8 px-2 min-w-8",
-        ToggleSize::Default => "h-9 px-3 min-w-9",
-        ToggleSize::Lg => "h-10 px-4 min-w-10",
-    };
-
-    let pressed_class = if *pressed.read() {
-        "bg-accent text-accent-foreground"
-    } else {
-        "hover:bg-muted hover:text-muted-foreground"
+        ToggleSize::Sm => "h-8 min-w-8 px-1.5",
+        ToggleSize::Default => "h-9 min-w-9 px-2",
+        ToggleSize::Lg => "h-10 min-w-10 px-2.5",
     };
 
     let classes = format!(
-        "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium \
-         ring-offset-background transition-colors focus-visible:outline-none \
-         focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 \
+        "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap \
+         transition-[color,box-shadow] outline-none \
+         hover:bg-muted hover:text-muted-foreground \
+         focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 \
          disabled:pointer-events-none disabled:opacity-50 \
-         [&_svg]:pointer-events-none [&_svg]:shrink-0 \
-         {} {} {} {}",
-        variant_class, size_class, pressed_class, custom_class
+         aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 \
+         data-[state=on]:bg-accent data-[state=on]:text-accent-foreground \
+         [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 \
+         {} {} {}",
+        variant_class, size_class, custom_class
     );
 
     let handle_click = {
