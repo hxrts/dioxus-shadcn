@@ -17,7 +17,7 @@ pub fn TextareaDoc() -> Element {
             section { class: "space-y-4",
                 h2 { id: "installation", class: "text-2xl font-semibold tracking-tight", "Installation" }
                 CodeBlock {
-                    source: r#"use lumen_blocks::components::textarea::Textarea;"#.to_string(),
+                    source: r#"use dioxus_shadcn::components::textarea::Textarea;"#.to_string(),
                     language: "rust".to_string(),
                 }
             }

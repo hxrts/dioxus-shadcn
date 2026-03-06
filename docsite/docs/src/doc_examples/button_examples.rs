@@ -10,7 +10,7 @@ pub use variants::ButtonVariantsExample;
 pub mod variants {
     // ANCHOR: variants
     use dioxus::prelude::*;
-    use lumen_blocks::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
     #[component]
     pub fn ButtonVariantsExample() -> Element {
@@ -54,7 +54,7 @@ pub mod variants {
 pub mod sizes {
     // ANCHOR: sizes
     use dioxus::prelude::*;
-    use lumen_blocks::components::button::{Button, ButtonSize, ButtonVariant};
+    use dioxus_shadcn::components::button::{Button, ButtonSize, ButtonVariant};
 
     #[component]
     pub fn ButtonSizesExample() -> Element {
@@ -86,7 +86,7 @@ pub mod sizes {
 pub mod states {
     // ANCHOR: states
     use dioxus::prelude::*;
-    use lumen_blocks::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
     #[component]
     pub fn ButtonStatesExample() -> Element {
@@ -127,7 +127,7 @@ pub mod icons {
     // ANCHOR: icons
     use dioxus::prelude::*;
     use lucide_dioxus::{ArrowLeft, ArrowRight};
-    use lumen_blocks::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
     #[component]
     pub fn ButtonWithIconsExample() -> Element {
@@ -153,7 +153,7 @@ pub mod icons {
 pub mod full_width {
     // ANCHOR: full_width
     use dioxus::prelude::*;
-    use lumen_blocks::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
     #[component]
     pub fn FullWidthButtonExample() -> Element {
@@ -174,7 +174,7 @@ pub mod icon_buttons {
     // ANCHOR: icon_buttons
     use dioxus::prelude::*;
     use lucide_dioxus::{Pencil, Plus, Search, Trash, X};
-    use lumen_blocks::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
     #[component]
     pub fn IconButtonsExample() -> Element {
@@ -223,7 +223,7 @@ pub mod icon_buttons {
 // This maintains the original example for backward compatibility
 pub mod example {
     use dioxus::prelude::*;
-    use lumen_blocks::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
     #[component]
     pub fn ButtonExample() -> Element {

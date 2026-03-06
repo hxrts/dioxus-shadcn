@@ -3,7 +3,7 @@
 use crate::components::docs::{CodeBlock, ComponentPreview, DocHeader};
 use crate::examples::dialog::*;
 use dioxus::prelude::*;
-use lumen_blocks::components::toast::ToastProvider;
+use dioxus_shadcn::components::toast::ToastProvider;
 
 /// Dialog documentation page.
 #[component]

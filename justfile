@@ -1,4 +1,4 @@
-# Lumen Blocks - Development Commands
+# dioxus-shadcn - Development Commands
 
 # Show available commands
 default:
@@ -28,11 +28,11 @@ dev-verbose:
 
 # Build the library
 build:
-    cargo build -p lumen-blocks
+    cargo build -p dioxus-shadcn
 
 # Build the library in release mode
 build-release:
-    cargo build -p lumen-blocks --release
+    cargo build -p dioxus-shadcn --release
 
 # Build the docsite for production
 build-docsite:
@@ -49,7 +49,7 @@ build-docs:
 
 # Run all tests
 test:
-    cargo test -p lumen-blocks
+    cargo test -p dioxus-shadcn
 
 # Check all packages compile
 check:

@@ -1,12 +1,12 @@
 //! Card component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::button::Button;
-use lumen_blocks::components::card::{
+use dioxus_shadcn::components::button::Button;
+use dioxus_shadcn::components::card::{
     Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
 };
-use lumen_blocks::components::input::Input;
-use lumen_blocks::components::label::Label;
+use dioxus_shadcn::components::input::Input;
+use dioxus_shadcn::components::label::Label;
 
 pub const BASIC_SOURCE: &str = r#"rsx! {
     Card {
@@ -111,7 +111,7 @@ pub const WITH_ACTION_SOURCE: &str = r#"rsx! {
 
 #[component]
 pub fn CardWithActionExample() -> Element {
-    use lumen_blocks::components::button::{ButtonSize, ButtonVariant};
+    use dioxus_shadcn::components::button::{ButtonSize, ButtonVariant};
 
     rsx! {
         Card {

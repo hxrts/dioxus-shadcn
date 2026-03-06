@@ -1,12 +1,12 @@
 //! AlertDialog example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::alert_dialog::{
+use dioxus_shadcn::components::alert_dialog::{
     AlertDialog, AlertDialogAction, AlertDialogButtonVariant, AlertDialogCancel,
     AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
     AlertDialogTitle, AlertDialogTrigger,
 };
-use lumen_blocks::components::button::Button;
+use dioxus_shadcn::components::button::Button;
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"let open = use_signal(|| false);
@@ -98,7 +98,7 @@ rsx! {
 /// Destructive action alert dialog example.
 #[component]
 pub fn AlertDialogDestructiveExample() -> Element {
-    use lumen_blocks::components::button::ButtonVariant;
+    use dioxus_shadcn::components::button::ButtonVariant;
     let mut open = use_signal(|| false);
 
     rsx! {

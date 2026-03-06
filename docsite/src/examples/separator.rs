@@ -1,7 +1,7 @@
 //! Separator component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::separator::{Separator, SeparatorOrientation};
+use dioxus_shadcn::components::separator::{Separator, SeparatorOrientation};
 
 pub const HORIZONTAL_SOURCE: &str = r#"rsx! {
     div { class: "space-y-4",
@@ -60,7 +60,7 @@ pub const IN_CARD_SOURCE: &str = r#"rsx! {
 
 #[component]
 pub fn SeparatorInCardExample() -> Element {
-    use lumen_blocks::components::card::{
+    use dioxus_shadcn::components::card::{
         Card, CardContent, CardDescription, CardHeader, CardTitle,
     };
 

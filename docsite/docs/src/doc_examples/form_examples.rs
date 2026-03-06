@@ -14,7 +14,7 @@ pub use variants::InputVariantsExample;
 pub mod basic {
     // ANCHOR: basic
     use dioxus::prelude::*;
-    use lumen_blocks::components::input::Input;
+    use dioxus_shadcn::components::input::Input;
 
     #[component]
     pub fn BasicInputExample() -> Element {
@@ -40,7 +40,7 @@ pub mod variants {
     // ANCHOR: variants
     use dioxus::prelude::*;
     use lucide_dioxus::CircleAlert;
-    use lumen_blocks::components::input::{Input, InputVariant};
+    use dioxus_shadcn::components::input::{Input, InputVariant};
 
     #[component]
     pub fn InputVariantsExample() -> Element {
@@ -80,7 +80,7 @@ pub mod variants {
 pub mod sizes {
     // ANCHOR: sizes
     use dioxus::prelude::*;
-    use lumen_blocks::components::input::{Input, InputSize};
+    use dioxus_shadcn::components::input::{Input, InputSize};
 
     #[component]
     pub fn InputSizesExample() -> Element {
@@ -113,7 +113,7 @@ pub mod icons {
     // ANCHOR: icons
     use dioxus::prelude::*;
     use lucide_dioxus::{Mail, Search, User};
-    use lumen_blocks::components::input::Input;
+    use dioxus_shadcn::components::input::Input;
 
     #[component]
     pub fn InputWithIconsExample() -> Element {
@@ -145,7 +145,7 @@ pub mod icons {
 pub mod states {
     // ANCHOR: states
     use dioxus::prelude::*;
-    use lumen_blocks::components::input::Input;
+    use dioxus_shadcn::components::input::Input;
 
     #[component]
     pub fn InputStatesExample() -> Element {
@@ -171,8 +171,8 @@ pub mod states {
 pub mod labels {
     // ANCHOR: labels
     use dioxus::prelude::*;
-    use lumen_blocks::components::input::Input;
-    use lumen_blocks::components::label::Label;
+    use dioxus_shadcn::components::input::Input;
+    use dioxus_shadcn::components::label::Label;
 
     #[component]
     pub fn LabelExample() -> Element {
@@ -198,8 +198,8 @@ pub mod labels {
 pub mod label_sizes {
     // ANCHOR: label_sizes
     use dioxus::prelude::*;
-    use lumen_blocks::components::input::{Input, InputSize};
-    use lumen_blocks::components::label::{Label, LabelSize};
+    use dioxus_shadcn::components::input::{Input, InputSize};
+    use dioxus_shadcn::components::label::{Label, LabelSize};
 
     #[component]
     pub fn LabelSizesExample() -> Element {
@@ -255,8 +255,8 @@ pub mod label_sizes {
 pub mod required {
     // ANCHOR: required
     use dioxus::prelude::*;
-    use lumen_blocks::components::input::Input;
-    use lumen_blocks::components::label::Label;
+    use dioxus_shadcn::components::input::Input;
+    use dioxus_shadcn::components::label::Label;
 
     #[component]
     pub fn RequiredFieldExample() -> Element {
@@ -297,8 +297,8 @@ pub mod validation {
     // ANCHOR: validation
     use dioxus::prelude::*;
     use lucide_dioxus::CircleAlert;
-    use lumen_blocks::components::input::{Input, InputVariant};
-    use lumen_blocks::components::label::Label;
+    use dioxus_shadcn::components::input::{Input, InputVariant};
+    use dioxus_shadcn::components::label::Label;
 
     #[component]
     pub fn FormValidationExample() -> Element {
@@ -346,9 +346,9 @@ pub mod complete {
     // ANCHOR: complete
     use dioxus::prelude::*;
     use lucide_dioxus::{CircleAlert, Lock, Mail};
-    use lumen_blocks::components::button::{Button, ButtonVariant};
-    use lumen_blocks::components::input::{Input, InputVariant};
-    use lumen_blocks::components::label::Label;
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::input::{Input, InputVariant};
+    use dioxus_shadcn::components::label::Label;
 
     #[component]
     pub fn CompleteFormExample() -> Element {

@@ -1,7 +1,7 @@
 //! Accordion component examples with embedded source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::accordion::{
+use dioxus_shadcn::components::accordion::{
     Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 };
 
@@ -9,7 +9,7 @@ use lumen_blocks::components::accordion::{
 // Source code strings for documentation
 // ============================================================================
 
-pub const BASIC_SOURCE: &str = r#"use lumen_blocks::components::accordion::{
+pub const BASIC_SOURCE: &str = r#"use dioxus_shadcn::components::accordion::{
     Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 };
 
@@ -36,7 +36,7 @@ rsx! {
     }
 }"#;
 
-pub const MULTIPLE_SOURCE: &str = r#"use lumen_blocks::components::accordion::{
+pub const MULTIPLE_SOURCE: &str = r#"use dioxus_shadcn::components::accordion::{
     Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 };
 

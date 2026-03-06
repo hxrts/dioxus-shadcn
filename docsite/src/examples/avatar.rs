@@ -1,7 +1,7 @@
 //! Avatar component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::avatar::{
+use dioxus_shadcn::components::avatar::{
     Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage, AvatarSize,
 };
 

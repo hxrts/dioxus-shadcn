@@ -2,8 +2,9 @@
 
 use super::ExamplesShell;
 use dioxus::prelude::*;
-use lumen_blocks::components::{
+use dioxus_shadcn::components::{
     badge::{Badge, BadgeVariant},
+    button::{Button, ButtonSize, ButtonVariant},
     table::{Table, TableBody, TableCell, TableHead, TableHeader, TableRow},
 };
 
@@ -30,6 +31,15 @@ pub fn TasksExample() -> Element {
                     div { class: "flex flex-col gap-1",
                         h2 { class: "text-2xl font-semibold tracking-tight", "Welcome back!" }
                         p { class: "text-muted-foreground", "Here's a list of your tasks for this month." }
+                    }
+                    div { class: "flex items-center gap-2",
+                        Button {
+                            variant: ButtonVariant::Secondary,
+                            size: ButtonSize::IconSm,
+                            is_icon_button: true,
+                            aria_label: "User menu",
+                            "LB"
+                        }
                     }
                 }
 

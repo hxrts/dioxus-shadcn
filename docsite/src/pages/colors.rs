@@ -1,7 +1,7 @@
 //! Tailwind-inspired color palette page.
 
 use crate::components::{
-    Announcement, PageActions, PageHeader, PageHeaderDescription, PageHeaderHeading,
+    Announcement, ColorsNav, PageActions, PageHeader, PageHeaderDescription, PageHeaderHeading,
 };
 use dioxus::prelude::*;
 
@@ -93,8 +93,8 @@ pub fn Colors() -> Element {
                         class: "inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90",
                         "Browse Colors"
                     }
-                    a {
-                        href: "/docs/theming",
+                    Link {
+                        to: "/docs/theming",
                         class: "inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
                         "Documentation"
                     }
@@ -103,7 +103,9 @@ pub fn Colors() -> Element {
 
             div { class: "hidden",
                 div { class: "container-wrapper",
-                    div { class: "container flex items-center justify-between gap-8 py-4" }
+                    div { class: "container flex items-center justify-between gap-8 py-4",
+                        ColorsNav { class: "flex-1 overflow-hidden [&>a:first-child]:text-primary" }
+                    }
                 }
             }
 
@@ -113,6 +115,7 @@ pub fn Colors() -> Element {
                         div { class: "grid gap-8 lg:gap-16 xl:gap-20",
                             for (name, shades) in PALETTES {
                                 article { class: "space-y-3",
+                                    id: "{name.to_lowercase()}",
                                     h2 { class: "text-xl font-semibold", "{name}" }
                                     div { class: "grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
                                         for (scale, color) in shades {

@@ -1,7 +1,7 @@
 //! Table example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::table::{
+use dioxus_shadcn::components::table::{
     Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow,
 };
 

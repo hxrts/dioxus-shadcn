@@ -1,7 +1,7 @@
 //! Select component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::select::{
+use dioxus_shadcn::components::select::{
     Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue,
 };
 

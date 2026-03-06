@@ -1,8 +1,8 @@
 //! Textarea component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::label::Label;
-use lumen_blocks::components::textarea::Textarea;
+use dioxus_shadcn::components::label::Label;
+use dioxus_shadcn::components::textarea::Textarea;
 
 pub const BASIC_SOURCE: &str = r#"rsx! {
     Textarea { placeholder: "Type your message here..." }

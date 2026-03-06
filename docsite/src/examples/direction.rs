@@ -1,7 +1,7 @@
 //! Direction example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::direction::{Direction, DirectionProvider};
+use dioxus_shadcn::components::direction::{Direction, DirectionProvider};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

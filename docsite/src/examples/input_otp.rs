@@ -1,7 +1,7 @@
 //! InputOTP example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::input_otp::{
+use dioxus_shadcn::components::input_otp::{
     InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot,
 };
 

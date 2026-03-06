@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Lumen Blocks is an ARIA-accessible, styled component library for Dioxus (Rust web framework), inspired by shadcn-ui and built on top of Dioxus Primitives. It uses Tailwind CSS v4 for styling with OKLCH color space theming.
+dioxus-shadcn is an ARIA-accessible, styled component library for Dioxus (Rust web framework), a high-fidelity port of shadcn-ui built on top of Dioxus Primitives. It uses Tailwind CSS v4 for styling with OKLCH color space theming.
 
 ## Development Commands
 
@@ -17,10 +17,10 @@ direnv allow
 dx serve -p docsite --platform web
 
 # Build the library
-cargo build -p lumen-blocks
+cargo build -p dioxus-shadcn
 
 # Run tests
-cargo test -p lumen-blocks
+cargo test -p dioxus-shadcn
 
 # Check all packages
 cargo check --workspace
@@ -43,14 +43,14 @@ nix develop
 nix build .#docsite
 
 # Build the library
-nix build .#lumen-blocks
+nix build .#dioxus-shadcn
 ```
 
 ## Architecture
 
 ### Workspace Structure
-- `blocks/` - Core component library (published as `lumen-blocks` crate)
-- `docsite/` - Documentation website with component previews, porting from `~/projects/ui/apps/v4/app/` (shadcn-ui v4 reference app) to Dioxus
+- `blocks/` - Core component library (published as `dioxus-shadcn` crate)
+- `docsite/` - Documentation website with component previews
 
 ### Core Modules (blocks/src/)
 - `components/` - Individual UI components (Button, Dialog, Tabs, etc.)
@@ -86,7 +86,7 @@ Uses Tailwind CSS v4 with CSS custom properties for theming:
 ### Variant System (CVA-style)
 
 ```rust
-use lumen_blocks::variants::{cva, cn};
+use dioxus_shadcn::variants::{cva, cn};
 
 let button = cva(
     "base-classes",

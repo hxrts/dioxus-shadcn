@@ -1,8 +1,8 @@
 //! HoverCard example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::avatar::{Avatar, AvatarFallback, AvatarImage};
-use lumen_blocks::components::hover_card::{HoverCard, HoverCardContent, HoverCardTrigger};
+use dioxus_shadcn::components::avatar::{Avatar, AvatarFallback, AvatarImage};
+use dioxus_shadcn::components::hover_card::{HoverCard, HoverCardContent, HoverCardTrigger};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

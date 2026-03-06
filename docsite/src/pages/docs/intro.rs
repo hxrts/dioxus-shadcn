@@ -52,8 +52,8 @@ pub fn IntroDoc() -> Element {
                 h2 { id: "getting-started", class: "text-2xl font-semibold tracking-tight", "Getting Started" }
                 p { class: "text-muted-foreground leading-7",
                     "Check out the "
-                    a {
-                        href: "/docs/installation",
+                    Link {
+                        to: "/docs/installation",
                         class: "font-medium text-foreground underline underline-offset-4 hover:no-underline",
                         "Installation"
                     }

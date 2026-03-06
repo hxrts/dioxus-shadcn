@@ -1,15 +1,15 @@
 //! Checkbox component examples with embedded source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::checkbox::{Checkbox, CheckboxSize};
-use lumen_blocks::components::label::Label;
+use dioxus_shadcn::components::checkbox::{Checkbox, CheckboxSize};
+use dioxus_shadcn::components::label::Label;
 
 // ============================================================================
 // Source code strings for documentation
 // ============================================================================
 
-pub const BASIC_SOURCE: &str = r#"use lumen_blocks::components::checkbox::Checkbox;
-use lumen_blocks::components::label::Label;
+pub const BASIC_SOURCE: &str = r#"use dioxus_shadcn::components::checkbox::Checkbox;
+use dioxus_shadcn::components::label::Label;
 
 rsx! {
     div { class: "flex items-center space-x-2",
@@ -18,7 +18,7 @@ rsx! {
     }
 }"#;
 
-pub const SIZES_SOURCE: &str = r#"use lumen_blocks::components::checkbox::{Checkbox, CheckboxSize};
+pub const SIZES_SOURCE: &str = r#"use dioxus_shadcn::components::checkbox::{Checkbox, CheckboxSize};
 
 rsx! {
     div { class: "flex items-center gap-4",
@@ -28,7 +28,7 @@ rsx! {
     }
 }"#;
 
-pub const CONTROLLED_SOURCE: &str = r#"use lumen_blocks::components::checkbox::Checkbox;
+pub const CONTROLLED_SOURCE: &str = r#"use dioxus_shadcn::components::checkbox::Checkbox;
 
 let checked = use_signal(|| false);
 
@@ -39,7 +39,7 @@ rsx! {
     }
 }"#;
 
-pub const DISABLED_SOURCE: &str = r#"use lumen_blocks::components::checkbox::Checkbox;
+pub const DISABLED_SOURCE: &str = r#"use dioxus_shadcn::components::checkbox::Checkbox;
 
 rsx! {
     div { class: "flex items-center gap-4",

@@ -1,7 +1,7 @@
 //! Collapsible example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::collapsible::{Collapsible, CollapsibleContent, CollapsibleTrigger};
+use dioxus_shadcn::components::collapsible::{Collapsible, CollapsibleContent, CollapsibleTrigger};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"rsx! {

@@ -1,8 +1,8 @@
 //! Input component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::input::{Input, InputSize, InputVariant};
-use lumen_blocks::components::label::Label;
+use dioxus_shadcn::components::input::{Input, InputSize, InputVariant};
+use dioxus_shadcn::components::label::Label;
 
 pub const BASIC_SOURCE: &str = r#"rsx! {
     Input { placeholder: "Enter your email" }

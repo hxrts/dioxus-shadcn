@@ -1,10 +1,10 @@
 //! ScrollArea example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::scroll_area::{
+use dioxus_shadcn::components::scroll_area::{
     ScrollArea, ScrollAreaViewport, ScrollBar, ScrollbarOrientation,
 };
-use lumen_blocks::components::separator::Separator;
+use dioxus_shadcn::components::separator::Separator;
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"rsx! {

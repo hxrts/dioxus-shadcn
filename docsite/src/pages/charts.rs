@@ -5,7 +5,7 @@ use crate::components::{
     PageNav,
 };
 use dioxus::prelude::*;
-use lumen_blocks::components::{
+use dioxus_shadcn::components::{
     card::{Card, CardContent, CardHeader, CardTitle},
     progress::Progress,
 };
@@ -53,8 +53,8 @@ fn ChartTypePage(chart_type: String) -> Element {
                         class: "inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90",
                         "Browse Charts"
                     }
-                    a {
-                        href: "/docs/components/chart",
+                    Link {
+                        to: "/docs/components/chart",
                         class: "inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
                         "Documentation"
                     }

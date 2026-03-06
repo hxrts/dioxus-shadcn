@@ -33,7 +33,7 @@ pub fn MainLayout() -> Element {
 
         div {
             "data-slot": "layout",
-            class: "group/body relative z-10 flex min-h-svh flex-col bg-background",
+            class: "group/body relative z-10 flex min-h-svh flex-col bg-background overscroll-none antialiased [--footer-height:calc(var(--spacing)*14)] [--header-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)]",
 
             // Top navigation bar
             Navbar {}

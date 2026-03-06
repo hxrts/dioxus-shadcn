@@ -27,8 +27,8 @@ pub fn CheckboxDoc() -> Element {
             section { class: "space-y-4",
                 h2 { id: "usage", class: "text-2xl font-semibold tracking-tight", "Usage" }
                 CodeBlock {
-                    source: r#"use lumen_blocks::components::checkbox::Checkbox;
-use lumen_blocks::components::label::Label;
+                    source: r#"use dioxus_shadcn::components::checkbox::Checkbox;
+use dioxus_shadcn::components::label::Label;
 
 rsx! {
     div { class: "flex items-center space-x-2",

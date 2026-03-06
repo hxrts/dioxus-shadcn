@@ -18,7 +18,7 @@ pub fn BreadcrumbDoc() -> Element {
             section { class: "space-y-4",
                 h2 { id: "installation", class: "text-2xl font-semibold tracking-tight", "Installation" }
                 CodeBlock {
-                    source: r#"use lumen_blocks::components::breadcrumb::{
+                    source: r#"use dioxus_shadcn::components::breadcrumb::{
     Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList,
     BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis,
 };"#.to_string(),

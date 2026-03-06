@@ -2,7 +2,7 @@
 
 use crate::components::ThemeToggle;
 use dioxus::prelude::*;
-use lumen_blocks::components::{
+use dioxus_shadcn::components::{
     native_select::{NativeSelect, NativeSelectOption, NativeSelectSize},
     separator::{Separator, SeparatorOrientation},
 };
@@ -39,8 +39,8 @@ pub fn ThemeSelector(#[props(default)] class: Option<String>) -> Element {
                 }
             }
 
-            a {
-                href: "/themes",
+            Link {
+                to: "/themes",
                 class: "inline-flex h-8 items-center justify-center rounded-md border bg-transparent px-3 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
                 "Open"
             }

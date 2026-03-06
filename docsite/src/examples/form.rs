@@ -1,11 +1,11 @@
 //! Form example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::button::Button;
-use lumen_blocks::components::form::{
+use dioxus_shadcn::components::button::Button;
+use dioxus_shadcn::components::form::{
     Form, FormControl, FormDescription, FormField, FormLabel, FormMessage,
 };
-use lumen_blocks::components::input::Input;
+use dioxus_shadcn::components::input::Input;
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

@@ -2,8 +2,8 @@
 
 use dioxus::prelude::*;
 use lucide_dioxus::File;
-use lumen_blocks::components::button::Button;
-use lumen_blocks::components::item::{
+use dioxus_shadcn::components::button::Button;
+use dioxus_shadcn::components::item::{
     Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemMediaVariant,
     ItemSeparator, ItemTitle, ItemVariant,
 };

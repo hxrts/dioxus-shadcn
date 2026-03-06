@@ -14,7 +14,7 @@ A high-fidelity port of [shadcn UI](https://ui.shadcn.com) to [Dioxus](https://d
 ```bash
 nix develop                           # enter dev environment
 dx serve -p docsite --platform web    # serve docsite
-cargo check -p lumen-blocks           # check compilation
+cargo check -p dioxus-shadcn          # check compilation
 ```
 
 ## License

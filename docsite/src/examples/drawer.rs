@@ -1,8 +1,8 @@
 //! Drawer example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::button::Button;
-use lumen_blocks::components::drawer::{
+use dioxus_shadcn::components::button::Button;
+use dioxus_shadcn::components::drawer::{
     Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle,
     DrawerTrigger,
 };

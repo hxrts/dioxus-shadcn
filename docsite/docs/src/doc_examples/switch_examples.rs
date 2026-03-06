@@ -8,7 +8,7 @@ pub use with_text::SwitchWithTextExample;
 pub mod basic {
     // ANCHOR: basic
     use dioxus::prelude::*;
-    use lumen_blocks::components::switch::Switch;
+    use dioxus_shadcn::components::switch::Switch;
 
     #[component]
     pub fn BasicSwitchExample() -> Element {
@@ -35,7 +35,7 @@ pub mod basic {
 pub mod sizes {
     // ANCHOR: sizes
     use dioxus::prelude::*;
-    use lumen_blocks::components::switch::{Switch, SwitchSize};
+    use dioxus_shadcn::components::switch::{Switch, SwitchSize};
 
     #[component]
     pub fn SwitchSizesExample() -> Element {
@@ -97,7 +97,7 @@ pub mod sizes {
 pub mod states {
     // ANCHOR: states
     use dioxus::prelude::*;
-    use lumen_blocks::components::switch::Switch;
+    use dioxus_shadcn::components::switch::Switch;
 
     #[component]
     pub fn SwitchStatesExample() -> Element {
@@ -152,7 +152,7 @@ pub mod states {
 pub mod with_text {
     // ANCHOR: with_text
     use dioxus::prelude::*;
-    use lumen_blocks::components::switch::Switch;
+    use dioxus_shadcn::components::switch::Switch;
 
     #[component]
     pub fn SwitchWithTextExample() -> Element {

@@ -1,7 +1,7 @@
 //! Skeleton example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::skeleton::Skeleton;
+use dioxus_shadcn::components::skeleton::Skeleton;
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"rsx! {

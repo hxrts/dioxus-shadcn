@@ -10,7 +10,7 @@ pub use ultrawide_example::UltrawideFormatExample;
 pub mod basic_examples {
     // ANCHOR: basic
     use dioxus::prelude::*;
-    use lumen_blocks::components::aspect_ratio::AspectRatio;
+    use dioxus_shadcn::components::aspect_ratio::AspectRatio;
 
     #[component]
     pub fn BasicAspectRatioExample() -> Element {
@@ -34,7 +34,7 @@ pub mod basic_examples {
 pub mod photo_example {
     // ANCHOR: photo
     use dioxus::prelude::*;
-    use lumen_blocks::components::aspect_ratio::AspectRatio;
+    use dioxus_shadcn::components::aspect_ratio::AspectRatio;
 
     #[component]
     pub fn ClassicPhotoExample() -> Element {
@@ -58,7 +58,7 @@ pub mod photo_example {
 pub mod square_example {
     // ANCHOR: square
     use dioxus::prelude::*;
-    use lumen_blocks::components::aspect_ratio::AspectRatio;
+    use dioxus_shadcn::components::aspect_ratio::AspectRatio;
 
     #[component]
     pub fn SquareFormatExample() -> Element {
@@ -86,7 +86,7 @@ pub mod square_example {
 pub mod ultrawide_example {
     // ANCHOR: ultrawide
     use dioxus::prelude::*;
-    use lumen_blocks::components::aspect_ratio::AspectRatio;
+    use dioxus_shadcn::components::aspect_ratio::AspectRatio;
 
     #[component]
     pub fn UltrawideFormatExample() -> Element {
@@ -110,7 +110,7 @@ pub mod ultrawide_example {
 pub mod custom_content {
     // ANCHOR: custom
     use dioxus::prelude::*;
-    use lumen_blocks::components::aspect_ratio::AspectRatio;
+    use dioxus_shadcn::components::aspect_ratio::AspectRatio;
 
     #[component]
     pub fn CustomContentExample() -> Element {
@@ -142,7 +142,7 @@ pub mod custom_content {
 pub mod multiple_ratios {
     // ANCHOR: multiple
     use dioxus::prelude::*;
-    use lumen_blocks::components::aspect_ratio::AspectRatio;
+    use dioxus_shadcn::components::aspect_ratio::AspectRatio;
 
     #[component]
     pub fn MultipleRatiosExample() -> Element {

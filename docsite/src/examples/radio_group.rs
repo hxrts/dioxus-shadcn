@@ -1,8 +1,8 @@
 //! RadioGroup example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::label::Label;
-use lumen_blocks::components::radio_group::{RadioGroup, RadioGroupItem, RadioGroupOrientation};
+use dioxus_shadcn::components::label::Label;
+use dioxus_shadcn::components::radio_group::{RadioGroup, RadioGroupItem, RadioGroupOrientation};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"let selected = use_signal(|| "comfortable".to_string());

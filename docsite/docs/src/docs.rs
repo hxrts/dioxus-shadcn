@@ -1,7 +1,7 @@
 pub use crate::doc_examples::*;
 use dioxus::prelude::*;
 use lucide_dioxus::{Check, Copy};
-use lumen_blocks::components::button::{Button, ButtonSize, ButtonVariant};
+use dioxus_shadcn::components::button::{Button, ButtonSize, ButtonVariant};
 use std::hash::Hash;
 
 // This module does not exist in the git repo - it is auto-generated at build time.

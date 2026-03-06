@@ -8,7 +8,7 @@ serde = { version = "1.0.163", features = ["derive"] }
 use-mdbook = { workspace = true }
 dioxus = { workspace = true, features = ["router"] }
 mdbook-shared = { workspace = true }
-lumen-blocks.workspace = true
+dioxus-shadcn.workspace = true
 lucide-dioxus = { workspace = true, features = ["all-icons"] }
 
 [build-dependencies]

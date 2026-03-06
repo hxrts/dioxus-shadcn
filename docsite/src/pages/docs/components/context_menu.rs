@@ -32,7 +32,7 @@ pub fn ContextMenuDoc() -> Element {
             section { class: "space-y-4",
                 h2 { id: "installation", class: "text-2xl font-semibold tracking-tight", "Installation" }
                 CodeBlock {
-                    source: "use lumen_blocks::components::context_menu::{{ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem}};".to_string(),
+                    source: "use dioxus_shadcn::components::context_menu::{{ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem}};".to_string(),
                     language: "rust".to_string(),
                 }
             }

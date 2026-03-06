@@ -1,7 +1,7 @@
 //! Badge component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::badge::{Badge, BadgeVariant};
+use dioxus_shadcn::components::badge::{Badge, BadgeVariant};
 
 pub const VARIANTS_SOURCE: &str = r#"rsx! {
     div { class: "flex flex-wrap gap-2",

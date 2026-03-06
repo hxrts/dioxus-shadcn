@@ -1,10 +1,10 @@
 //! SideSheet example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::button::Button;
-use lumen_blocks::components::input::Input;
-use lumen_blocks::components::label::Label;
-use lumen_blocks::components::side_sheet::{
+use dioxus_shadcn::components::button::Button;
+use dioxus_shadcn::components::input::Input;
+use dioxus_shadcn::components::label::Label;
+use dioxus_shadcn::components::side_sheet::{
     SideSheet, SideSheetCloseButton, SideSheetContent, SideSheetDescription, SideSheetFooter,
     SideSheetHeader, SideSheetSide, SideSheetTitle, SideSheetTrigger,
 };
@@ -43,7 +43,7 @@ pub const BASIC_SOURCE: &str = r#"rsx! {
 /// Basic side sheet example.
 #[component]
 pub fn SideSheetBasicExample() -> Element {
-    use lumen_blocks::components::button::ButtonVariant;
+    use dioxus_shadcn::components::button::ButtonVariant;
 
     rsx! {
         SideSheet {
@@ -133,7 +133,7 @@ pub const SIDES_SOURCE: &str = r#"rsx! {
 /// Side sheet positions example.
 #[component]
 pub fn SideSheetSidesExample() -> Element {
-    use lumen_blocks::components::button::ButtonVariant;
+    use dioxus_shadcn::components::button::ButtonVariant;
 
     rsx! {
         div { class: "flex gap-2 flex-wrap",

@@ -1,7 +1,7 @@
 //! Menubar example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::menubar::{
+use dioxus_shadcn::components::menubar::{
     Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarShortcut,
     MenubarTrigger,
 };

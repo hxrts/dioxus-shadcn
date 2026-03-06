@@ -3,7 +3,7 @@ resolver = "3"
 members = ["blocks", "docsite"]
 
 [workspace.dependencies]
-lumen-blocks = { path = "blocks" }
+dioxus-shadcn = { path = "blocks" }
 dioxus = "0.7"
 use-mdbook = { git = "https://github.com/DioxusLabs/docsite.git", rev = "029a529a02f3fe3d0b24c143bc7722850986dbfa" }
 mdbook-shared = { git = "https://github.com/DioxusLabs/docsite.git", rev = "029a529a02f3fe3d0b24c143bc7722850986dbfa" }

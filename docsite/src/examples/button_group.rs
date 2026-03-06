@@ -1,8 +1,8 @@
 //! ButtonGroup example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::button::Button;
-use lumen_blocks::components::button_group::{ButtonGroup, ButtonGroupOrientation};
+use dioxus_shadcn::components::button::Button;
+use dioxus_shadcn::components::button_group::{ButtonGroup, ButtonGroupOrientation};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

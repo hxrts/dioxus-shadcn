@@ -114,8 +114,8 @@ fn NavLink(
     };
 
     rsx! {
-        a {
-            href: "{href}",
+        Link {
+            to: href,
             class: "{base_class} {state_class}",
             "data-active": if is_active { "true" } else { "false" },
 
@@ -147,8 +147,8 @@ fn DocsContent(route: DocsRoute) -> Element {
 
             // Breadcrumbs
             nav { class: "mb-4 flex items-center space-x-1 text-sm text-muted-foreground",
-                a {
-                    href: "/docs",
+                Link {
+                    to: "/docs",
                     class: "hover:text-foreground transition-colors",
                     "Docs"
                 }

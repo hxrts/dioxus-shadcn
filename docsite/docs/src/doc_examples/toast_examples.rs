@@ -9,7 +9,7 @@ pub use setup::ToastProviderSetupExample;
 pub mod setup {
     // ANCHOR: setup
     use dioxus::prelude::*;
-    use lumen_blocks::components::toast::ToastProvider;
+    use dioxus_shadcn::components::toast::ToastProvider;
     use std::time::Duration;
 
     #[component]
@@ -43,8 +43,8 @@ pub mod setup {
 pub mod basic {
     // ANCHOR: basic
     use dioxus::prelude::*;
-    use lumen_blocks::components::button::{Button, ButtonVariant};
-    use lumen_blocks::components::toast::use_toast;
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::toast::use_toast;
 
     #[component]
     pub fn BasicToastExample() -> Element {
@@ -96,8 +96,8 @@ pub mod basic {
 pub mod descriptions {
     // ANCHOR: descriptions
     use dioxus::prelude::*;
-    use lumen_blocks::components::button::{Button, ButtonVariant};
-    use lumen_blocks::components::toast::{use_toast, ToastOptions};
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::toast::{use_toast, ToastOptions};
 
     #[component]
     pub fn ToastWithDescriptionsExample() -> Element {
@@ -173,8 +173,8 @@ pub mod descriptions {
 pub mod durations {
     // ANCHOR: durations
     use dioxus::prelude::*;
-    use lumen_blocks::components::button::{Button, ButtonVariant};
-    use lumen_blocks::components::toast::{use_toast, ToastOptions};
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::toast::{use_toast, ToastOptions};
     use std::time::Duration;
 
     #[component]
@@ -239,8 +239,8 @@ pub mod durations {
 pub mod advanced {
     // ANCHOR: advanced
     use dioxus::prelude::*;
-    use lumen_blocks::components::button::{Button, ButtonVariant};
-    use lumen_blocks::components::toast::{use_toast, ToastOptions, ToastType};
+    use dioxus_shadcn::components::button::{Button, ButtonVariant};
+    use dioxus_shadcn::components::toast::{use_toast, ToastOptions, ToastType};
     use std::time::Duration;
 
     #[component]
@@ -326,7 +326,7 @@ pub mod advanced {
 // This is for backward compatibility with any existing examples
 pub mod example {
     use dioxus::prelude::*;
-    use lumen_blocks::components::{button::Button, toast::use_toast};
+    use dioxus_shadcn::components::{button::Button, toast::use_toast};
 
     #[component]
     pub fn ToastExample() -> Element {

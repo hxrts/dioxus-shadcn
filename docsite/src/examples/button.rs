@@ -2,13 +2,13 @@
 
 use dioxus::prelude::*;
 use lucide_dioxus::{ArrowLeft, ArrowRight, Pencil, Plus, Search, Trash, X};
-use lumen_blocks::components::button::{Button, ButtonSize, ButtonVariant};
+use dioxus_shadcn::components::button::{Button, ButtonSize, ButtonVariant};
 
 // ============================================================================
 // Source code strings for documentation
 // ============================================================================
 
-pub const VARIANTS_SOURCE: &str = r#"use lumen_blocks::components::button::{Button, ButtonVariant};
+pub const VARIANTS_SOURCE: &str = r#"use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
 rsx! {
     div { class: "flex flex-wrap gap-2.5 items-center",
@@ -21,7 +21,7 @@ rsx! {
     }
 }"#;
 
-pub const SIZES_SOURCE: &str = r#"use lumen_blocks::components::button::{Button, ButtonSize, ButtonVariant};
+pub const SIZES_SOURCE: &str = r#"use dioxus_shadcn::components::button::{Button, ButtonSize, ButtonVariant};
 
 rsx! {
     div { class: "flex flex-wrap gap-2.5 items-center",
@@ -31,7 +31,7 @@ rsx! {
     }
 }"#;
 
-pub const STATES_SOURCE: &str = r#"use lumen_blocks::components::button::{Button, ButtonVariant};
+pub const STATES_SOURCE: &str = r#"use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
 let mut loading = use_signal(|| false);
 
@@ -48,7 +48,7 @@ rsx! {
 }"#;
 
 pub const ICONS_SOURCE: &str = r#"use lucide_dioxus::{ArrowLeft, ArrowRight};
-use lumen_blocks::components::button::{Button, ButtonVariant};
+use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
 rsx! {
     div { class: "flex flex-wrap gap-2.5 items-center",
@@ -66,7 +66,7 @@ rsx! {
 }"#;
 
 pub const ICON_BUTTONS_SOURCE: &str = r#"use lucide_dioxus::{Plus, Pencil, Trash, Search, X};
-use lumen_blocks::components::button::{Button, ButtonVariant};
+use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
 rsx! {
     div { class: "flex flex-wrap gap-2.5 items-center",
@@ -86,7 +86,7 @@ rsx! {
     }
 }"#;
 
-pub const FULL_WIDTH_SOURCE: &str = r#"use lumen_blocks::components::button::{Button, ButtonVariant};
+pub const FULL_WIDTH_SOURCE: &str = r#"use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
 rsx! {
     Button {

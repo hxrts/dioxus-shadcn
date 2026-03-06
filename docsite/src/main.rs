@@ -1,3 +1,5 @@
+extern crate dioxus_shadcn as lumen_blocks;
+
 use dioxus::document;
 use dioxus::prelude::*;
 
@@ -88,7 +90,7 @@ fn App() -> Element {
         document::Meta { property: "og:image", content: PREVIEW_IMAGE }
         document::Meta { name: "twitter:card", content: "summary_large_image" }
 
-        div { class: "relative min-h-screen bg-background antialiased",
+        div { class: "relative min-h-screen bg-background",
             Router::<Route> {}
         }
     }

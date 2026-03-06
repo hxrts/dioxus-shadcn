@@ -1,8 +1,8 @@
 //! Tooltip component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::button::Button;
-use lumen_blocks::components::tooltip::{Tooltip, TooltipProvider, TooltipSide};
+use dioxus_shadcn::components::button::Button;
+use dioxus_shadcn::components::tooltip::{Tooltip, TooltipProvider, TooltipSide};
 
 pub const BASIC_SOURCE: &str = r#"rsx! {
     Tooltip {

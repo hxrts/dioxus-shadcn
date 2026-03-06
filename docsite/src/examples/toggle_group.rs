@@ -2,8 +2,8 @@
 
 use dioxus::prelude::*;
 use lucide_dioxus::{Bold, Italic, Underline};
-use lumen_blocks::components::toggle::{ToggleSize, ToggleVariant};
-use lumen_blocks::components::toggle_group::{ToggleGroup, ToggleGroupItem, ToggleGroupType};
+use dioxus_shadcn::components::toggle::{ToggleSize, ToggleVariant};
+use dioxus_shadcn::components::toggle_group::{ToggleGroup, ToggleGroupItem, ToggleGroupType};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"let alignment = use_signal(|| vec!["center".to_string()]);

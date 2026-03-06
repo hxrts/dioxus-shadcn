@@ -26,7 +26,7 @@ pub fn KbdDoc() -> Element {
             section { class: "space-y-4",
                 h2 { id: "installation", class: "text-2xl font-semibold tracking-tight", "Installation" }
                 CodeBlock {
-                    source: "use lumen_blocks::components::kbd::{{Kbd, KbdGroup}};".to_string(),
+                    source: "use dioxus_shadcn::components::kbd::{{Kbd, KbdGroup}};".to_string(),
                     language: "rust".to_string(),
                 }
             }

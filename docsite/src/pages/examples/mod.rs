@@ -31,14 +31,14 @@ pub fn ExamplesShell(children: Element) -> Element {
                 PageHeaderHeading { class: "max-w-4xl", "{TITLE}" }
                 PageHeaderDescription { "{DESCRIPTION}" }
                 PageActions {
-                    a {
-                        href: "/docs/installation",
-                        class: "inline-flex h-[31px] items-center justify-center rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90",
+                    Link {
+                        to: "/docs/installation",
+                        class: "inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90",
                         "Get Started"
                     }
-                    a {
-                        href: "/docs/components",
-                        class: "inline-flex h-8 items-center justify-center rounded-lg px-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
+                    Link {
+                        to: "/docs/components",
+                        class: "inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
                         "View Components"
                     }
                 }

@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 use lucide_dioxus::{Check, Info, X};
-use lumen_blocks::components::{
+use dioxus_shadcn::components::{
     avatar::{Avatar, AvatarFallback, AvatarImage},
     button::{Button, ButtonVariant},
     input::Input,

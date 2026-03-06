@@ -1,16 +1,16 @@
 //! Toast component examples with embedded source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::button::{Button, ButtonVariant};
-use lumen_blocks::components::toast::{use_toast, ToastOptions};
+use dioxus_shadcn::components::button::{Button, ButtonVariant};
+use dioxus_shadcn::components::toast::{use_toast, ToastOptions};
 use std::time::Duration;
 
 // ============================================================================
 // Source code strings for documentation
 // ============================================================================
 
-pub const BASIC_SOURCE: &str = r#"use lumen_blocks::components::toast::{ToastProvider, use_toast};
-use lumen_blocks::components::button::{Button, ButtonVariant};
+pub const BASIC_SOURCE: &str = r#"use dioxus_shadcn::components::toast::{ToastProvider, use_toast};
+use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
 // Wrap your app in ToastProvider
 rsx! {
@@ -33,7 +33,7 @@ fn ToastDemo() -> Element {
     }
 }"#;
 
-pub const VARIANTS_SOURCE: &str = r#"use lumen_blocks::components::toast::{use_toast, ToastOptions};
+pub const VARIANTS_SOURCE: &str = r#"use dioxus_shadcn::components::toast::{use_toast, ToastOptions};
 
 let toast = use_toast();
 
@@ -49,7 +49,7 @@ toast.warning("Please review your input", None);
 // Info toast
 toast.info("Here's some information", None);"#;
 
-pub const WITH_DESCRIPTION_SOURCE: &str = r#"use lumen_blocks::components::toast::{use_toast, ToastOptions};
+pub const WITH_DESCRIPTION_SOURCE: &str = r#"use dioxus_shadcn::components::toast::{use_toast, ToastOptions};
 
 let toast = use_toast();
 
@@ -58,7 +58,7 @@ toast.success(
     Some(ToastOptions::with_description("Your changes have been saved."))
 );"#;
 
-pub const CUSTOM_DURATION_SOURCE: &str = r#"use lumen_blocks::components::toast::{use_toast, ToastOptions};
+pub const CUSTOM_DURATION_SOURCE: &str = r#"use dioxus_shadcn::components::toast::{use_toast, ToastOptions};
 use std::time::Duration;
 
 let toast = use_toast();

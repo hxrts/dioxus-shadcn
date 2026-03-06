@@ -1,15 +1,15 @@
 [package]
-name = "lumen-blocks"
+name = "dioxus-shadcn"
 version = "0.3.0"
 edition = "2024"
-description = "Accessible, styled, opinionated components for Dioxus inspired by the shadcn UI and built on Dioxus Primitives"
+description = "A high-fidelity port of shadcn UI to Dioxus - accessible, styled components built on Dioxus Primitives"
 readme = "../README.md"
 keywords = ["gui", "dioxus", "components", "shadcn", "tailwind"]
 categories = ["gui", "wasm"]
-authors = ["Daniel D’Aquino <daniel@daquino.me>"]
+authors = ["Daniel D'Aquino <daniel@daquino.me>"]
 license = "MIT"
-homepage = "https://lumenblocks.dev"
-repository = "https://github.com/Leaf-Computer/lumen-blocks"
+homepage = "https://dioxus-shadcn.dev"
+repository = "https://github.com/hxrts/dioxus-shadcn"
 
 [dependencies]
 dioxus.workspace = true

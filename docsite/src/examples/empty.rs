@@ -2,8 +2,8 @@
 
 use dioxus::prelude::*;
 use lucide_dioxus::Inbox;
-use lumen_blocks::components::button::Button;
-use lumen_blocks::components::empty::{
+use dioxus_shadcn::components::button::Button;
+use dioxus_shadcn::components::empty::{
     Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyMediaVariant, EmptyTitle,
 };
 

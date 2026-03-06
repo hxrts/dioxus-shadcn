@@ -2,7 +2,7 @@
 
 use super::ExamplesShell;
 use dioxus::prelude::*;
-use lumen_blocks::components::{
+use dioxus_shadcn::components::{
     button::{Button, ButtonVariant},
     card::{Card, CardContent, CardDescription, CardHeader, CardTitle},
     direction::{Direction, DirectionProvider},

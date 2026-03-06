@@ -18,7 +18,7 @@ pub fn CardDoc() -> Element {
             section { class: "space-y-4",
                 h2 { id: "installation", class: "text-2xl font-semibold tracking-tight", "Installation" }
                 CodeBlock {
-                    source: r#"use lumen_blocks::components::card::{
+                    source: r#"use dioxus_shadcn::components::card::{
     Card, CardHeader, CardTitle, CardDescription,
     CardContent, CardFooter, CardAction
 };"#.to_string(),

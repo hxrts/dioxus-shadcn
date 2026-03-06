@@ -1,7 +1,7 @@
 //! Combobox example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::combobox::{
+use dioxus_shadcn::components::combobox::{
     Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList,
 };
 

@@ -1,8 +1,8 @@
 //! Carousel example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::card::Card;
-use lumen_blocks::components::carousel::{
+use dioxus_shadcn::components::card::Card;
+use dioxus_shadcn::components::carousel::{
     Carousel, CarouselContent, CarouselDots, CarouselItem, CarouselNext, CarouselPrevious,
 };
 

@@ -917,6 +917,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "dioxus-shadcn"
+version = "0.3.0"
+dependencies = [
+ "dioxus",
+ "dioxus-primitives",
+ "dioxus-sdk-time",
+ "env_logger",
+ "gloo-timers",
+ "log",
+ "lucide-dioxus",
+ "tracing",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
 name = "dioxus-signals"
 version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1006,8 +1022,8 @@ version = "0.0.0"
 dependencies = [
  "dioxus",
  "dioxus-sdk-time",
+ "dioxus-shadcn",
  "lucide-dioxus",
- "lumen-blocks",
  "wasm-bindgen",
  "web-sys",
 ]
@@ -1752,22 +1768,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0f4dd334f8a4a78ef1c07092f8ebae3b3441dfe9f429c32b2e51ee0fc9ceb354"
 dependencies = [
  "dioxus",
-]
-
-[[package]]
-name = "lumen-blocks"
-version = "0.3.0"
-dependencies = [
- "dioxus",
- "dioxus-primitives",
- "dioxus-sdk-time",
- "env_logger",
- "gloo-timers",
- "log",
- "lucide-dioxus",
- "tracing",
- "wasm-bindgen",
- "web-sys",
 ]
 
 [[package]]

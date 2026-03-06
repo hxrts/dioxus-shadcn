@@ -29,7 +29,7 @@ pub fn HoverCardDoc() -> Element {
             section { class: "space-y-4",
                 h2 { id: "installation", class: "text-2xl font-semibold tracking-tight", "Installation" }
                 CodeBlock {
-                    source: "use lumen_blocks::components::hover_card::{{HoverCard, HoverCardContent, HoverCardTrigger}};".to_string(),
+                    source: "use dioxus_shadcn::components::hover_card::{{HoverCard, HoverCardContent, HoverCardTrigger}};".to_string(),
                     language: "rust".to_string(),
                 }
             }

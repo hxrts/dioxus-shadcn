@@ -1,20 +1,20 @@
 //! Dialog component examples with embedded source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::button::{Button, ButtonVariant};
-use lumen_blocks::components::dialog::{
+use dioxus_shadcn::components::button::{Button, ButtonVariant};
+use dioxus_shadcn::components::dialog::{
     Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
     DialogOverlay, DialogTitle,
 };
-use lumen_blocks::components::input::Input;
-use lumen_blocks::components::label::Label;
+use dioxus_shadcn::components::input::Input;
+use dioxus_shadcn::components::label::Label;
 
 // ============================================================================
 // Source code strings for documentation
 // ============================================================================
 
-pub const BASIC_SOURCE: &str = r#"use lumen_blocks::components::button::{Button, ButtonVariant};
-use lumen_blocks::components::dialog::{
+pub const BASIC_SOURCE: &str = r#"use dioxus_shadcn::components::button::{Button, ButtonVariant};
+use dioxus_shadcn::components::dialog::{
     Dialog, DialogContent, DialogDescription, DialogHeader,
     DialogOverlay, DialogTitle,
 };
@@ -42,12 +42,12 @@ rsx! {
     }
 }"#;
 
-pub const WITH_FORM_SOURCE: &str = r#"use lumen_blocks::components::dialog::{
+pub const WITH_FORM_SOURCE: &str = r#"use dioxus_shadcn::components::dialog::{
     Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 };
-use lumen_blocks::components::input::Input;
-use lumen_blocks::components::label::Label;
-use lumen_blocks::components::button::{Button, ButtonVariant};
+use dioxus_shadcn::components::input::Input;
+use dioxus_shadcn::components::label::Label;
+use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
 rsx! {
     Dialog {

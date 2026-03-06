@@ -2,8 +2,8 @@
 
 use dioxus::prelude::*;
 use lucide_dioxus::{LogOut, Settings, User};
-use lumen_blocks::components::button::{Button, ButtonVariant};
-use lumen_blocks::components::dropdown::{
+use dioxus_shadcn::components::button::{Button, ButtonVariant};
+use dioxus_shadcn::components::dropdown::{
     Dropdown, DropdownContent, DropdownItem, DropdownLabel, DropdownSeparator, DropdownTrigger,
 };
 
@@ -11,10 +11,10 @@ use lumen_blocks::components::dropdown::{
 // Source code strings for documentation
 // ============================================================================
 
-pub const BASIC_SOURCE: &str = r#"use lumen_blocks::components::dropdown::{
+pub const BASIC_SOURCE: &str = r#"use dioxus_shadcn::components::dropdown::{
     Dropdown, DropdownContent, DropdownItem, DropdownTrigger,
 };
-use lumen_blocks::components::button::{Button, ButtonVariant};
+use dioxus_shadcn::components::button::{Button, ButtonVariant};
 
 rsx! {
     Dropdown {
@@ -30,7 +30,7 @@ rsx! {
 }"#;
 
 pub const WITH_ICONS_SOURCE: &str = r#"use lucide_dioxus::{User, Settings, LogOut};
-use lumen_blocks::components::dropdown::{
+use dioxus_shadcn::components::dropdown::{
     Dropdown, DropdownContent, DropdownItem, DropdownLabel, DropdownSeparator, DropdownTrigger,
 };
 

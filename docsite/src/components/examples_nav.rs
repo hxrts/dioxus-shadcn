@@ -33,8 +33,8 @@ pub fn ExamplesNav(#[props(default)] class: Option<String>) -> Element {
         div { class: "flex items-center {class}",
             div { class: "flex max-w-[96%] items-center overflow-x-auto no-scrollbar md:max-w-[600px] lg:max-w-none",
                 for (name, href) in EXAMPLE_LINKS {
-                    a {
-                        href: "{href}",
+                    Link {
+                        to: href,
                         class: "flex h-7 shrink-0 items-center justify-center gap-2 px-4 text-center text-base font-medium text-muted-foreground transition-colors hover:text-primary data-[active=true]:text-primary",
                         "data-active": if current_path == href { "true" } else { "false" },
                         "{name}"

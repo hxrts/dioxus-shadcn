@@ -78,8 +78,8 @@ fn BlocksPage(active_category: Option<String>) -> Element {
                         class: "inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90",
                         "Browse Blocks"
                     }
-                    a {
-                        href: "/docs/blocks",
+                    Link {
+                        to: "/docs/blocks",
                         class: "inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
                         "Add a block"
                     }
@@ -88,8 +88,8 @@ fn BlocksPage(active_category: Option<String>) -> Element {
 
             PageNav { id: "blocks",
                 BlocksNav {}
-                a {
-                    href: "/blocks/sidebar",
+                Link {
+                    to: "/blocks/sidebar",
                     class: "mr-7 hidden h-8 items-center justify-center rounded-md bg-secondary px-3 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80 lg:flex",
                     "Browse all blocks"
                 }
@@ -105,8 +105,8 @@ fn BlocksPage(active_category: Option<String>) -> Element {
                         if show_featured {
                             div { class: "container-wrapper",
                                 div { class: "container flex justify-center py-6",
-                                    a {
-                                        href: "/blocks/sidebar",
+                                    Link {
+                                        to: "/blocks/sidebar",
                                         class: "inline-flex h-9 items-center justify-center rounded-md border bg-background px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
                                         "Browse more blocks"
                                     }

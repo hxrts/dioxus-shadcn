@@ -1,7 +1,7 @@
 //! Kbd example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::kbd::{Kbd, KbdGroup};
+use dioxus_shadcn::components::kbd::{Kbd, KbdGroup};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

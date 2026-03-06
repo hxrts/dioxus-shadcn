@@ -18,7 +18,7 @@ pub fn AlertDialogDoc() -> Element {
             section { class: "space-y-4",
                 h2 { id: "installation", class: "text-2xl font-semibold tracking-tight", "Installation" }
                 CodeBlock {
-                    source: r#"use lumen_blocks::components::alert_dialog::{
+                    source: r#"use dioxus_shadcn::components::alert_dialog::{
     AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
     AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
     AlertDialogTrigger,

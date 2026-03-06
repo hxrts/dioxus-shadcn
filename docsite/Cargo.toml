@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 dioxus = { workspace = true, features = ["router"] }
-lumen-blocks.workspace = true
+dioxus-shadcn.workspace = true
 lucide-dioxus = { workspace = true, features = ["all-icons"] }
 dioxus-sdk-time.workspace = true
 

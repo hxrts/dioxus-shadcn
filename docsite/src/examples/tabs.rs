@@ -1,17 +1,17 @@
 //! Tabs component examples with embedded source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::button::{Button, ButtonVariant};
-use lumen_blocks::components::card::{Card, CardContent, CardDescription, CardHeader, CardTitle};
-use lumen_blocks::components::input::Input;
-use lumen_blocks::components::label::Label;
-use lumen_blocks::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger, TabsVariant};
+use dioxus_shadcn::components::button::{Button, ButtonVariant};
+use dioxus_shadcn::components::card::{Card, CardContent, CardDescription, CardHeader, CardTitle};
+use dioxus_shadcn::components::input::Input;
+use dioxus_shadcn::components::label::Label;
+use dioxus_shadcn::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger, TabsVariant};
 
 // ============================================================================
 // Source code strings for documentation
 // ============================================================================
 
-pub const BASIC_SOURCE: &str = r#"use lumen_blocks::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger};
+pub const BASIC_SOURCE: &str = r#"use dioxus_shadcn::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger};
 
 rsx! {
     Tabs { default_value: Some("account".to_string()),
@@ -28,7 +28,7 @@ rsx! {
     }
 }"#;
 
-pub const LINE_VARIANT_SOURCE: &str = r#"use lumen_blocks::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger, TabsVariant};
+pub const LINE_VARIANT_SOURCE: &str = r#"use dioxus_shadcn::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger, TabsVariant};
 
 rsx! {
     Tabs {
@@ -44,7 +44,7 @@ rsx! {
     }
 }"#;
 
-pub const CONTROLLED_SOURCE: &str = r#"use lumen_blocks::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger};
+pub const CONTROLLED_SOURCE: &str = r#"use dioxus_shadcn::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger};
 
 let active_tab = use_signal(|| "tab1".to_string());
 

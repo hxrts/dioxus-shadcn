@@ -1,7 +1,7 @@
 //! NavigationMenu example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::navigation_menu::{
+use dioxus_shadcn::components::navigation_menu::{
     NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink,
     NavigationMenuList, NavigationMenuTrigger,
 };

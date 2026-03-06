@@ -7,7 +7,7 @@ pub use nested::NestedCollapsibleExample;
 pub mod basic {
     // ANCHOR: basic
     use dioxus::prelude::*;
-    use lumen_blocks::components::collapsible::{
+    use dioxus_shadcn::components::collapsible::{
         Collapsible, CollapsibleContent, CollapsibleTrigger,
     };
 
@@ -36,7 +36,7 @@ pub mod basic {
 pub mod multiple {
     // ANCHOR: multiple
     use dioxus::prelude::*;
-    use lumen_blocks::components::collapsible::{
+    use dioxus_shadcn::components::collapsible::{
         Collapsible, CollapsibleContent, CollapsibleTrigger,
     };
 
@@ -109,7 +109,7 @@ pub mod multiple {
 pub mod nested {
     // ANCHOR: nested
     use dioxus::prelude::*;
-    use lumen_blocks::components::collapsible::{
+    use dioxus_shadcn::components::collapsible::{
         Collapsible, CollapsibleContent, CollapsibleTrigger,
     };
 
@@ -172,7 +172,7 @@ pub mod nested {
 // Original example for backward compatibility
 pub mod example {
     use dioxus::prelude::*;
-    use lumen_blocks::components::collapsible::{
+    use dioxus_shadcn::components::collapsible::{
         Collapsible, CollapsibleContent, CollapsibleTrigger,
     };
 

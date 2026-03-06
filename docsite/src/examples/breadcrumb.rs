@@ -1,7 +1,7 @@
 //! Breadcrumb example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::breadcrumb::{
+use dioxus_shadcn::components::breadcrumb::{
     Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage,
     BreadcrumbSeparator,
 };

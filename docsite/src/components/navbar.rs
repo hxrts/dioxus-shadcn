@@ -3,9 +3,9 @@
 use crate::components::ThemeToggle;
 use crate::LOGO_SMALL;
 use dioxus::prelude::*;
+use dioxus_shadcn::components::button::{Button, ButtonSize, ButtonVariant};
+use dioxus_shadcn::components::separator::{Separator, SeparatorOrientation};
 use lucide_dioxus::{Github, Menu, X};
-use lumen_blocks::components::button::{Button, ButtonSize, ButtonVariant};
-use lumen_blocks::components::separator::{Separator, SeparatorOrientation};
 
 // Button styling classes matching shadcn Button component
 const BTN_BASE: &str = "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50";
@@ -50,8 +50,8 @@ pub fn Navbar() -> Element {
                     }
 
                     // Logo - styled anchor matching shadcn Button ghost icon
-                    a {
-                        href: "/",
+                    Link {
+                        to: "/",
                         class: "{BTN_BASE} {BTN_GHOST} {BTN_ICON} hidden lg:flex",
                         img { class: "size-5 dark:invert", src: LOGO_SMALL }
                         span { class: "sr-only", "dioxus-shadcn" }
@@ -108,8 +108,8 @@ fn NavButton(href: &'static str, children: Element) -> Element {
     // Reference uses Button variant="ghost" size="sm" className="px-2.5"
     // sm size: h-8 gap-1.5 rounded-md px-3 -> override to px-2.5
     rsx! {
-        a {
-            href: href,
+        Link {
+            to: href,
             class: "{BTN_BASE} {BTN_GHOST} {BTN_SM} px-2.5",
             {children}
         }
@@ -162,8 +162,8 @@ fn MobileNav() -> Element {
 #[component]
 fn MobileNavLink(href: &'static str, children: Element) -> Element {
     rsx! {
-        a {
-            href: href,
+        Link {
+            to: href,
             class: "font-medium text-foreground transition-colors hover:text-foreground/80",
             onclick: move |_| { *MOBILE_MENU_OPEN.write() = false; },
             {children}

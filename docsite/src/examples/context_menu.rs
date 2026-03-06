@@ -1,7 +1,7 @@
 //! ContextMenu example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::context_menu::{
+use dioxus_shadcn::components::context_menu::{
     ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator,
     ContextMenuShortcut, ContextMenuTrigger,
 };

@@ -1,7 +1,7 @@
 //! Resizable example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::resizable::{
+use dioxus_shadcn::components::resizable::{
     ResizableDirection, ResizableHandle, ResizablePanel, ResizablePanelGroup,
 };
 

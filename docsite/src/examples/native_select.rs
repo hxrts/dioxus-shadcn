@@ -1,7 +1,7 @@
 //! NativeSelect example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::native_select::{
+use dioxus_shadcn::components::native_select::{
     NativeSelect, NativeSelectOptGroup, NativeSelectOption,
 };
 

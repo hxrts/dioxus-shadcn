@@ -1,7 +1,7 @@
 //! AspectRatio example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::aspect_ratio::AspectRatio;
+use dioxus_shadcn::components::aspect_ratio::AspectRatio;
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"rsx! {

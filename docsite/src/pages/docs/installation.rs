@@ -2,7 +2,7 @@
 
 use crate::components::docs::{CodeBlock, DocHeader};
 use dioxus::prelude::*;
-use lumen_blocks::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger};
+use dioxus_shadcn::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger};
 
 /// Installation guide page.
 #[component]

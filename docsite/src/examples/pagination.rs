@@ -1,7 +1,7 @@
 //! Pagination example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::pagination::{
+use dioxus_shadcn::components::pagination::{
     Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink,
     PaginationNext, PaginationPrevious,
 };

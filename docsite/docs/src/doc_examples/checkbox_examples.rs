@@ -8,7 +8,7 @@ pub use states::CheckboxStatesExample;
 pub mod basic {
     // ANCHOR: basic
     use dioxus::prelude::*;
-    use lumen_blocks::components::checkbox::Checkbox;
+    use dioxus_shadcn::components::checkbox::Checkbox;
 
     #[component]
     pub fn BasicCheckboxExample() -> Element {
@@ -57,7 +57,7 @@ pub mod basic {
 pub mod sizes {
     // ANCHOR: sizes
     use dioxus::prelude::*;
-    use lumen_blocks::components::checkbox::{Checkbox, CheckboxSize};
+    use dioxus_shadcn::components::checkbox::{Checkbox, CheckboxSize};
 
     #[component]
     pub fn CheckboxSizesExample() -> Element {
@@ -119,7 +119,7 @@ pub mod sizes {
 pub mod states {
     // ANCHOR: states
     use dioxus::prelude::*;
-    use lumen_blocks::components::checkbox::Checkbox;
+    use dioxus_shadcn::components::checkbox::Checkbox;
 
     #[component]
     pub fn CheckboxStatesExample() -> Element {
@@ -158,7 +158,7 @@ pub mod states {
 pub mod form_integration {
     // ANCHOR: form_integration
     use dioxus::prelude::*;
-    use lumen_blocks::components::{button::Button, checkbox::Checkbox};
+    use dioxus_shadcn::components::{button::Button, checkbox::Checkbox};
 
     #[component]
     pub fn FormIntegrationExample() -> Element {
@@ -223,7 +223,7 @@ pub mod form_integration {
 // This maintains the original example for backward compatibility
 pub mod example {
     use dioxus::prelude::*;
-    use lumen_blocks::components::checkbox::Checkbox;
+    use dioxus_shadcn::components::checkbox::Checkbox;
 
     #[component]
     pub fn CheckboxExample() -> Element {

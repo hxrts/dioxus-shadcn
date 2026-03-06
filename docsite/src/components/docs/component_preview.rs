@@ -2,7 +2,7 @@
 
 use super::CodeBlock;
 use dioxus::prelude::*;
-use lumen_blocks::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger};
+use dioxus_shadcn::components::tabs::{Tabs, TabsContent, TabsList, TabsTrigger};
 
 /// Props for the ComponentPreview component.
 #[derive(Props, Clone, PartialEq)]

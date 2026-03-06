@@ -1,7 +1,7 @@
 //! Alert component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::alert::{Alert, AlertDescription, AlertTitle, AlertVariant};
+use dioxus_shadcn::components::alert::{Alert, AlertDescription, AlertTitle, AlertVariant};
 
 pub const VARIANTS_SOURCE: &str = r#"rsx! {
     div { class: "grid gap-4",

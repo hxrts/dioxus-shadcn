@@ -1,9 +1,9 @@
 //! Label component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::checkbox::Checkbox;
-use lumen_blocks::components::input::Input;
-use lumen_blocks::components::label::{Label, LabelSize};
+use dioxus_shadcn::components::checkbox::Checkbox;
+use dioxus_shadcn::components::input::Input;
+use dioxus_shadcn::components::label::{Label, LabelSize};
 
 pub const BASIC_SOURCE: &str = r#"rsx! {
     div { class: "grid gap-2",

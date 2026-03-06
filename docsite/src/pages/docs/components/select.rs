@@ -17,7 +17,7 @@ pub fn SelectDoc() -> Element {
             section { class: "space-y-4",
                 h2 { id: "installation", class: "text-2xl font-semibold tracking-tight", "Installation" }
                 CodeBlock {
-                    source: r#"use lumen_blocks::components::select::{
+                    source: r#"use dioxus_shadcn::components::select::{
     Select, SelectTrigger, SelectValue, SelectContent,
     SelectItem, SelectGroup, SelectLabel
 };"#.to_string(),

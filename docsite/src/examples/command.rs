@@ -1,7 +1,7 @@
 //! Command example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::command::{
+use dioxus_shadcn::components::command::{
     Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator,
     CommandShortcut,
 };

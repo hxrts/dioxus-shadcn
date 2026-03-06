@@ -1,10 +1,10 @@
 //! Field example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::field::{
+use dioxus_shadcn::components::field::{
     Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet,
 };
-use lumen_blocks::components::input::Input;
+use dioxus_shadcn::components::input::Input;
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

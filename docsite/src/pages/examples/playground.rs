@@ -2,10 +2,11 @@
 
 use super::ExamplesShell;
 use dioxus::prelude::*;
-use lumen_blocks::components::{
+use dioxus_shadcn::components::{
     button::{Button, ButtonSize, ButtonVariant},
     label::Label,
     separator::Separator,
+    slider::Slider,
     tabs::{Tabs, TabsContent, TabsList, TabsTrigger},
     textarea::Textarea,
 };
@@ -33,8 +34,11 @@ pub fn PlaygroundExample() -> Element {
                     h2 { class: "pl-0.5 text-lg font-semibold", "Playground" }
                     div { class: "ml-auto flex w-full gap-2 sm:justify-end",
                         Button { variant: ButtonVariant::Outline, size: ButtonSize::Small, "Preset" }
-                        Button { variant: ButtonVariant::Outline, size: ButtonSize::Small, "Code" }
-                        Button { variant: ButtonVariant::Ghost, size: ButtonSize::Small, "Share" }
+                        Button { variant: ButtonVariant::Outline, size: ButtonSize::Small, "Save" }
+                        div { class: "hidden gap-2 md:flex",
+                            Button { variant: ButtonVariant::Outline, size: ButtonSize::Small, "Code" }
+                            Button { variant: ButtonVariant::Ghost, size: ButtonSize::Small, "Share" }
+                        }
                         Button { size: ButtonSize::Small, "Run" }
                     }
                 }
@@ -51,6 +55,31 @@ pub fn PlaygroundExample() -> Element {
                                         TabsTrigger { value: "complete", "Complete" }
                                         TabsTrigger { value: "insert", "Insert" }
                                         TabsTrigger { value: "edit", "Edit" }
+                                    }
+                                }
+                                PlaygroundControl {
+                                    label: "Model",
+                                    div { class: "rounded-md border bg-muted px-3 py-2 text-sm", "gpt-4.1-mini" }
+                                }
+                                PlaygroundControl {
+                                    label: "Temperature",
+                                    div { class: "space-y-2",
+                                        Slider { default_value: 56.0, max: 100.0 }
+                                        p { class: "text-xs text-muted-foreground", "0.56" }
+                                    }
+                                }
+                                PlaygroundControl {
+                                    label: "Max Length",
+                                    div { class: "space-y-2",
+                                        Slider { default_value: 26.0, max: 100.0 }
+                                        p { class: "text-xs text-muted-foreground", "256 tokens" }
+                                    }
+                                }
+                                PlaygroundControl {
+                                    label: "Top P",
+                                    div { class: "space-y-2",
+                                        Slider { default_value: 90.0, max: 100.0 }
+                                        p { class: "text-xs text-muted-foreground", "0.9" }
                                     }
                                 }
                             }
@@ -77,6 +106,10 @@ pub fn PlaygroundExample() -> Element {
                                         }
                                         div { class: "rounded-md border bg-muted" }
                                     }
+                                    div { class: "flex items-center gap-2",
+                                        Button { "Submit" }
+                                        Button { variant: ButtonVariant::Secondary, "History" }
+                                    }
                                 }
 
                                 TabsContent { value: "edit", class: "mt-0 flex flex-col gap-4 border-0 p-0",
@@ -100,12 +133,26 @@ pub fn PlaygroundExample() -> Element {
                                         }
                                         div { class: "min-h-[400px] rounded-md border bg-muted lg:min-h-[700px]" }
                                     }
+                                    div { class: "flex items-center gap-2",
+                                        Button { "Submit" }
+                                        Button { variant: ButtonVariant::Secondary, "History" }
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+#[component]
+fn PlaygroundControl(label: &'static str, children: Element) -> Element {
+    rsx! {
+        div { class: "grid gap-3",
+            Label { class: "text-sm leading-none font-medium", "{label}" }
+            {children}
         }
     }
 }

@@ -7,7 +7,7 @@ pub use with_icons::MenubarWithIconsExample;
 pub mod basic {
     // ANCHOR: basic
     use dioxus::prelude::*;
-    use lumen_blocks::components::menubar::{
+    use dioxus_shadcn::components::menubar::{
         Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger,
     };
 
@@ -94,7 +94,7 @@ pub mod basic {
 pub mod disabled {
     // ANCHOR: disabled
     use dioxus::prelude::*;
-    use lumen_blocks::components::menubar::{
+    use dioxus_shadcn::components::menubar::{
         Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger,
     };
 
@@ -183,7 +183,7 @@ pub mod with_icons {
     // ANCHOR: with_icons
     use dioxus::prelude::*;
     use lucide_dioxus::{Clipboard, Copy, FileText, FolderOpen, Save, Scissors};
-    use lumen_blocks::components::menubar::{
+    use dioxus_shadcn::components::menubar::{
         Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger,
     };
 

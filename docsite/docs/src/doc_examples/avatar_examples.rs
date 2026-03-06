@@ -9,7 +9,7 @@ pub use state::AvatarStateExample;
 pub mod basic {
     // ANCHOR: basic
     use dioxus::prelude::*;
-    use lumen_blocks::components::avatar::{Avatar, AvatarFallback, AvatarImage};
+    use dioxus_shadcn::components::avatar::{Avatar, AvatarFallback, AvatarImage};
 
     const PERSON_1: Asset = asset!("/assets/person-1.avif");
 
@@ -38,7 +38,7 @@ pub mod basic {
 pub mod sizes {
     // ANCHOR: sizes
     use dioxus::prelude::*;
-    use lumen_blocks::components::avatar::{Avatar, AvatarFallback, AvatarImage};
+    use dioxus_shadcn::components::avatar::{Avatar, AvatarFallback, AvatarImage};
 
     const PERSON_1: Asset = asset!("/assets/person-1.avif");
 
@@ -96,7 +96,7 @@ pub mod sizes {
 pub mod fallbacks {
     // ANCHOR: fallbacks
     use dioxus::prelude::*;
-    use lumen_blocks::components::avatar::{Avatar, AvatarFallback, AvatarImage};
+    use dioxus_shadcn::components::avatar::{Avatar, AvatarFallback, AvatarImage};
 
     #[component]
     pub fn ErrorStateExample() -> Element {
@@ -149,7 +149,7 @@ pub mod fallbacks {
 pub mod groups {
     // ANCHOR: groups
     use dioxus::prelude::*;
-    use lumen_blocks::components::avatar::{Avatar, AvatarFallback, AvatarImage};
+    use dioxus_shadcn::components::avatar::{Avatar, AvatarFallback, AvatarImage};
 
     const PERSON_1: Asset = asset!("/assets/person-1.avif");
     const PERSON_2: Asset = asset!("/assets/person-2.jpeg");
@@ -233,7 +233,7 @@ pub mod groups {
 pub mod state {
     // ANCHOR: state
     use dioxus::prelude::*;
-    use lumen_blocks::components::avatar::{Avatar, AvatarFallback, AvatarImage};
+    use dioxus_shadcn::components::avatar::{Avatar, AvatarFallback, AvatarImage};
 
     const PERSON_1: Asset = asset!("/assets/person-1.avif");
 

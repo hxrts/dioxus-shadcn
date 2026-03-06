@@ -1,7 +1,7 @@
 //! Progress component examples and source code.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::progress::{Progress, ProgressSize, ProgressVariant};
+use dioxus_shadcn::components::progress::{Progress, ProgressSize, ProgressVariant};
 
 pub const BASIC_SOURCE: &str = r#"rsx! {
     Progress { value: use_signal(|| 60.0) }

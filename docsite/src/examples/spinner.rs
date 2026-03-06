@@ -1,7 +1,7 @@
 //! Spinner example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::spinner::{Spinner, SpinnerSize};
+use dioxus_shadcn::components::spinner::{Spinner, SpinnerSize};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

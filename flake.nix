@@ -1,5 +1,5 @@
 {
-  description = "Lumen Blocks - Accessible, styled components for Dioxus";
+  description = "dioxus-shadcn - shadcn UI components for Dioxus";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -74,7 +74,7 @@
             fi
 
             echo ""
-            echo "Lumen Blocks development environment"
+            echo "dioxus-shadcn development environment"
             echo "Rust: $(rustc --version)"
             echo "Dioxus CLI: $(dx --version)"
             echo "wasm-bindgen: $(wasm-bindgen --version 2>/dev/null || echo 'not installed')"
@@ -93,7 +93,7 @@
 
         # Package for building the docsite
         packages.docsite = pkgs.stdenv.mkDerivation {
-          pname = "lumen-blocks-docsite";
+          pname = "dioxus-shadcn-docsite";
           version = "0.3.0";
 
           src = ./.;
@@ -118,8 +118,8 @@
         };
 
         # Library package (for use as a dependency)
-        packages.lumen-blocks = pkgs.rustPlatform.buildRustPackage {
-          pname = "lumen-blocks";
+        packages.dioxus-shadcn = pkgs.rustPlatform.buildRustPackage {
+          pname = "dioxus-shadcn";
           version = "0.3.0";
 
           src = ./.;
@@ -135,13 +135,13 @@
           ] ++ darwinInputs;
 
           buildPhase = ''
-            cargo build --package lumen-blocks --release
+            cargo build --package dioxus-shadcn --release
           '';
 
           installPhase = ''
             mkdir -p $out/lib
-            if [ -f target/release/liblumen_blocks.rlib ]; then
-              cp target/release/liblumen_blocks.rlib $out/lib/
+            if [ -f target/release/libdioxus_shadcn.rlib ]; then
+              cp target/release/libdioxus_shadcn.rlib $out/lib/
             fi
           '';
 
