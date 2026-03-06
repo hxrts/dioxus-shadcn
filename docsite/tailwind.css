@@ -675,3 +675,105 @@ Based on MIT-licensed code from shadcn: https://github.com/shadcn-ui/ui
         outline-offset: 2px;
     }
 }
+
+/* ==========================================================================
+   Syntax Highlighting Overrides
+   Ensure highlight.js integrates with our theme
+   ========================================================================== */
+
+/* Code block container */
+[data-slot="code-block"] pre {
+    background-color: #0d0d0d !important;
+    margin: 0 !important;
+    padding: 1rem !important;
+    border-radius: 0 !important;
+}
+
+[data-slot="code-block"] pre code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    tab-size: 2;
+}
+
+/* Override highlight.js background to match our theme */
+[data-slot="code-block"] pre code.hljs {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* Ensure highlighted code inherits proper styling */
+.hljs {
+    color: #e6e6e6;
+    background: #0d0d0d;
+}
+
+/* Token colors matching GitHub Dark / shadcn style */
+.hljs-comment,
+.hljs-quote {
+    color: #8b949e;
+    font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-addition {
+    color: #ff7b72;
+}
+
+.hljs-string,
+.hljs-attribute,
+.hljs-template-variable,
+.hljs-addition {
+    color: #a5d6ff;
+}
+
+.hljs-number,
+.hljs-literal {
+    color: #79c0ff;
+}
+
+.hljs-built_in,
+.hljs-type,
+.hljs-class .hljs-title {
+    color: #ffa657;
+}
+
+.hljs-function,
+.hljs-title,
+.hljs-section {
+    color: #d2a8ff;
+}
+
+.hljs-variable,
+.hljs-template-variable {
+    color: #ffa657;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+    color: #7ee787;
+}
+
+.hljs-meta {
+    color: #79c0ff;
+}
+
+.hljs-deletion {
+    color: #ffa198;
+    background-color: rgba(248, 81, 73, 0.15);
+}
+
+.hljs-addition {
+    color: #7ee787;
+    background-color: rgba(46, 160, 67, 0.15);
+}
+
+/* Rust-specific syntax */
+.hljs-title.function_ {
+    color: #d2a8ff;
+}
+
+.hljs-title.class_ {
+    color: #ffa657;
+}

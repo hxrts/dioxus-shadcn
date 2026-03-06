@@ -11,10 +11,10 @@ title = "dioxus-shadcn"
 [web.resource]
 
 # Additional CSS style files
-style = []
+style = ["/assets/tailwind.css"]
 
 # Additional JavaScript files
-script = []
+script = ["/assets/theme-init.js", "/assets/syntax-highlight.js"]
 
 [web.resource.dev]
 

@@ -97,14 +97,12 @@ pub fn CodeBlock(props: CodeBlockProps) -> Element {
             // Code content
             if !collapsed() {
                 div {
-                    class: "overflow-auto text-xs",
+                    class: "overflow-auto text-xs [&_pre]:!bg-[#0d0d0d] [&_pre]:!m-0 [&_pre]:!p-4",
                     style: "max-height: {max_height}",
 
                     pre {
-                        class: "p-4 bg-[#0d0d0d] m-0",
-
                         code {
-                            class: "font-mono text-zinc-300 whitespace-pre",
+                            class: "language-{props.language} !text-sm",
                             "{props.source}"
                         }
                     }
