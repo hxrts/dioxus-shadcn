@@ -1,12 +1,12 @@
 //! Item example components.
 
 use dioxus::prelude::*;
-use lucide_dioxus::File;
 use dioxus_shadcn::components::button::Button;
 use dioxus_shadcn::components::item::{
     Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemMediaVariant,
     ItemSeparator, ItemTitle, ItemVariant,
 };
+use lucide_dioxus::File;
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

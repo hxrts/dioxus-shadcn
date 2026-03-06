@@ -1,8 +1,8 @@
 //! Button component examples with embedded source code.
 
 use dioxus::prelude::*;
-use lucide_dioxus::{ArrowLeft, ArrowRight, Pencil, Plus, Search, Trash, X};
 use dioxus_shadcn::components::button::{Button, ButtonSize, ButtonVariant};
+use lucide_dioxus::{ArrowLeft, ArrowRight, Pencil, Plus, Search, Trash, X};
 
 // ============================================================================
 // Source code strings for documentation

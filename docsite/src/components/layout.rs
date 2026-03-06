@@ -1,10 +1,10 @@
 use dioxus::prelude::*;
-use lucide_dioxus::{Check, Info, X};
 use dioxus_shadcn::components::{
     avatar::{Avatar, AvatarFallback, AvatarImage},
     button::{Button, ButtonVariant},
     input::Input,
 };
+use lucide_dioxus::{Check, Info, X};
 
 #[component]
 pub fn SidebarLink(

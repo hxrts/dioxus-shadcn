@@ -41,7 +41,7 @@ impl NavigationMenuContext {
         let previous = self.previous_value.read();
 
         match (&*current, &*previous) {
-            (Some(curr), Some(prev)) if curr == item_value => {
+            (Some(curr), Some(_prev)) if curr == item_value => {
                 // Navigating to this item - determine direction based on order
                 // For simplicity, use from-start as default
                 "from-start"

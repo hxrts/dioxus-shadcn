@@ -1,11 +1,11 @@
 //! Dropdown component examples with embedded source code.
 
 use dioxus::prelude::*;
-use lucide_dioxus::{LogOut, Settings, User};
 use dioxus_shadcn::components::button::{Button, ButtonVariant};
 use dioxus_shadcn::components::dropdown::{
     Dropdown, DropdownContent, DropdownItem, DropdownLabel, DropdownSeparator, DropdownTrigger,
 };
+use lucide_dioxus::{LogOut, Settings, User};
 
 // ============================================================================
 // Source code strings for documentation

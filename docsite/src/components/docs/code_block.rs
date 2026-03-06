@@ -1,8 +1,8 @@
 //! Syntax-highlighted code block with copy functionality.
 
 use dioxus::prelude::*;
-use lucide_dioxus::{Check, Copy};
 use dioxus_shadcn::components::button::{Button, ButtonSize, ButtonVariant};
+use lucide_dioxus::{Check, Copy};
 
 /// Props for the CodeBlock component.
 #[derive(Props, Clone, PartialEq)]

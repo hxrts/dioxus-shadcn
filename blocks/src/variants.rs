@@ -219,10 +219,8 @@ mod tests {
 
     #[test]
     fn test_compound_variants() {
-        const COMPOUND: CompoundVariant<'static> = CompoundVariant::new(
-            &[("variant", "outline"), ("size", "icon")],
-            "border-2",
-        );
+        const COMPOUND: CompoundVariant<'static> =
+            CompoundVariant::new(&[("variant", "outline"), ("size", "icon")], "border-2");
         let config = cva(
             "base",
             &[

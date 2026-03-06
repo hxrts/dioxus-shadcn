@@ -229,5 +229,58 @@
             </div>
         </div>
         <div id="main"></div>
+
+        <!-- Syntax highlighting with highlight.js -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/toml.min.js"></script>
+        <script>
+            (function() {
+                hljs.configure({
+                    ignoreUnescapedHTML: true,
+                    languages: ['rust', 'bash', 'shell', 'toml', 'json', 'html', 'css', 'javascript', 'typescript']
+                });
+
+                function highlightAll() {
+                    document.querySelectorAll('pre code[class*="language-"]').forEach(function(block) {
+                        if (!block.dataset.highlighted) {
+                            hljs.highlightElement(block);
+                            block.dataset.highlighted = 'yes';
+                        }
+                    });
+                }
+
+                // Initial highlight
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', highlightAll);
+                } else {
+                    highlightAll();
+                }
+
+                // MutationObserver for dynamically added code blocks
+                const observer = new MutationObserver(function(mutations) {
+                    let shouldHighlight = false;
+                    mutations.forEach(function(mutation) {
+                        if (mutation.addedNodes.length) {
+                            mutation.addedNodes.forEach(function(node) {
+                                if (node.nodeType === 1) {
+                                    if (node.tagName === 'CODE' || node.querySelector && node.querySelector('code[class*="language-"]')) {
+                                        shouldHighlight = true;
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    if (shouldHighlight) {
+                        highlightAll();
+                    }
+                });
+
+                observer.observe(document.body, { childList: true, subtree: true });
+                window.highlightCodeBlocks = highlightAll;
+            })();
+        </script>
     </body>
 </html>

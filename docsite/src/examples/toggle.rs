@@ -1,8 +1,8 @@
 //! Toggle example components.
 
 use dioxus::prelude::*;
-use lucide_dioxus::{Bold, Italic, Underline};
 use dioxus_shadcn::components::toggle::{Toggle, ToggleSize, ToggleVariant};
+use lucide_dioxus::{Bold, Italic, Underline};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"let pressed = use_signal(|| false);

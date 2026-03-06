@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
-use lucide_dioxus::House;
 use dioxus_shadcn::components::button::{Button, ButtonSize, ButtonVariant};
+use lucide_dioxus::House;
 
 use crate::Route;
 
