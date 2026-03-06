@@ -18,12 +18,16 @@ pub fn AuthenticationExample() -> Element {
                 img {
                     src: "/examples/authentication-light.png",
                     alt: "Authentication",
-                    class: "block w-full dark:hidden",
+                    width: "1280",
+                    height: "843",
+                    class: "block h-auto w-full dark:hidden",
                 }
                 img {
                     src: "/examples/authentication-dark.png",
                     alt: "Authentication",
-                    class: "hidden w-full dark:block",
+                    width: "1280",
+                    height: "843",
+                    class: "hidden h-auto w-full dark:block",
                 }
             }
 

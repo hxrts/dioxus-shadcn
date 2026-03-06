@@ -51,12 +51,16 @@ pub fn Home() -> Element {
                         img {
                             src: "/r/styles/new-york-v4/dashboard-01-light.png",
                             alt: "Dashboard",
-                            class: "block w-full dark:hidden",
+                            width: "1400",
+                            height: "875",
+                            class: "block h-auto w-full dark:hidden",
                         }
                         img {
                             src: "/r/styles/new-york-v4/dashboard-01-dark.png",
                             alt: "Dashboard",
-                            class: "hidden w-full dark:block",
+                            width: "1400",
+                            height: "875",
+                            class: "hidden h-auto w-full dark:block",
                         }
                     }
 

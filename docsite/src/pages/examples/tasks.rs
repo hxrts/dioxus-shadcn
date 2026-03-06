@@ -17,12 +17,16 @@ pub fn TasksExample() -> Element {
                 img {
                     src: "/examples/tasks-light.png",
                     alt: "Tasks",
-                    class: "block w-full dark:hidden",
+                    width: "1280",
+                    height: "998",
+                    class: "block h-auto w-full dark:hidden",
                 }
                 img {
                     src: "/examples/tasks-dark.png",
                     alt: "Tasks",
-                    class: "hidden w-full dark:block",
+                    width: "1280",
+                    height: "998",
+                    class: "hidden h-auto w-full dark:block",
                 }
             }
 

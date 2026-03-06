@@ -16,12 +16,16 @@ pub fn DashboardExample() -> Element {
                 img {
                     src: "/examples/dashboard-light.png",
                     alt: "Dashboard",
-                    class: "block w-full dark:hidden",
+                    width: "1280",
+                    height: "843",
+                    class: "block h-auto w-full dark:hidden",
                 }
                 img {
                     src: "/examples/dashboard-dark.png",
                     alt: "Dashboard",
-                    class: "hidden w-full dark:block",
+                    width: "1280",
+                    height: "843",
+                    class: "hidden h-auto w-full dark:block",
                 }
             }
 

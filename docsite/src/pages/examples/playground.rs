@@ -20,12 +20,16 @@ pub fn PlaygroundExample() -> Element {
                 img {
                     src: "/examples/playground-light.png",
                     alt: "Playground",
-                    class: "block w-full dark:hidden",
+                    width: "1280",
+                    height: "916",
+                    class: "block h-auto w-full dark:hidden",
                 }
                 img {
                     src: "/examples/playground-dark.png",
                     alt: "Playground",
-                    class: "hidden w-full dark:block",
+                    width: "1280",
+                    height: "916",
+                    class: "hidden h-auto w-full dark:block",
                 }
             }
 
