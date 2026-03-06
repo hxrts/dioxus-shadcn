@@ -1,7 +1,7 @@
 use crate::use_unique_id;
-use dioxus::prelude::*;
 use dioxus::document::eval;
 use dioxus::prelude::Key;
+use dioxus::prelude::*;
 use lucide_dioxus::X;
 
 // Side from which the sheet appears (matches shadcn sheet.tsx)

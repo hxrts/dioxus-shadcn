@@ -17,9 +17,7 @@ pub enum BadgeVariant {
 impl BadgeVariant {
     fn classes(&self) -> &'static str {
         match self {
-            BadgeVariant::Default => {
-                "bg-primary text-primary-foreground [a&]:hover:bg-primary/90"
-            }
+            BadgeVariant::Default => "bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
             BadgeVariant::Secondary => {
                 "bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90"
             }
@@ -29,12 +27,8 @@ impl BadgeVariant {
             BadgeVariant::Outline => {
                 "border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground"
             }
-            BadgeVariant::Ghost => {
-                "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground"
-            }
-            BadgeVariant::Link => {
-                "text-primary underline-offset-4 [a&]:hover:underline"
-            }
+            BadgeVariant::Ghost => "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+            BadgeVariant::Link => "text-primary underline-offset-4 [a&]:hover:underline",
         }
     }
 }

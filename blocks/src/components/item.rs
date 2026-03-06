@@ -74,10 +74,7 @@ pub struct ItemGroupProps {
 pub fn ItemGroup(props: ItemGroupProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "flex flex-col {}",
-        custom_class
-    );
+    let classes = format!("flex flex-col {}", custom_class);
 
     rsx! {
         div {
@@ -317,7 +314,10 @@ pub struct ItemDescriptionProps {
 pub fn ItemDescription(props: ItemDescriptionProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let line_clamp = props.lines.map(|n| format!("line-clamp-{}", n)).unwrap_or_default();
+    let line_clamp = props
+        .lines
+        .map(|n| format!("line-clamp-{}", n))
+        .unwrap_or_default();
 
     let classes = format!(
         "text-sm text-muted-foreground \
@@ -351,10 +351,7 @@ pub struct ItemActionsProps {
 pub fn ItemActions(props: ItemActionsProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "flex shrink-0 items-center gap-2 {}",
-        custom_class
-    );
+    let classes = format!("flex shrink-0 items-center gap-2 {}", custom_class);
 
     rsx! {
         div {
@@ -438,10 +435,7 @@ pub struct ItemSeparatorProps {
 pub fn ItemSeparator(props: ItemSeparatorProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "-mx-3 h-px bg-border {}",
-        custom_class
-    );
+    let classes = format!("-mx-3 h-px bg-border {}", custom_class);
 
     rsx! {
         div {

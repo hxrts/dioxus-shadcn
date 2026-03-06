@@ -26,8 +26,8 @@
 //! }
 //! ```
 
-use dioxus::prelude::*;
 use dioxus::document::eval;
+use dioxus::prelude::*;
 
 /// Selector for all focusable elements within a container.
 pub const FOCUSABLE_SELECTOR: &str = r#"

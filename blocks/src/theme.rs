@@ -32,8 +32,8 @@
 //! }
 //! ```
 
-use dioxus::prelude::*;
 use dioxus::document::eval;
+use dioxus::prelude::*;
 
 /// OKLCH color representation.
 ///

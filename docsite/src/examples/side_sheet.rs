@@ -1,13 +1,13 @@
 //! SideSheet example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::side_sheet::{
-    SideSheet, SideSheetContent, SideSheetDescription, SideSheetHeader, SideSheetTitle,
-    SideSheetTrigger, SideSheetFooter, SideSheetSide, SideSheetCloseButton,
-};
 use lumen_blocks::components::button::Button;
 use lumen_blocks::components::input::Input;
 use lumen_blocks::components::label::Label;
+use lumen_blocks::components::side_sheet::{
+    SideSheet, SideSheetCloseButton, SideSheetContent, SideSheetDescription, SideSheetFooter,
+    SideSheetHeader, SideSheetSide, SideSheetTitle, SideSheetTrigger,
+};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"rsx! {

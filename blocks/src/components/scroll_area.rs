@@ -188,13 +188,17 @@ pub fn ScrollBar(props: ScrollBarProps) -> Element {
 
     let orientation_classes = match props.orientation {
         ScrollbarOrientation::Vertical => "h-full w-2.5 border-l border-l-transparent p-px",
-        ScrollbarOrientation::Horizontal => "h-2.5 w-full flex-col border-t border-t-transparent p-px",
+        ScrollbarOrientation::Horizontal => {
+            "h-2.5 w-full flex-col border-t border-t-transparent p-px"
+        }
     };
 
     let visibility_classes = match visibility {
         ScrollbarVisibility::Auto => "",
         ScrollbarVisibility::Always => "",
-        ScrollbarVisibility::Hover => "opacity-0 group-hover/scroll-area:opacity-100 transition-opacity",
+        ScrollbarVisibility::Hover => {
+            "opacity-0 group-hover/scroll-area:opacity-100 transition-opacity"
+        }
         ScrollbarVisibility::Never => "hidden",
     };
 
@@ -240,10 +244,7 @@ pub struct ScrollAreaThumbProps {
 pub fn ScrollAreaThumb(props: ScrollAreaThumbProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "relative flex-1 rounded-full bg-border {}",
-        custom_class
-    );
+    let classes = format!("relative flex-1 rounded-full bg-border {}", custom_class);
 
     rsx! {
         div {

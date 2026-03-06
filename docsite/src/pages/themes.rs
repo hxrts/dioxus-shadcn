@@ -1,5 +1,8 @@
 //! Themes page with theme picker and preview.
 
+use crate::components::{
+    Announcement, PageActions, PageHeader, PageHeaderDescription, PageHeaderHeading, ThemeSelector,
+};
 use dioxus::prelude::*;
 use lumen_blocks::components::{
     button::{Button, ButtonSize, ButtonVariant},
@@ -7,6 +10,10 @@ use lumen_blocks::components::{
     input::Input,
     label::Label,
 };
+
+const TITLE: &str = "Pick a Color. Make it yours.";
+const DESCRIPTION: &str =
+    "Try our hand-picked themes. Copy and paste them into your project. New theme editor coming soon.";
 
 /// Theme configuration.
 #[derive(Clone, PartialEq)]
@@ -84,54 +91,52 @@ pub fn Themes() -> Element {
     let mut selected_theme = use_signal(|| 0usize);
 
     rsx! {
-        div { class: "flex flex-1 flex-col",
-            // Page header
-            div {
-                class: "border-b border-border/40",
-                div {
-                    class: "container max-w-screen-2xl",
-                    div {
-                        class: "flex flex-col items-center gap-4 py-12 md:py-16 text-center px-4",
-                        h1 {
-                            class: "text-3xl font-bold leading-tight tracking-tighter md:text-4xl",
-                            "Themes"
-                        }
-                        p {
-                            class: "max-w-2xl text-lg text-muted-foreground",
-                            "Explore different color themes. All themes use OKLCH color space for perceptual uniformity."
-                        }
+        div {
+            PageHeader {
+                Announcement {}
+                PageHeaderHeading { "{TITLE}" }
+                PageHeaderDescription { "{DESCRIPTION}" }
+                PageActions {
+                    a {
+                        href: "#themes",
+                        class: "inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90",
+                        "Browse Themes"
+                    }
+                    a {
+                        href: "/docs/theming",
+                        class: "inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
+                        "Documentation"
                     }
                 }
             }
 
-            // Theme content
-            div { class: "container max-w-screen-2xl px-4 md:px-6 py-12",
-                div { class: "grid gap-8 lg:grid-cols-[1fr_400px]",
-                    // Theme picker grid
-                    div {
-                        h2 { class: "text-xl font-semibold mb-4", "Choose a Theme" }
-                        div { class: "grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
-                            for (i, theme) in THEMES.iter().enumerate() {
-                                ThemeCard {
-                                    theme: theme.clone(),
-                                    selected: *selected_theme.read() == i,
-                                    on_select: move |_| selected_theme.set(i),
+            div { id: "themes", class: "container-wrapper scroll-mt-20",
+                div { class: "container flex items-center justify-between gap-8 px-6 py-4 md:px-8",
+                    ThemeSelector {}
+                }
+            }
+
+            div { class: "container-wrapper flex flex-1 flex-col section-soft pb-6",
+                div { class: "container flex flex-1 flex-col theme-container",
+                    div { class: "grid gap-8 lg:grid-cols-[1fr_400px]",
+                        div {
+                            h2 { class: "mb-4 text-xl font-semibold", "Choose a Theme" }
+                            div { class: "grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
+                                for (i, theme) in THEMES.iter().enumerate() {
+                                    ThemeCard {
+                                        theme: theme.clone(),
+                                        selected: *selected_theme.read() == i,
+                                        on_select: move |_| selected_theme.set(i),
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    // Theme preview
-                    div {
-                        h2 { class: "text-xl font-semibold mb-4", "Preview" }
-                        ThemePreview { theme: THEMES[*selected_theme.read()].clone() }
+                        div {
+                            h2 { class: "mb-4 text-xl font-semibold", "Preview" }
+                            ThemePreview { theme: THEMES[*selected_theme.read()].clone() }
+                        }
                     }
-                }
-
-                // CSS output section
-                div { class: "mt-12",
-                    h2 { class: "text-xl font-semibold mb-4", "CSS Variables" }
-                    ThemeCSSOutput { theme: THEMES[*selected_theme.read()].clone() }
                 }
             }
         }
@@ -152,7 +157,6 @@ fn ThemeCard(theme: Theme, selected: bool, on_select: EventHandler<()>) -> Eleme
             class: "flex flex-col items-start gap-2 rounded-lg p-4 text-left transition-colors {border_class}",
             onclick: move |_| on_select.call(()),
 
-            // Color preview circles
             div { class: "flex gap-2",
                 div {
                     class: "h-6 w-6 rounded-full border border-border",
@@ -164,10 +168,9 @@ fn ThemeCard(theme: Theme, selected: bool, on_select: EventHandler<()>) -> Eleme
                 }
             }
 
-            // Theme info
             div {
-                p { class: "font-medium text-sm", "{theme.name}" }
-                p { class: "text-xs text-muted-foreground line-clamp-2", "{theme.description}" }
+                p { class: "text-sm font-medium", "{theme.name}" }
+                p { class: "line-clamp-2 text-xs text-muted-foreground", "{theme.description}" }
             }
         }
     }
@@ -211,9 +214,8 @@ fn ThemePreview(theme: Theme) -> Element {
                 }
             }
 
-            // Button variants preview
-            div { class: "mt-6 pt-6 border-t border-border",
-                p { class: "text-sm font-medium mb-3", "Button Variants" }
+            div { class: "mt-6 border-t border-border pt-6",
+                p { class: "mb-3 text-sm font-medium", "Button Variants" }
                 div { class: "flex flex-wrap gap-2",
                     Button { variant: ButtonVariant::Default, size: ButtonSize::Small, "Default" }
                     Button { variant: ButtonVariant::Secondary, size: ButtonSize::Small, "Secondary" }
@@ -222,30 +224,6 @@ fn ThemePreview(theme: Theme) -> Element {
                     Button { variant: ButtonVariant::Destructive, size: ButtonSize::Small, "Destructive" }
                 }
             }
-        }
-    }
-}
-
-/// CSS output for the selected theme.
-#[component]
-fn ThemeCSSOutput(theme: Theme) -> Element {
-    let css_code = format!(
-        r#":root {{
-  --primary: {};
-  --primary-foreground: {};
-  --accent: {};
-}}"#,
-        theme.primary, theme.primary_foreground, theme.accent
-    );
-
-    rsx! {
-        div { class: "rounded-lg border border-border bg-muted/50 p-4",
-            pre { class: "text-sm font-mono overflow-x-auto",
-                code { "{css_code}" }
-            }
-        }
-        p { class: "mt-2 text-sm text-muted-foreground",
-            "Copy these CSS variables to your tailwind.css or globals.css file."
         }
     }
 }

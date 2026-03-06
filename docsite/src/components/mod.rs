@@ -1,13 +1,27 @@
+pub mod announcement;
+pub mod blocks_nav;
+pub mod charts_nav;
 pub mod component_card;
 pub mod docs;
+pub mod examples_nav;
 pub mod feature_card;
 pub mod footer;
 pub mod layout;
 pub mod navbar;
+pub mod page_header;
+pub mod page_nav;
+pub mod theme_selector;
 pub mod theme_toggle;
 
+pub use announcement::Announcement;
+pub use blocks_nav::BlocksNav;
+pub use charts_nav::ChartsNav;
 pub use component_card::ComponentCard;
+pub use examples_nav::ExamplesNav;
 pub use feature_card::FeatureCard;
 pub use footer::SiteFooter;
 pub use navbar::Navbar;
+pub use page_header::{PageActions, PageHeader, PageHeaderDescription, PageHeaderHeading};
+pub use page_nav::PageNav;
+pub use theme_selector::ThemeSelector;
 pub use theme_toggle::ThemeToggle;

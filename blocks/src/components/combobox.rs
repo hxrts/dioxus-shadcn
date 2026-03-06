@@ -644,7 +644,11 @@ pub fn ComboboxItem(props: ComboboxItemProps) -> Element {
     // Check if this item matches the search
     let search = context.search.read().to_lowercase();
     let value_lower = props.value.to_lowercase();
-    let label_lower = props.label.as_ref().map(|l| l.to_lowercase()).unwrap_or_default();
+    let label_lower = props
+        .label
+        .as_ref()
+        .map(|l| l.to_lowercase())
+        .unwrap_or_default();
     let keywords = props.keywords.clone().unwrap_or_default();
 
     let matches = search.is_empty()

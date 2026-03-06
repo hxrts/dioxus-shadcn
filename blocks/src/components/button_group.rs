@@ -148,10 +148,7 @@ pub fn ButtonGroupSeparator(props: ButtonGroupSeparatorProps) -> Element {
         ButtonGroupOrientation::Vertical => "h-px w-full",
     };
 
-    let classes = format!(
-        "bg-border {} {}",
-        orientation_class, custom_class
-    );
+    let classes = format!("bg-border {} {}", orientation_class, custom_class);
 
     rsx! {
         div {

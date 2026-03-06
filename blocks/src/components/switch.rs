@@ -88,13 +88,13 @@ pub fn Switch(props: SwitchProps) -> Element {
     // Determine size-specific classes matching shadcn-ui
     let (switch_size_class, thumb_size_class, thumb_translate) = match props.size {
         SwitchSize::Sm => (
-            "h-3.5 w-6",              // data-[size=sm]:h-3.5 data-[size=sm]:w-6
-            "size-3",                  // group-data-[size=sm]/switch:size-3
+            "h-3.5 w-6", // data-[size=sm]:h-3.5 data-[size=sm]:w-6
+            "size-3",    // group-data-[size=sm]/switch:size-3
             "data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0",
         ),
         SwitchSize::Default => (
-            "h-[1.15rem] w-8",        // data-[size=default]:h-[1.15rem] data-[size=default]:w-8
-            "size-4",                  // group-data-[size=default]/switch:size-4
+            "h-[1.15rem] w-8", // data-[size=default]:h-[1.15rem] data-[size=default]:w-8
+            "size-4",          // group-data-[size=default]/switch:size-4
             "data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0",
         ),
     };
@@ -116,8 +116,7 @@ pub fn Switch(props: SwitchProps) -> Element {
          data-[state=checked]:bg-primary data-[state=unchecked]:bg-input \
          dark:data-[state=unchecked]:bg-input/80 \
          {} {}",
-        switch_size_class,
-        custom_class
+        switch_size_class, custom_class
     );
 
     // Build thumb classes

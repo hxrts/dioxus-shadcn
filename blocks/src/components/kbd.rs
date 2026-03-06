@@ -88,10 +88,7 @@ pub struct KbdGroupProps {
 pub fn KbdGroup(props: KbdGroupProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "inline-flex items-center gap-1 {}",
-        custom_class
-    );
+    let classes = format!("inline-flex items-center gap-1 {}", custom_class);
 
     rsx! {
         span {

@@ -60,7 +60,9 @@ pub const IN_CARD_SOURCE: &str = r#"rsx! {
 
 #[component]
 pub fn SeparatorInCardExample() -> Element {
-    use lumen_blocks::components::card::{Card, CardContent, CardDescription, CardHeader, CardTitle};
+    use lumen_blocks::components::card::{
+        Card, CardContent, CardDescription, CardHeader, CardTitle,
+    };
 
     rsx! {
         Card {

@@ -366,10 +366,7 @@ pub struct PaginationEllipsisProps {
 pub fn PaginationEllipsis(props: PaginationEllipsisProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "flex h-9 w-9 items-center justify-center {}",
-        custom_class
-    );
+    let classes = format!("flex h-9 w-9 items-center justify-center {}", custom_class);
 
     rsx! {
         span {

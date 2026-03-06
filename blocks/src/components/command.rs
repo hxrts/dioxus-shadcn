@@ -117,18 +117,16 @@ pub fn Command(props: CommandProps) -> Element {
 
     let handle_keydown = {
         let mut context = context.clone();
-        move |event: KeyboardEvent| {
-            match event.key() {
-                Key::ArrowUp => {
-                    event.prevent_default();
-                    context.select_previous();
-                }
-                Key::ArrowDown => {
-                    event.prevent_default();
-                    context.select_next();
-                }
-                _ => {}
+        move |event: KeyboardEvent| match event.key() {
+            Key::ArrowUp => {
+                event.prevent_default();
+                context.select_previous();
             }
+            Key::ArrowDown => {
+                event.prevent_default();
+                context.select_next();
+            }
+            _ => {}
         }
     };
 
@@ -178,8 +176,14 @@ pub fn CommandDialog(props: CommandDialogProps) -> Element {
         return rsx! {};
     }
 
-    let title = props.title.clone().unwrap_or_else(|| "Command Palette".to_string());
-    let description = props.description.clone().unwrap_or_else(|| "Search for a command to run...".to_string());
+    let title = props
+        .title
+        .clone()
+        .unwrap_or_else(|| "Command Palette".to_string());
+    let description = props
+        .description
+        .clone()
+        .unwrap_or_else(|| "Search for a command to run...".to_string());
 
     let handle_close = {
         let mut open = props.open;
@@ -410,7 +414,10 @@ pub struct CommandGroupProps {
 pub fn CommandGroup(props: CommandGroupProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!("overflow-hidden p-1 text-foreground [&_[data-slot=command-group-heading]]:py-1.5 {}", custom_class);
+    let classes = format!(
+        "overflow-hidden p-1 text-foreground [&_[data-slot=command-group-heading]]:py-1.5 {}",
+        custom_class
+    );
 
     rsx! {
         div {
@@ -593,7 +600,10 @@ pub struct CommandShortcutProps {
 pub fn CommandShortcut(props: CommandShortcutProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!("ml-auto text-xs tracking-widest text-muted-foreground {}", custom_class);
+    let classes = format!(
+        "ml-auto text-xs tracking-widest text-muted-foreground {}",
+        custom_class
+    );
 
     rsx! {
         span {

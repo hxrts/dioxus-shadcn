@@ -1,11 +1,11 @@
 //! Empty example components.
 
 use dioxus::prelude::*;
+use lucide_dioxus::Inbox;
 use lumen_blocks::components::button::Button;
 use lumen_blocks::components::empty::{
     Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyMediaVariant, EmptyTitle,
 };
-use lucide_dioxus::Inbox;
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

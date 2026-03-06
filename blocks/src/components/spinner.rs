@@ -65,10 +65,7 @@ pub fn Spinner(props: SpinnerProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
     let size_class = props.size.class();
 
-    let classes = format!(
-        "animate-spin {} {}",
-        size_class, custom_class
-    );
+    let classes = format!("animate-spin {} {}", size_class, custom_class);
 
     rsx! {
         span {

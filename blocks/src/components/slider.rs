@@ -69,10 +69,14 @@ pub fn Slider(props: SliderProps) -> Element {
     let id = props.id.clone().unwrap_or_else(|| slider_id());
 
     let mut internal_value = use_signal(|| props.default_value);
-    let current_value = props.value.map(|s| *s.read()).unwrap_or(*internal_value.read());
+    let current_value = props
+        .value
+        .map(|s| *s.read())
+        .unwrap_or(*internal_value.read());
 
     // Calculate percentage for styling
-    let percentage = ((current_value - props.min) / (props.max - props.min) * 100.0).clamp(0.0, 100.0);
+    let percentage =
+        ((current_value - props.min) / (props.max - props.min) * 100.0).clamp(0.0, 100.0);
 
     let custom_class = props.class.as_deref().unwrap_or("");
 

@@ -50,7 +50,7 @@ impl NavigationMenuContext {
                 // Navigating away from this item
                 "to-end"
             }
-            _ => "from-start"
+            _ => "from-start",
         }
     }
 }
@@ -194,7 +194,9 @@ pub fn NavigationMenuItem(props: NavigationMenuItemProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     // Provide item value in context for child components
-    use_context_provider(|| NavigationMenuItemContext { value: value.clone() });
+    use_context_provider(|| NavigationMenuItemContext {
+        value: value.clone(),
+    });
 
     rsx! {
         li {
@@ -333,7 +335,11 @@ pub fn NavigationMenuContent(props: NavigationMenuContentProps) -> Element {
         custom_class
     );
 
-    let classes = if context.use_viewport { viewport_classes } else { inline_classes };
+    let classes = if context.use_viewport {
+        viewport_classes
+    } else {
+        inline_classes
+    };
 
     rsx! {
         div {

@@ -38,7 +38,10 @@ pub fn CodeBlock(props: CodeBlockProps) -> Element {
     let mut collapsed = use_signal(|| props.collapsible && props.default_collapsed);
 
     let source_for_clipboard = props.source.clone();
-    let max_height = props.max_height.clone().unwrap_or_else(|| "400px".to_string());
+    let max_height = props
+        .max_height
+        .clone()
+        .unwrap_or_else(|| "400px".to_string());
 
     rsx! {
         div {

@@ -1,7 +1,9 @@
 //! ScrollArea example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::scroll_area::{ScrollArea, ScrollAreaViewport, ScrollBar, ScrollbarOrientation};
+use lumen_blocks::components::scroll_area::{
+    ScrollArea, ScrollAreaViewport, ScrollBar, ScrollbarOrientation,
+};
 use lumen_blocks::components::separator::Separator;
 
 /// Source code for the basic example.
@@ -26,15 +28,7 @@ pub const BASIC_SOURCE: &str = r#"rsx! {
 }"#;
 
 const TAGS: &[&str] = &[
-    "v1.0.0",
-    "v0.9.0",
-    "v0.8.5",
-    "v0.8.0",
-    "v0.7.3",
-    "v0.7.0",
-    "v0.6.0",
-    "v0.5.2",
-    "v0.5.0",
+    "v1.0.0", "v0.9.0", "v0.8.5", "v0.8.0", "v0.7.3", "v0.7.0", "v0.6.0", "v0.5.2", "v0.5.0",
     "v0.4.0",
 ];
 

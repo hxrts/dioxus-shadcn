@@ -10,10 +10,12 @@ pub mod theme;
 pub mod variants;
 
 // Re-export commonly used items
-pub use focus_trap::{use_focus_trap, FocusTrap, FocusSentinel};
-pub use patterns::{ControlledState, CallbackExt, EventHandlerExt};
-pub use theme::{Theme, ThemeColors, ThemeContext, ThemeProvider, ColorScheme, OklchColor, use_theme, themes};
-pub use variants::{cva, cn, class_if, class_switch, VariantConfig, CompoundVariant};
+pub use focus_trap::{FocusSentinel, FocusTrap, use_focus_trap};
+pub use patterns::{CallbackExt, ControlledState, EventHandlerExt};
+pub use theme::{
+    ColorScheme, OklchColor, Theme, ThemeColors, ThemeContext, ThemeProvider, themes, use_theme,
+};
+pub use variants::{CompoundVariant, VariantConfig, class_if, class_switch, cn, cva};
 
 /// Generate a runtime-unique id.
 fn use_unique_id() -> Signal<String> {

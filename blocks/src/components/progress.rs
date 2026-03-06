@@ -94,10 +94,7 @@ pub fn Progress(props: ProgressProps) -> Element {
     };
 
     // Build indicator classes
-    let indicator_class = format!(
-        "h-full w-full flex-1 transition-all {}",
-        indicator_color
-    );
+    let indicator_class = format!("h-full w-full flex-1 transition-all {}", indicator_color);
 
     rsx! {
         div { class: "w-full space-y-2",

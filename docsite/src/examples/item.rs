@@ -1,12 +1,12 @@
 //! Item example components.
 
 use dioxus::prelude::*;
+use lucide_dioxus::File;
 use lumen_blocks::components::button::Button;
 use lumen_blocks::components::item::{
     Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemMediaVariant,
     ItemSeparator, ItemTitle, ItemVariant,
 };
-use lucide_dioxus::File;
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

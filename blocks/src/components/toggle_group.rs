@@ -2,8 +2,8 @@
 //!
 //! A set of two-state buttons that can be toggled on or off.
 
+use super::toggle::{ToggleSize, ToggleVariant};
 use dioxus::prelude::*;
-use super::toggle::{ToggleVariant, ToggleSize};
 
 /// Context for managing toggle group state.
 #[derive(Clone)]
@@ -241,7 +241,8 @@ pub fn ToggleGroupItem(props: ToggleGroupItemProps) -> Element {
     };
 
     // Border handling for outline variant with no spacing
-    let border_class = if context.spacing == 0 && matches!(context.variant, ToggleVariant::Outline) {
+    let border_class = if context.spacing == 0 && matches!(context.variant, ToggleVariant::Outline)
+    {
         "border-l-0 first:border-l"
     } else {
         ""

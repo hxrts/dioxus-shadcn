@@ -203,7 +203,11 @@ impl ToastContext {
 
     /// Show a success toast.
     pub fn success(&self, title: impl Into<String>, options: Option<ToastOptions>) -> usize {
-        self.show(title.into(), ToastType::Success, options.unwrap_or_default())
+        self.show(
+            title.into(),
+            ToastType::Success,
+            options.unwrap_or_default(),
+        )
     }
 
     /// Show an error toast.
@@ -213,7 +217,11 @@ impl ToastContext {
 
     /// Show a warning toast.
     pub fn warning(&self, title: impl Into<String>, options: Option<ToastOptions>) -> usize {
-        self.show(title.into(), ToastType::Warning, options.unwrap_or_default())
+        self.show(
+            title.into(),
+            ToastType::Warning,
+            options.unwrap_or_default(),
+        )
     }
 
     /// Show an info toast.
@@ -569,7 +577,10 @@ pub fn use_toast() -> ToastContext {
 ///
 /// **Deprecated**: Use `use_toast()` within a `ToastProvider` instead.
 /// This is kept for backward compatibility but may cause issues with SSR.
-#[deprecated(since = "0.4.0", note = "Use use_toast() within a ToastProvider instead")]
+#[deprecated(
+    since = "0.4.0",
+    note = "Use use_toast() within a ToastProvider instead"
+)]
 #[derive(Clone, Copy)]
 pub struct Toasts;
 

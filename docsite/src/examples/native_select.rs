@@ -1,7 +1,9 @@
 //! NativeSelect example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::native_select::{NativeSelect, NativeSelectOptGroup, NativeSelectOption};
+use lumen_blocks::components::native_select::{
+    NativeSelect, NativeSelectOptGroup, NativeSelectOption,
+};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r##"rsx! {

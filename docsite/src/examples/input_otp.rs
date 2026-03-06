@@ -1,7 +1,9 @@
 //! InputOTP example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::input_otp::{InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator};
+use lumen_blocks::components::input_otp::{
+    InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot,
+};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"let otp = use_signal(String::new);

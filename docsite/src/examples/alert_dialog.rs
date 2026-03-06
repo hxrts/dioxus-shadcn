@@ -2,9 +2,9 @@
 
 use dioxus::prelude::*;
 use lumen_blocks::components::alert_dialog::{
-    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-    AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
-    AlertDialogTrigger, AlertDialogButtonVariant,
+    AlertDialog, AlertDialogAction, AlertDialogButtonVariant, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
+    AlertDialogTitle, AlertDialogTrigger,
 };
 use lumen_blocks::components::button::Button;
 

@@ -1,7 +1,9 @@
 //! Field example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::field::{Field, FieldDescription, FieldGroup, FieldLabel, FieldSet, FieldLegend};
+use lumen_blocks::components::field::{
+    Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet,
+};
 use lumen_blocks::components::input::Input;
 
 /// Source code for the basic example.

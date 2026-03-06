@@ -1,8 +1,8 @@
 //! Slider example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::slider::Slider;
 use lumen_blocks::components::label::Label;
+use lumen_blocks::components::slider::Slider;
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"let value = use_signal(|| 50.0);

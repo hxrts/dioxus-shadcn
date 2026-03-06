@@ -27,10 +27,10 @@ pub fn Navbar() -> Element {
             class: "sticky top-0 z-50 w-full bg-background",
 
             div {
-                class: "container-wrapper px-6",
+                class: "container-wrapper px-6 3xl:fixed:px-0",
 
                 div {
-                    class: "flex h-14 items-center",
+                    class: "flex h-(--header-height) items-center **:data-[slot=separator]:h-4! 3xl:fixed:container",
 
                     // Mobile menu button (visible on mobile only)
                     div { class: "flex lg:hidden",
@@ -61,11 +61,13 @@ pub fn Navbar() -> Element {
                     nav {
                         class: "hidden items-center gap-0 lg:flex",
 
-                        NavButton { href: "/docs", "Docs" }
-                        NavButton { href: "/docs/components/accordion", "Components" }
+                        NavButton { href: "/docs/installation", "Docs" }
+                        NavButton { href: "/docs/components/button", "Components" }
                         NavButton { href: "/blocks", "Blocks" }
+                        NavButton { href: "/charts/area", "Charts" }
+                        NavButton { href: "/colors", "Colors" }
                         NavButton { href: "/themes", "Themes" }
-                        NavButton { href: "/examples/authentication", "Examples" }
+                        NavButton { href: "/examples/dashboard", "Examples" }
                     }
 
                     // Right side - spacer and actions
@@ -119,11 +121,11 @@ fn NavButton(href: &'static str, children: Element) -> Element {
 fn MobileNav() -> Element {
     rsx! {
         div {
-            class: "fixed inset-0 top-14 z-50 lg:hidden",
+            class: "fixed inset-0 top-(--header-height) z-50 lg:hidden",
 
             // Backdrop
             div {
-                class: "fixed inset-0 top-14 bg-background/80 backdrop-blur-sm",
+                class: "fixed inset-0 top-(--header-height) bg-background/80 backdrop-blur-sm",
                 onclick: move |_| {
                     *MOBILE_MENU_OPEN.write() = false;
                 },
@@ -131,15 +133,17 @@ fn MobileNav() -> Element {
 
             // Menu content
             nav {
-                class: "fixed top-14 left-0 bottom-0 w-full max-w-xs border-r border-border bg-background p-6 shadow-lg",
+                class: "fixed top-(--header-height) left-0 bottom-0 w-full max-w-xs border-r border-border bg-background p-6 shadow-lg",
 
                 div { class: "flex flex-col gap-4",
                     MobileNavLink { href: "/", "Home" }
                     MobileNavLink { href: "/docs", "Docs" }
-                    MobileNavLink { href: "/docs/components/accordion", "Components" }
+                    MobileNavLink { href: "/docs/components/button", "Components" }
                     MobileNavLink { href: "/blocks", "Blocks" }
+                    MobileNavLink { href: "/charts/area", "Charts" }
+                    MobileNavLink { href: "/colors", "Colors" }
                     MobileNavLink { href: "/themes", "Themes" }
-                    MobileNavLink { href: "/examples/authentication", "Examples" }
+                    MobileNavLink { href: "/examples/dashboard", "Examples" }
                     a {
                         href: "https://github.com/hxrts/dioxus-shadcn",
                         target: "_blank",

@@ -183,12 +183,14 @@ pub fn Tooltip(props: TooltipProps) -> Element {
 
     // Get delay from provider context if available, otherwise use prop
     let provider_context = try_use_context::<TooltipProviderContext>();
-    let effective_delay = props.delay_ms.max(
-        provider_context.map(|ctx| ctx.delay_ms).unwrap_or(0)
-    );
+    let effective_delay = props
+        .delay_ms
+        .max(provider_context.map(|ctx| ctx.delay_ms).unwrap_or(0));
     // If prop is 200 (default), prefer provider's delay
     let delay = if props.delay_ms == 200 {
-        provider_context.map(|ctx| ctx.delay_ms).unwrap_or(props.delay_ms)
+        provider_context
+            .map(|ctx| ctx.delay_ms)
+            .unwrap_or(props.delay_ms)
     } else {
         props.delay_ms
     };

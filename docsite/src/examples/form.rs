@@ -2,7 +2,9 @@
 
 use dioxus::prelude::*;
 use lumen_blocks::components::button::Button;
-use lumen_blocks::components::form::{Form, FormControl, FormDescription, FormField, FormLabel, FormMessage};
+use lumen_blocks::components::form::{
+    Form, FormControl, FormDescription, FormField, FormLabel, FormMessage,
+};
 use lumen_blocks::components::input::Input;
 
 /// Source code for the basic example.

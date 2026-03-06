@@ -2,8 +2,8 @@
 
 use dioxus::prelude::*;
 use lumen_blocks::components::breadcrumb::{
-    Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
-    BreadcrumbEllipsis,
+    Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage,
+    BreadcrumbSeparator,
 };
 
 /// Source code for the basic example.

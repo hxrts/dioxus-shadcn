@@ -14,8 +14,16 @@ pub fn MainLayout() -> Element {
     let title = match route {
         Route::Home { .. } => "dioxus-shadcn",
         Route::Blocks { .. } => "dioxus-shadcn - Blocks",
+        Route::BlocksCategory { .. } => "dioxus-shadcn - Blocks",
+        Route::Colors { .. } => "dioxus-shadcn - Colors",
+        Route::Charts { .. } => "dioxus-shadcn - Charts",
+        Route::ChartType { .. } => "dioxus-shadcn - Charts",
         Route::Themes { .. } => "dioxus-shadcn - Themes",
+        Route::DashboardExample { .. } => "dioxus-shadcn - Dashboard Example",
+        Route::TasksExample { .. } => "dioxus-shadcn - Tasks Example",
+        Route::PlaygroundExample { .. } => "dioxus-shadcn - Playground Example",
         Route::AuthenticationExample { .. } => "dioxus-shadcn - Authentication",
+        Route::RtlExample { .. } => "dioxus-shadcn - RTL Example",
         Route::DocsPage { .. } => "dioxus-shadcn - Docs",
         Route::Err404 { .. } => "dioxus-shadcn - Not Found",
     };
@@ -24,6 +32,7 @@ pub fn MainLayout() -> Element {
         document::Title { "{title}" }
 
         div {
+            "data-slot": "layout",
             class: "group/body relative z-10 flex min-h-svh flex-col bg-background",
 
             // Top navigation bar

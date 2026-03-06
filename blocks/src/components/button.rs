@@ -142,21 +142,15 @@ pub fn Button(props: ButtonProps) -> Element {
 
     // Determine base classes for button based on variant
     let variant_classes = match props.variant {
-        ButtonVariant::Default => {
-            "bg-primary text-primary-foreground hover:bg-primary/90"
-        }
-        ButtonVariant::Secondary => {
-            "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-        }
+        ButtonVariant::Default => "bg-primary text-primary-foreground hover:bg-primary/90",
+        ButtonVariant::Secondary => "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ButtonVariant::Outline => {
             "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50"
         }
         ButtonVariant::Ghost => {
             "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50"
         }
-        ButtonVariant::Link => {
-            "text-primary underline-offset-4 hover:underline"
-        }
+        ButtonVariant::Link => "text-primary underline-offset-4 hover:underline",
         ButtonVariant::Destructive => {
             "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40"
         }
@@ -165,15 +159,21 @@ pub fn Button(props: ButtonProps) -> Element {
     // Determine size classes based on whether it's an icon button or regular button
     let size_classes = if props.is_icon_button {
         match props.size {
-            ButtonSize::IconXs | ButtonSize::Xs => "size-6 rounded-md [&_svg:not([class*='size-'])]:size-3",
+            ButtonSize::IconXs | ButtonSize::Xs => {
+                "size-6 rounded-md [&_svg:not([class*='size-'])]:size-3"
+            }
             ButtonSize::IconSm | ButtonSize::Small => "size-8",
             ButtonSize::Icon | ButtonSize::Medium => "size-9",
             ButtonSize::IconLg | ButtonSize::Large => "size-10",
         }
     } else {
         match props.size {
-            ButtonSize::Xs | ButtonSize::IconXs => "h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3",
-            ButtonSize::Small | ButtonSize::IconSm => "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
+            ButtonSize::Xs | ButtonSize::IconXs => {
+                "h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3"
+            }
+            ButtonSize::Small | ButtonSize::IconSm => {
+                "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5"
+            }
             ButtonSize::Medium | ButtonSize::Icon => "h-9 px-4 py-2 has-[>svg]:px-3",
             ButtonSize::Large | ButtonSize::IconLg => "h-10 rounded-md px-6 has-[>svg]:px-4",
         }

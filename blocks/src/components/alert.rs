@@ -1,7 +1,7 @@
 //! Alert component for displaying important messages.
 
 use dioxus::prelude::*;
-use lucide_dioxus::{CircleAlert, TriangleAlert, CircleCheck, Info};
+use lucide_dioxus::{CircleAlert, CircleCheck, Info, TriangleAlert};
 
 /// Alert variant styles.
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]

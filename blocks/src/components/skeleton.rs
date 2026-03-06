@@ -35,10 +35,7 @@ pub struct SkeletonProps {
 pub fn Skeleton(props: SkeletonProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "animate-pulse rounded-md bg-accent {}",
-        custom_class
-    );
+    let classes = format!("animate-pulse rounded-md bg-accent {}", custom_class);
 
     rsx! {
         div {

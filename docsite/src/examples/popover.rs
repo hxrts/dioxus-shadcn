@@ -1,12 +1,12 @@
 //! Popover example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::popover::{
-    Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger,
-};
 use lumen_blocks::components::button::Button;
 use lumen_blocks::components::input::Input;
 use lumen_blocks::components::label::Label;
+use lumen_blocks::components::popover::{
+    Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger,
+};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"rsx! {

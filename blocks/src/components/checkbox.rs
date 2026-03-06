@@ -189,18 +189,16 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
     // Handle keyboard activation
     let on_keydown = {
         let mut toggle = toggle_checked.clone();
-        move |event: KeyboardEvent| {
-            match event.key() {
-                Key::Character(ref s) if s == " " => {
-                    event.prevent_default();
-                    toggle();
-                }
-                Key::Enter => {
-                    event.prevent_default();
-                    toggle();
-                }
-                _ => {}
+        move |event: KeyboardEvent| match event.key() {
+            Key::Character(ref s) if s == " " => {
+                event.prevent_default();
+                toggle();
             }
+            Key::Enter => {
+                event.prevent_default();
+                toggle();
+            }
+            _ => {}
         }
     };
 

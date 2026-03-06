@@ -91,6 +91,29 @@ pub struct DropdownContentProps {
     children: Element,
 }
 
+/// Dropdown Portal Props
+#[derive(Props, Clone, PartialEq)]
+pub struct DropdownPortalProps {
+    /// Additional CSS classes.
+    #[props(default)]
+    pub class: Option<String>,
+
+    /// Portal content.
+    pub children: Element,
+}
+
+/// A portal wrapper for dropdown content.
+///
+/// Mirrors shadcn's `DropdownMenuPortal` API surface for composition.
+#[component]
+pub fn DropdownPortal(props: DropdownPortalProps) -> Element {
+    let _ = props.class;
+
+    rsx! {
+        {props.children}
+    }
+}
+
 // Dropdown Item Props
 #[derive(Props, Clone, PartialEq)]
 pub struct DropdownItemProps<T: Clone + PartialEq + 'static> {

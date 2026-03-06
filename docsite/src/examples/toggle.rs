@@ -1,8 +1,8 @@
 //! Toggle example components.
 
 use dioxus::prelude::*;
-use lumen_blocks::components::toggle::{Toggle, ToggleVariant, ToggleSize};
 use lucide_dioxus::{Bold, Italic, Underline};
+use lumen_blocks::components::toggle::{Toggle, ToggleSize, ToggleVariant};
 
 /// Source code for the basic example.
 pub const BASIC_SOURCE: &str = r#"let pressed = use_signal(|| false);

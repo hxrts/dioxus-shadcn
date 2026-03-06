@@ -1,8 +1,8 @@
 //! Tabs component for organizing content into switchable panels.
 
 use crate::use_unique_id;
-use dioxus::prelude::*;
 use dioxus::prelude::Key;
+use dioxus::prelude::*;
 
 /// Visual variant for tabs.
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]

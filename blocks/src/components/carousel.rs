@@ -3,8 +3,8 @@
 //! A carousel implementation inspired by embla-carousel, using CSS scroll-snap
 //! for native smooth scrolling behavior with keyboard navigation support.
 
-use dioxus::prelude::*;
 use crate::components::button::{Button, ButtonSize, ButtonVariant};
+use dioxus::prelude::*;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 /// Global counter for generating unique carousel IDs.
@@ -111,6 +111,52 @@ pub struct CarouselContext {
     pub content_id: Signal<String>,
 }
 
+/// Lightweight carousel API compatible with shadcn's `setApi` pattern.
+#[derive(Clone, Copy)]
+pub struct CarouselApi {
+    context: CarouselContext,
+}
+
+impl CarouselApi {
+    /// Scroll to the previous slide.
+    pub fn scroll_prev(&self) {
+        self.context.scroll_prev();
+    }
+
+    /// Scroll to the next slide.
+    pub fn scroll_next(&self) {
+        self.context.scroll_next();
+    }
+
+    /// Scroll to a specific slide.
+    pub fn scroll_to(&self, index: usize) {
+        self.context.scroll_to(index);
+    }
+
+    /// Returns whether previous scrolling is available.
+    pub fn can_scroll_prev(&self) -> bool {
+        *self.context.can_scroll_prev.read()
+    }
+
+    /// Returns whether next scrolling is available.
+    pub fn can_scroll_next(&self) -> bool {
+        *self.context.can_scroll_next.read()
+    }
+
+    /// Returns the currently selected slide index.
+    pub fn selected_index(&self) -> usize {
+        *self.context.selected_index.read()
+    }
+
+    /// Returns the total slide count.
+    pub fn slide_count(&self) -> usize {
+        *self.context.slide_count.read()
+    }
+}
+
+/// Carousel plugin callback type.
+pub type CarouselPlugin = Callback<CarouselApi>;
+
 impl CarouselContext {
     /// Scroll to the previous slide.
     pub fn scroll_prev(&self) {
@@ -181,6 +227,11 @@ impl CarouselContext {
             can_next.set(current < count.saturating_sub(1));
         }
     }
+
+    /// Returns the public carousel API object.
+    pub fn api(&self) -> CarouselApi {
+        CarouselApi { context: *self }
+    }
 }
 
 /// Hook to access carousel context.
@@ -198,6 +249,14 @@ pub struct CarouselProps {
     /// Carousel options.
     #[props(default)]
     pub opts: Option<CarouselOptions>,
+
+    /// Optional plugins (invoked on mount with the current API).
+    #[props(default)]
+    pub plugins: Option<Vec<CarouselPlugin>>,
+
+    /// Optional callback to expose the carousel API.
+    #[props(default)]
+    pub set_api: Option<Callback<CarouselApi>>,
 
     /// Additional CSS classes.
     #[props(default)]
@@ -228,6 +287,8 @@ pub struct CarouselProps {
 pub fn Carousel(props: CarouselProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
     let options = props.opts.clone().unwrap_or_default();
+    let plugins = props.plugins.clone().unwrap_or_default();
+    let set_api = props.set_api;
     let orientation = props.orientation;
 
     // Generate a unique ID for the content element
@@ -266,35 +327,43 @@ pub fn Carousel(props: CarouselProps) -> Element {
         context.update_scroll_states();
     });
 
-    // Keyboard handlers
-    let handle_keydown = move |event: KeyboardEvent| {
-        match event.key() {
-            Key::ArrowLeft => {
-                event.prevent_default();
-                if orientation == CarouselOrientation::Horizontal {
-                    context.scroll_prev();
-                }
-            }
-            Key::ArrowRight => {
-                event.prevent_default();
-                if orientation == CarouselOrientation::Horizontal {
-                    context.scroll_next();
-                }
-            }
-            Key::ArrowUp => {
-                event.prevent_default();
-                if orientation == CarouselOrientation::Vertical {
-                    context.scroll_prev();
-                }
-            }
-            Key::ArrowDown => {
-                event.prevent_default();
-                if orientation == CarouselOrientation::Vertical {
-                    context.scroll_next();
-                }
-            }
-            _ => {}
+    let api = context.api();
+    use_effect(move || {
+        if let Some(callback) = set_api {
+            callback.call(api);
         }
+        for plugin in &plugins {
+            plugin.call(api);
+        }
+    });
+
+    // Keyboard handlers
+    let handle_keydown = move |event: KeyboardEvent| match event.key() {
+        Key::ArrowLeft => {
+            event.prevent_default();
+            if orientation == CarouselOrientation::Horizontal {
+                context.scroll_prev();
+            }
+        }
+        Key::ArrowRight => {
+            event.prevent_default();
+            if orientation == CarouselOrientation::Horizontal {
+                context.scroll_next();
+            }
+        }
+        Key::ArrowUp => {
+            event.prevent_default();
+            if orientation == CarouselOrientation::Vertical {
+                context.scroll_prev();
+            }
+        }
+        Key::ArrowDown => {
+            event.prevent_default();
+            if orientation == CarouselOrientation::Vertical {
+                context.scroll_next();
+            }
+        }
+        _ => {}
     };
 
     let classes = format!("relative {}", custom_class);
@@ -409,12 +478,12 @@ pub fn CarouselContent(props: CarouselContentProps) -> Element {
     };
 
     let classes = format!(
-        "flex {} {} {} {}",
+        "flex {} {} {} {} no-scrollbar",
         flex_direction, margin_class, custom_class, overflow_class
     );
 
     let style = format!(
-        "scroll-snap-type: {}; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none;",
+        "scroll-snap-type: {}; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;",
         snap_type
     );
 
@@ -428,7 +497,7 @@ pub fn CarouselContent(props: CarouselContentProps) -> Element {
             div {
                 id: id,
                 class: classes,
-                style: "{style} &::-webkit-scrollbar {{ display: none; }}",
+                style: style,
 
                 {props.children}
             }
@@ -753,7 +822,11 @@ pub fn CarouselThumbnail(props: CarouselThumbnailProps) -> Element {
 
     let classes = format!(
         "relative overflow-hidden rounded-md border-2 transition-colors cursor-pointer {} {}",
-        if is_active { "border-primary" } else { "border-transparent hover:border-muted-foreground/50" },
+        if is_active {
+            "border-primary"
+        } else {
+            "border-transparent hover:border-muted-foreground/50"
+        },
         custom_class
     );
 

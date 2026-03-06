@@ -77,11 +77,7 @@ impl FormContext {
 
     /// Get errors for a field.
     pub fn get_errors(&self, field: &str) -> Vec<FieldError> {
-        self.errors
-            .read()
-            .get(field)
-            .cloned()
-            .unwrap_or_default()
+        self.errors.read().get(field).cloned().unwrap_or_default()
     }
 
     /// Check if a field has errors.
@@ -364,7 +360,10 @@ pub fn FormMessage(props: FormMessageProps) -> Element {
         return rsx! {};
     }
 
-    let classes = format!("text-[0.8rem] font-medium text-destructive {}", custom_class);
+    let classes = format!(
+        "text-[0.8rem] font-medium text-destructive {}",
+        custom_class
+    );
 
     rsx! {
         p {

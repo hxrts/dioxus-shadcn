@@ -5,39 +5,38 @@ use dioxus::prelude::*;
 /// Site footer component - matches shadcn/ui v4 exactly.
 #[component]
 pub fn SiteFooter() -> Element {
-    // Reference: group-has-[.section-soft]/body:bg-surface/40 dark:bg-transparent
     rsx! {
         footer {
-            class: "dark:bg-transparent",
+            class: "group-has-[.docs-nav]/body:pb-20 group-has-[.section-soft]/body:bg-surface/40 group-has-[[data-slot=docs]]/body:hidden group-has-[.docs-nav]/body:sm:pb-0 dark:bg-transparent dark:group-has-[.section-soft]/body:bg-surface/40 3xl:fixed:bg-transparent",
 
             div {
                 class: "container-wrapper px-4 xl:px-6",
 
                 div {
-                    class: "flex h-14 items-center justify-between",
+                    class: "flex h-(--footer-height) items-center justify-between",
 
                     div {
                         class: "w-full px-1 text-center text-xs leading-loose text-muted-foreground sm:text-sm",
 
-                        "Built with "
+                        "Built by "
                         a {
-                            href: "https://dioxuslabs.com",
+                            href: "https://x.com/shadcn",
                             target: "_blank",
                             rel: "noreferrer",
                             class: "font-medium underline underline-offset-4",
-                            "Dioxus"
+                            "shadcn"
                         }
-                        " and "
+                        " at "
                         a {
-                            href: "https://ui.shadcn.com",
+                            href: "https://vercel.com",
                             target: "_blank",
                             rel: "noreferrer",
                             class: "font-medium underline underline-offset-4",
-                            "shadcn/ui"
+                            "Vercel"
                         }
-                        ". Source code on "
+                        ". The source code is available on "
                         a {
-                            href: "https://github.com/hxrts/dioxus-shadcn",
+                            href: "https://github.com/shadcn-ui/ui",
                             target: "_blank",
                             rel: "noreferrer",
                             class: "font-medium underline underline-offset-4",

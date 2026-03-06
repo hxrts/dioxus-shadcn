@@ -56,9 +56,9 @@ impl<'a> CompoundVariant<'a> {
 
     /// Check if this compound variant's conditions are satisfied by the given selections.
     fn matches(&self, selections: &HashMap<&str, &str>) -> bool {
-        self.conditions.iter().all(|(key, value)| {
-            selections.get(key).map(|v| *v == *value).unwrap_or(false)
-        })
+        self.conditions
+            .iter()
+            .all(|(key, value)| selections.get(key).map(|v| *v == *value).unwrap_or(false))
     }
 }
 
@@ -107,11 +107,8 @@ impl<'a> VariantConfig<'a> {
         }
 
         // Build selection map, merging with defaults
-        let mut selection_map: HashMap<&str, &str> = self
-            .default_variants
-            .iter()
-            .cloned()
-            .collect();
+        let mut selection_map: HashMap<&str, &str> =
+            self.default_variants.iter().cloned().collect();
 
         for (key, value) in selections {
             selection_map.insert(key, value);
@@ -180,20 +177,12 @@ pub fn cn(classes: &[&str]) -> String {
 
 /// Helper function to conditionally include a class.
 pub fn class_if(condition: bool, class: &str) -> &str {
-    if condition {
-        class
-    } else {
-        ""
-    }
+    if condition { class } else { "" }
 }
 
 /// Helper function to select between two classes based on a condition.
 pub fn class_switch<'a>(condition: bool, if_true: &'a str, if_false: &'a str) -> &'a str {
-    if condition {
-        if_true
-    } else {
-        if_false
-    }
+    if condition { if_true } else { if_false }
 }
 
 #[cfg(test)]
@@ -205,25 +194,18 @@ mod tests {
         let config = cva(
             "base-class",
             &[
-                ("variant", &[
-                    ("primary", "bg-primary"),
-                    ("secondary", "bg-secondary"),
-                ]),
-                ("size", &[
-                    ("sm", "h-8"),
-                    ("md", "h-10"),
-                    ("lg", "h-12"),
-                ]),
+                (
+                    "variant",
+                    &[("primary", "bg-primary"), ("secondary", "bg-secondary")],
+                ),
+                ("size", &[("sm", "h-8"), ("md", "h-10"), ("lg", "h-12")]),
             ],
             &[("variant", "primary"), ("size", "md")],
             &[],
         );
 
         // Test with defaults
-        assert_eq!(
-            config.apply(&[]),
-            "base-class bg-primary h-10"
-        );
+        assert_eq!(config.apply(&[]), "base-class bg-primary h-10");
 
         // Test with custom selections
         assert_eq!(
@@ -232,10 +214,7 @@ mod tests {
         );
 
         // Test with partial selection (uses default for unspecified)
-        assert_eq!(
-            config.apply(&[("size", "sm")]),
-            "base-class bg-primary h-8"
-        );
+        assert_eq!(config.apply(&[("size", "sm")]), "base-class bg-primary h-8");
     }
 
     #[test]
@@ -243,14 +222,8 @@ mod tests {
         let config = cva(
             "base",
             &[
-                ("variant", &[
-                    ("outline", "border"),
-                    ("solid", "bg-solid"),
-                ]),
-                ("size", &[
-                    ("icon", "w-10 h-10"),
-                    ("default", "px-4"),
-                ]),
+                ("variant", &[("outline", "border"), ("solid", "bg-solid")]),
+                ("size", &[("icon", "w-10 h-10"), ("default", "px-4")]),
             ],
             &[("variant", "solid"), ("size", "default")],
             &[CompoundVariant::new(

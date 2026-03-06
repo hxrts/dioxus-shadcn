@@ -83,10 +83,7 @@ pub struct EmptyHeaderProps {
 pub fn EmptyHeader(props: EmptyHeaderProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "flex max-w-md flex-col items-center gap-1 {}",
-        custom_class
-    );
+    let classes = format!("flex max-w-md flex-col items-center gap-1 {}", custom_class);
 
     rsx! {
         div {
@@ -156,10 +153,7 @@ pub struct EmptyTitleProps {
 pub fn EmptyTitle(props: EmptyTitleProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "text-lg font-medium tracking-tight {}",
-        custom_class
-    );
+    let classes = format!("text-lg font-medium tracking-tight {}", custom_class);
 
     rsx! {
         h3 {
@@ -218,10 +212,7 @@ pub struct EmptyContentProps {
 pub fn EmptyContent(props: EmptyContentProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "mt-4 flex max-w-md flex-col gap-2 {}",
-        custom_class
-    );
+    let classes = format!("mt-4 flex max-w-md flex-col gap-2 {}", custom_class);
 
     rsx! {
         div {

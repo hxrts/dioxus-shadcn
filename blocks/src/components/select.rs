@@ -249,27 +249,25 @@ pub fn SelectTrigger(props: SelectTriggerProps) -> Element {
 
     let handle_keydown = {
         let mut context = context.clone();
-        move |event: KeyboardEvent| {
-            match event.key() {
-                Key::Enter => {
-                    event.prevent_default();
-                    context.toggle();
-                }
-                Key::Character(ref s) if s == " " => {
-                    event.prevent_default();
-                    context.toggle();
-                }
-                Key::ArrowDown | Key::ArrowUp => {
-                    event.prevent_default();
-                    if !*context.open.read() {
-                        context.open.set(true);
-                        if let Some(callback) = &context.on_open_change {
-                            callback.call(true);
-                        }
+        move |event: KeyboardEvent| match event.key() {
+            Key::Enter => {
+                event.prevent_default();
+                context.toggle();
+            }
+            Key::Character(ref s) if s == " " => {
+                event.prevent_default();
+                context.toggle();
+            }
+            Key::ArrowDown | Key::ArrowUp => {
+                event.prevent_default();
+                if !*context.open.read() {
+                    context.open.set(true);
+                    if let Some(callback) = &context.on_open_change {
+                        callback.call(true);
                     }
                 }
-                _ => {}
             }
+            _ => {}
         }
     };
 
@@ -632,7 +630,10 @@ pub struct SelectSeparatorProps {
 pub fn SelectSeparator(props: SelectSeparatorProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!("pointer-events-none -mx-1 my-1 h-px bg-border {}", custom_class);
+    let classes = format!(
+        "pointer-events-none -mx-1 my-1 h-px bg-border {}",
+        custom_class
+    );
 
     rsx! {
         div {

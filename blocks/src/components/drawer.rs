@@ -20,9 +20,15 @@ impl DrawerDirection {
     fn content_classes(&self) -> &'static str {
         match self {
             DrawerDirection::Top => "inset-x-0 top-0 mb-24 max-h-[80vh] rounded-b-lg border-b",
-            DrawerDirection::Bottom => "inset-x-0 bottom-0 mt-24 max-h-[80vh] rounded-t-lg border-t",
-            DrawerDirection::Left => "inset-y-0 left-0 mr-24 h-full w-3/4 rounded-r-lg border-r sm:max-w-sm",
-            DrawerDirection::Right => "inset-y-0 right-0 ml-24 h-full w-3/4 rounded-l-lg border-l sm:max-w-sm",
+            DrawerDirection::Bottom => {
+                "inset-x-0 bottom-0 mt-24 max-h-[80vh] rounded-t-lg border-t"
+            }
+            DrawerDirection::Left => {
+                "inset-y-0 left-0 mr-24 h-full w-3/4 rounded-r-lg border-r sm:max-w-sm"
+            }
+            DrawerDirection::Right => {
+                "inset-y-0 right-0 ml-24 h-full w-3/4 rounded-l-lg border-l sm:max-w-sm"
+            }
         }
     }
 
@@ -59,16 +65,29 @@ impl DrawerDirection {
 pub struct DrawerContext {
     pub open: Signal<bool>,
     pub direction: DrawerDirection,
+    pub on_open_change: Option<Callback<bool>>,
 }
 
 impl DrawerContext {
+    pub fn set_open(&mut self, value: bool) {
+        let current = *self.open.read();
+        if current == value {
+            return;
+        }
+
+        self.open.set(value);
+        if let Some(callback) = &self.on_open_change {
+            callback.call(value);
+        }
+    }
+
     pub fn close(&mut self) {
-        self.open.set(false);
+        self.set_open(false);
     }
 
     pub fn toggle(&mut self) {
         let current = *self.open.read();
-        self.open.set(!current);
+        self.set_open(!current);
     }
 }
 
@@ -136,6 +155,7 @@ pub fn Drawer(props: DrawerProps) -> Element {
     let context = DrawerContext {
         open,
         direction: props.direction,
+        on_open_change: props.on_open_change,
     };
 
     use_context_provider(|| context);
@@ -168,7 +188,7 @@ pub fn DrawerTrigger(props: DrawerTriggerProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
     let handle_click = move |_| {
-        context.open.set(true);
+        context.set_open(true);
     };
 
     rsx! {
@@ -399,10 +419,7 @@ pub struct DrawerFooterProps {
 pub fn DrawerFooter(props: DrawerFooterProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "mt-auto flex flex-col gap-2 p-4 {}",
-        custom_class
-    );
+    let classes = format!("mt-auto flex flex-col gap-2 p-4 {}", custom_class);
 
     rsx! {
         div {
@@ -429,10 +446,7 @@ pub struct DrawerTitleProps {
 pub fn DrawerTitle(props: DrawerTitleProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "font-semibold text-foreground {}",
-        custom_class
-    );
+    let classes = format!("font-semibold text-foreground {}", custom_class);
 
     rsx! {
         h2 {
@@ -459,10 +473,7 @@ pub struct DrawerDescriptionProps {
 pub fn DrawerDescription(props: DrawerDescriptionProps) -> Element {
     let custom_class = props.class.as_deref().unwrap_or("");
 
-    let classes = format!(
-        "text-sm text-muted-foreground {}",
-        custom_class
-    );
+    let classes = format!("text-sm text-muted-foreground {}", custom_class);
 
     rsx! {
         p {

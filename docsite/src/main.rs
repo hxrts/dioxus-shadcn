@@ -7,7 +7,10 @@ mod layouts;
 mod pages;
 
 use crate::layouts::MainLayout;
-use crate::pages::{AuthenticationExample, Blocks, Err404, Home, Themes};
+use crate::pages::{
+    AuthenticationExample, Blocks, BlocksCategory, ChartType, Charts, Colors, DashboardExample,
+    Err404, Home, PlaygroundExample, RtlExample, TasksExample, Themes,
+};
 
 const FAVICON: Asset = asset!("/assets/lumen-logo-small.png");
 const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
@@ -24,16 +27,39 @@ pub enum Route {
     #[route("/blocks")]
     Blocks {},
 
+    #[route("/blocks/:category")]
+    BlocksCategory { category: String },
+
+    #[route("/colors")]
+    Colors {},
+
+    #[route("/charts")]
+    Charts {},
+
+    #[route("/charts/:chart_type")]
+    ChartType { chart_type: String },
+
     #[route("/themes")]
     Themes {},
+
+    #[route("/examples/dashboard")]
+    DashboardExample {},
+
+    #[route("/examples/tasks")]
+    TasksExample {},
+
+    #[route("/examples/playground")]
+    PlaygroundExample {},
 
     #[route("/examples/authentication")]
     AuthenticationExample {},
 
+    #[route("/examples/rtl")]
+    RtlExample {},
+
     #[route("/docs/:..segments")]
     DocsPage { segments: Vec<String> },
     #[end_layout]
-
     #[layout(MainLayout)]
     #[route("/:..segments")]
     Err404 { segments: Vec<String> },
