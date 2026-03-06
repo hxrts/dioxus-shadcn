@@ -110,7 +110,7 @@ pub fn DialogBasicExample() -> Element {
 #[component]
 pub fn DialogWithFormExample() -> Element {
     let mut open = use_signal(|| false);
-    let mut name = use_signal(|| String::new());
+    let mut name = use_signal(String::new);
 
     rsx! {
         Button {

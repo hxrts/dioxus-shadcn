@@ -1,3 +1,12 @@
+#![allow(
+    clippy::clone_on_copy,
+    clippy::collapsible_if,
+    clippy::needless_return,
+    clippy::redundant_closure,
+    clippy::redundant_locals,
+    clippy::useless_format
+)]
+
 use dioxus::prelude::*;
 
 // Re-export log crate for use in components

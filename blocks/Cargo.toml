@@ -11,6 +11,9 @@ license = "MIT"
 homepage = "https://dioxus-shadcn.dev"
 repository = "https://github.com/hxrts/dioxus-shadcn"
 
+[lib]
+doctest = false
+
 [dependencies]
 dioxus.workspace = true
 dioxus-sdk-time.workspace = true

@@ -10,6 +10,7 @@ pub use intro::IntroDoc;
 
 /// Documentation route - parsed from URL path.
 #[derive(Clone, PartialEq, Debug, Default)]
+#[allow(clippy::enum_variant_names)]
 pub enum DocsRoute {
     #[default]
     IntroPage,
