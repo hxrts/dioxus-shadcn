@@ -28,17 +28,14 @@ pub use variants::{CompoundVariant, VariantConfig, class_if, class_switch, cn, c
 
 /// Generate a runtime-unique id.
 fn use_unique_id() -> Signal<String> {
-    static NEXT_ID: GlobalSignal<usize> = Signal::global(|| 0);
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    static NEXT_ID: AtomicUsize = AtomicUsize::new(0);
 
-    let id = *NEXT_ID.peek();
-    let id_str = format!("dxc-{id}");
-
-    // Update the ID counter in an effect to avoid signal writes during rendering
-    use_effect(move || {
-        *NEXT_ID.write() += 1;
-    });
-
-    use_signal(|| id_str)
+    // Use hook to capture a unique ID once during first render
+    use_hook(|| {
+        let id = NEXT_ID.fetch_add(1, Ordering::Relaxed);
+        Signal::new(format!("dxc-{id}"))
+    })
 }
 
 // Elements can only have one id so if the user provides their own, we must use it as the aria id.
