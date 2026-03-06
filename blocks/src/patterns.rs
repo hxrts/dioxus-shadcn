@@ -274,6 +274,7 @@ impl<T: 'static> EventHandlerExt<T> for Option<EventHandler<T>> {
 
 #[cfg(test)]
 mod tests {
+    #[allow(unused_imports)]
     use super::*;
 
     // Tests would go here once we have a proper test harness

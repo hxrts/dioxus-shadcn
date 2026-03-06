@@ -219,6 +219,10 @@ mod tests {
 
     #[test]
     fn test_compound_variants() {
+        const COMPOUND: CompoundVariant<'static> = CompoundVariant::new(
+            &[("variant", "outline"), ("size", "icon")],
+            "border-2",
+        );
         let config = cva(
             "base",
             &[
@@ -226,10 +230,7 @@ mod tests {
                 ("size", &[("icon", "w-10 h-10"), ("default", "px-4")]),
             ],
             &[("variant", "solid"), ("size", "default")],
-            &[CompoundVariant::new(
-                &[("variant", "outline"), ("size", "icon")],
-                "border-2",
-            )],
+            &[COMPOUND],
         );
 
         // Compound variant should not apply
