@@ -15,7 +15,6 @@ use crate::pages::{
 };
 
 const FAVICON: Asset = asset!("/assets/lumen-logo-small.png");
-const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
 pub const LOGO: Asset = asset!("/assets/lumen-logo.png");
 pub const LOGO_SMALL: Asset = asset!("/assets/lumen-logo-small.png");
 const PREVIEW_IMAGE: Asset = asset!("/assets/lumen-blocks-preview.jpg");
@@ -83,7 +82,6 @@ fn main() {
 fn App() -> Element {
     rsx! {
         document::Link { rel: "icon", href: FAVICON }
-        document::Link { rel: "stylesheet", href: TAILWIND_CSS }
         document::Meta { property: "og:type", content: "website" }
         document::Meta { property: "og:title", content: "dioxus-shadcn" }
         document::Meta { property: "og:description", content: "shadcn UI components for Dioxus" }
