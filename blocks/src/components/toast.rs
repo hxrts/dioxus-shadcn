@@ -395,9 +395,7 @@ pub fn Toast(props: ToastProps) -> Element {
             aria_labelledby: "toast-title-{toast.id}",
             aria_describedby: if toast.description.is_some() {
                 Some(format!("toast-desc-{}", toast.id))
-            } else {
-                None
-            },
+            } else { None },
             onkeydown: handle_keydown,
             onanimationend: move |_| {
                 if !*visible.read() {

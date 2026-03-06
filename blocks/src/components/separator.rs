@@ -68,9 +68,7 @@ pub fn Separator(props: SeparatorProps) -> Element {
                     SeparatorOrientation::Horizontal => "horizontal",
                     SeparatorOrientation::Vertical => "vertical",
                 })
-            } else {
-                None
-            },
+            } else { None },
         }
     }
 }

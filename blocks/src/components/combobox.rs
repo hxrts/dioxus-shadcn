@@ -1005,15 +1005,14 @@ pub fn ComboboxChipsInput(props: ComboboxChipsInputProps) -> Element {
                 Key::Escape => {
                     context.close();
                 }
-                Key::Backspace => {
+                Key::Backspace if context.search.read().is_empty() => {
                     // Remove last chip if input is empty
-                    if context.search.read().is_empty() {
-                        let values = context.value.read().clone();
-                        if let Some(last) = values.last() {
-                            context.remove(last);
-                        }
+                    let values = context.value.read().clone();
+                    if let Some(last) = values.last() {
+                        context.remove(last);
                     }
                 }
+                Key::Backspace => {}
                 _ => {}
             }
         }
