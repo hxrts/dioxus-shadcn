@@ -11,7 +11,7 @@ title = "dioxus-shadcn"
 [web.resource]
 
 # Additional CSS style files
-style = ["/assets/tailwind.css"]
+style = []
 
 # Additional JavaScript files (loaded via index.html for custom templates)
 script = []
