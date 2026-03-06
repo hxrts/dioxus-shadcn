@@ -14,7 +14,7 @@ title = "dioxus-shadcn"
 style = ["/assets/tailwind.css"]
 
 # Additional JavaScript files
-script = ["/assets/theme-init.js", "/assets/syntax-highlight.js"]
+script = ["/assets/syntax-highlight.js"]
 
 [web.resource.dev]
 
