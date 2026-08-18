@@ -19,7 +19,21 @@ dioxus.workspace = true
 dioxus-sdk-time.workspace = true
 dioxus-primitives = { git = "https://github.com/DioxusLabs/components", package = "dioxus-primitives", rev = "545aa7f55205b488f6403f92133fffb6c66838de" }
 tracing.workspace = true
-lucide-dioxus = { workspace = true, features = ["all-icons"] }
+# Five categories, not all forty two. They are the smallest set of features that
+# reaches every icon this crate draws, and no four of them do: `minus` is only
+# in development, math, text and tools, and `circle` is only in shapes. That
+# compiles 295 of lucide's 1648 icon modules rather than all of them.
+#
+# The set has to be stated here rather than left to the consumer. cargo unifies
+# features across the graph, so a crate that declares all-icons imposes it on
+# everyone who depends on this one, however few icons they draw.
+lucide-dioxus = { workspace = true, features = [
+    "notifications",
+    "shapes",
+    "cursors",
+    "math",
+    "gaming",
+] }
 gloo-timers = { version = "0.3", features = ["futures"] }
 log = "0.4"
 
